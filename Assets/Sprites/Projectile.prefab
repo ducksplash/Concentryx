@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8244074202099407371}
   - component: {fileID: 4675354139885001929}
   - component: {fileID: 8662984254857609582}
+  - component: {fileID: 8661630416350543983}
   m_Layer: 0
   m_Name: Projectile
   m_TagString: Untagged
@@ -120,7 +121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aeaaef9e85f833646b854f7bc836b021, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countdownTime: 1
+  countdownTime: 0.9
 --- !u!70 &8662984254857609582
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -137,3 +138,24 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.1, y: 0.2}
   m_Direction: 0
+--- !u!95 &8661630416350543983
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1153927297093656384}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 37cb7ff690631754bb3aa135426d45bb, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

@@ -28,9 +28,10 @@ public class Segment : MonoBehaviour
 
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
 
-        collider.offset = new Vector2(0f, 0f); // Set the collider offset to the center of the segment
+        // Set the collider offset to the center of the segment
+        collider.offset = new Vector2(0f, 0f);
 
-        // Set the radius of the collider to half the sprite width.
+        // Set the radius of the collider 
         collider.radius = spriteRenderer.bounds.extents.magnitude / 2f;
 
         // Set the isTrigger property to true, so that collisions are detected without physical interaction.
@@ -90,7 +91,7 @@ public class Segment : MonoBehaviour
         flashingLight.color = lightColor;
 
         // Set the range of the light to be just over the size of the object
-        float radius = Mathf.Max(transform.localScale.x, transform.localScale.y) / 4f;
+        float radius = Mathf.Max(transform.localScale.x, transform.localScale.y) / 3f;
         flashingLight.pointLightOuterRadius = radius;
 
         // Set the intensity of the light

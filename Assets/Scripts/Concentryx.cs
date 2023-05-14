@@ -24,7 +24,7 @@ public class Concentryx : MonoBehaviour
             Rigidbody2D ringRB = ringObject.AddComponent<Rigidbody2D>();
             ringRB.bodyType = RigidbodyType2D.Kinematic;
 
-            int segmentModifier = (o * 10);
+            int segmentModifier = (o * 15);
 
 
             // Create a new SpriteRenderer and Collider2D component for each segment of the ring.
