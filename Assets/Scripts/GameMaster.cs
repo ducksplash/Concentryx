@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using System.Collections;
 
+
 public class GameMaster : MonoBehaviour
 {
     public static GameMaster instance;
@@ -19,6 +20,8 @@ public class GameMaster : MonoBehaviour
     [SerializeField] private GameObject textPrefab;
     [SerializeField] private float riseSpeed = 2f;
     [SerializeField] private float lifeDuration = 2f;
+
+    public Material textMaterial;
 
 
     private void Awake()
@@ -66,6 +69,9 @@ public class GameMaster : MonoBehaviour
         }
     }
 
+
+
+
     private IEnumerator FlashScore()
     {
         isFlashing = true;
@@ -74,14 +80,26 @@ public class GameMaster : MonoBehaviour
 
         scoreText.color = flashColor;
 
+        textMaterial.EnableKeyword("UNDERLAY_ON");
+
+
         // Wait for the flash duration
         yield return new WaitForSeconds(0.1f);
 
-        GameMaster.instance.scoreText.color = originalColor;
+        scoreText.color = originalColor;
 
+        // Check if the material has the "_LocalLighting" property before setting it to 0
+
+        textMaterial.DisableKeyword("UNDERLAY_ON");
 
         isFlashing = false;
     }
+
+
+
+
+
+
 
     private IEnumerator DisplayFloatingText(int val)
     {
