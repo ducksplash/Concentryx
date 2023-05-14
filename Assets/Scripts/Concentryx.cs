@@ -26,6 +26,7 @@ public class Concentryx : MonoBehaviour
 
             int segmentModifier = (o * 10);
 
+
             // Create a new SpriteRenderer and Collider2D component for each segment of the ring.
             for (int i = 0; i < numSegments + segmentModifier; i++)
             {
@@ -68,6 +69,10 @@ public class Concentryx : MonoBehaviour
 
                 // add segment handler script
                 segmentObject.AddComponent<Segment>();
+
+                // set initial health
+
+                segmentObject.GetComponent<Segment>().health += o;
 
 
             }
