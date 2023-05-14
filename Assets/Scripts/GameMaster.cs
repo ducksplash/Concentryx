@@ -16,6 +16,10 @@ public class GameMaster : MonoBehaviour
     public Color flashColor = Color.red; // The color to flash the brick
     private bool isFlashing;
 
+    [SerializeField] private GameObject textPrefab;
+    [SerializeField] private float riseSpeed = 2f;
+    [SerializeField] private float lifeDuration = 2f;
+
 
     private void Awake()
     {
@@ -45,6 +49,7 @@ public class GameMaster : MonoBehaviour
         if (!isFlashing) // only start the flash effect if not already flashing
         {
             StartCoroutine(FlashScore());
+            StartCoroutine(DisplayFloatingText(amount));
         }
 
     }
@@ -77,6 +82,44 @@ public class GameMaster : MonoBehaviour
 
         isFlashing = false;
     }
+
+    private IEnumerator DisplayFloatingText(int val)
+    {
+
+        Vector3 offset = Vector3.up * -1.5f; // Change the Y value as needed
+        GameObject floatingTextObj = Instantiate(textPrefab, transform.position + offset, Quaternion.identity);
+
+        TextMeshProUGUI textMesh = floatingTextObj.GetComponentInChildren<TextMeshProUGUI>();
+
+        Vector3 targetPosition = transform.position + Vector3.up * 5.0f;
+
+        textMesh.text = val.ToString();
+
+        Debug.Log("Starting coroutine");
+        Debug.Log("Target position: " + targetPosition);
+
+        // Wait for a short delay to make sure the text is displayed before it starts rising up
+        yield return new WaitForSeconds(0.1f);
+
+        // Rise above the origin object
+        while (floatingTextObj.transform.position.y < targetPosition.y)
+        {
+            floatingTextObj.transform.position += Vector3.up * riseSpeed * Time.deltaTime;
+            Debug.Log("Position: " + floatingTextObj.transform.position);
+            yield return null;
+        }
+
+        // Wait for the duration of the text
+        yield return new WaitForSeconds(lifeDuration);
+
+        // Destroy the floating text
+        Destroy(floatingTextObj);
+        Debug.Log("Coroutine finished");
+    }
+
+
+
+
 
 
 
