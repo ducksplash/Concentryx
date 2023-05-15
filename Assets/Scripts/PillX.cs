@@ -2,10 +2,10 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.Rendering.Universal;
 
-public class Segment : MonoBehaviour
+public class PillX : MonoBehaviour
 {
 
-    public int health = 3;
+    public int health = 6;
 
     public int hits = 0;
     public float flashDuration = 0.1f; // How long to flash the brick after being hit
@@ -17,18 +17,24 @@ public class Segment : MonoBehaviour
 
     private SpriteRenderer spriteRenderer;
 
+    private string pilltype;
+
     void Start()
     {
 
         Rigidbody2D rb = gameObject.AddComponent<Rigidbody2D>();
         rb.bodyType = RigidbodyType2D.Kinematic;
 
-        // Add a CircleCollider2D component to the segment object.
+        pilltype = gameObject.name.Substring(gameObject.name.Length - 1)[0].ToString();
+
+        Debug.Log("Pill type: " + pilltype);
+
+        // Add a CircleCollider2D component to the pill object.
         CircleCollider2D collider = gameObject.AddComponent<CircleCollider2D>();
 
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
 
-        // Set the collider offset to the center of the segment
+        // Set the collider offset to the center of the pill
         collider.offset = new Vector2(0f, 0f);
 
         // Set the radius of the collider 
@@ -43,14 +49,14 @@ public class Segment : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // Get the segment that was hit by the projectile.
+        // Get the pill that was hit by the projectile.
         GameObject projectile = other.transform.gameObject;
 
         if (other.gameObject.layer == LayerMask.NameToLayer("Projectiles"))
         {
 
             // Output a message to the console.
-            Debug.Log("Projectile hit segment: " + projectile.name);
+            Debug.Log("Projectile hit pill: " + projectile.name);
 
             if (health > 0)
             {
@@ -58,13 +64,13 @@ public class Segment : MonoBehaviour
                 hits++;
                 if (!isFlashing) // only start the flash effect if not already flashing
                 {
-                    StartCoroutine(FlashBrick());
+                    StartCoroutine(FlashPill());
                 }
 
             }
             else
             {
-                // Destroy the segment.
+                GameMaster.instance.CollectPill(pilltype);
                 GameMaster.instance.IncrementScore(hits);
                 Destroy(gameObject);
             }
@@ -73,7 +79,7 @@ public class Segment : MonoBehaviour
     }
 
 
-    private IEnumerator FlashBrick()
+    private IEnumerator FlashPill()
     {
         isFlashing = true;
 

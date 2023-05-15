@@ -58,6 +58,17 @@ public class GameMaster : MonoBehaviour
     }
 
 
+    public void CollectPill(string pilltype)
+    {
+
+        if (!isFlashing) // only start the flash effect if not already flashing
+        {
+            StartCoroutine(DisplayPillText(pilltype));
+        }
+
+    }
+
+
 
     private IEnumerator Countdown()
     {
@@ -111,19 +122,13 @@ public class GameMaster : MonoBehaviour
 
         Vector3 targetPosition = transform.position + Vector3.up * 5.0f;
 
+        textMesh.color = Color.white;
         textMesh.text = val.ToString();
-
-        Debug.Log("Starting coroutine");
-        Debug.Log("Target position: " + targetPosition);
-
-        // Wait for a short delay to make sure the text is displayed before it starts rising up
-        yield return new WaitForSeconds(0.1f);
 
         // Rise above the origin object
         while (floatingTextObj.transform.position.y < targetPosition.y)
         {
             floatingTextObj.transform.position += Vector3.up * riseSpeed * Time.deltaTime;
-            Debug.Log("Position: " + floatingTextObj.transform.position);
             yield return null;
         }
 
@@ -132,7 +137,40 @@ public class GameMaster : MonoBehaviour
 
         // Destroy the floating text
         Destroy(floatingTextObj);
-        Debug.Log("Coroutine finished");
+    }
+
+
+
+
+
+
+    private IEnumerator DisplayPillText(string val)
+    {
+
+        Vector3 offset = Vector3.up * -1.5f; // Change the Y value as needed
+        GameObject floatingTextObj = Instantiate(textPrefab, transform.position + offset, Quaternion.identity);
+
+        TextMeshProUGUI textMesh = floatingTextObj.GetComponentInChildren<TextMeshProUGUI>();
+
+        Vector3 targetPosition = transform.position - Vector3.up * 15.0f;
+
+        textMesh.color = Color.red;
+        textMesh.text = val;
+
+        Debug.Log("DisplayPillText: " + val);
+
+        // Rise above the origin object
+        while (floatingTextObj.transform.position.y > targetPosition.y)
+        {
+            floatingTextObj.transform.position -= Vector3.up * riseSpeed * Time.deltaTime;
+            yield return null;
+        }
+
+        // Wait for the duration of the text
+        yield return new WaitForSeconds(lifeDuration);
+
+        // Destroy the floating text
+        Destroy(floatingTextObj);
     }
 
 
