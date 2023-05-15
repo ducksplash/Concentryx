@@ -85,7 +85,7 @@ public class GameMaster : MonoBehaviour
         // Update the score text to reflect the new player score
         healthbar.value = health;
 
-        if (healthbar.value < 0)
+        if (healthbar.value < 0 || health < 0)
         {
             health = 0;
             healthbar.value = health;
