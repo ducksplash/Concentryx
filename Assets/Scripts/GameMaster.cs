@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
+using System.Linq;
 
 
 public class GameMaster : MonoBehaviour
@@ -23,6 +24,15 @@ public class GameMaster : MonoBehaviour
 
     public Material textMaterial;
 
+    public CanvasGroup[] PillCanvases;
+    public int pillTime;
+    public TextMeshProUGUI pillTimeText;
+
+    public bool pillActive;
+
+    public float projectileDelay = 0.2f;
+
+    public int scoreModifier = 1;
 
     private void Awake()
     {
@@ -44,7 +54,7 @@ public class GameMaster : MonoBehaviour
     public void IncrementScore(int amount)
     {
         // Increment the player score by the specified amount
-        playerScore += amount;
+        playerScore += (amount * scoreModifier);
 
         // Update the score text to reflect the new player score
         scoreText.text = playerScore.ToString();
@@ -52,7 +62,7 @@ public class GameMaster : MonoBehaviour
         if (!isFlashing) // only start the flash effect if not already flashing
         {
             StartCoroutine(FlashScore());
-            StartCoroutine(DisplayFloatingText(amount));
+            StartCoroutine(DisplayFloatingText(amount * scoreModifier));
         }
 
     }
@@ -61,9 +71,31 @@ public class GameMaster : MonoBehaviour
     public void CollectPill(string pilltype)
     {
 
-        if (!isFlashing) // only start the flash effect if not already flashing
+        StartCoroutine(DisplayPillText(pilltype));
+
+        foreach (CanvasGroup canvasGroup in PillCanvases)
         {
-            StartCoroutine(DisplayPillText(pilltype));
+            if (canvasGroup.name == pilltype)
+            {
+                if (pilltype == "X")
+                {
+                    projectileDelay = projectileDelay / 4;
+                    Debug.Log("projectileDelay: " + projectileDelay);
+                }
+
+                if (pilltype == "S")
+                {
+                    scoreModifier = 2;
+                    Debug.Log("projectileDelay: " + projectileDelay);
+                }
+
+
+                pillActive = true;
+                canvasGroup.alpha = 1;
+                pillTime = 15;
+                pillTimeText.GetComponent<CanvasGroup>().alpha = 1;
+                StartCoroutine(PillCountDown(canvasGroup, pilltype));
+            }
         }
 
     }
@@ -80,6 +112,36 @@ public class GameMaster : MonoBehaviour
         }
     }
 
+
+
+    private IEnumerator PillCountDown(CanvasGroup pillCanvas, string pilltype)
+    {
+        while (pillTime > 0)
+        {
+            pillTime--;
+            pillTimeText.text = pillTime.ToString();
+            yield return new WaitForSeconds(1f);
+        }
+
+        pillActive = false;
+
+        pillCanvas.alpha = 0f;
+        pillTimeText.GetComponent<CanvasGroup>().alpha = 0;
+
+        if (pilltype == "X")
+        {
+            projectileDelay = 0.1f;
+            Debug.Log("projectileDelay: " + projectileDelay);
+        }
+
+        if (pilltype == "S")
+        {
+            scoreModifier = 1;
+            Debug.Log("projectileDelay: " + scoreModifier);
+        }
+
+
+    }
 
 
 
@@ -156,8 +218,6 @@ public class GameMaster : MonoBehaviour
 
         textMesh.color = Color.red;
         textMesh.text = val;
-
-        Debug.Log("DisplayPillText: " + val);
 
         // Rise above the origin object
         while (floatingTextObj.transform.position.y > targetPosition.y)

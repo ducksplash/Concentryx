@@ -17,6 +17,8 @@ public class Segment : MonoBehaviour
 
     private SpriteRenderer spriteRenderer;
 
+    public GameObject[] pillPrefabs;
+
     void Start()
     {
 
@@ -49,9 +51,6 @@ public class Segment : MonoBehaviour
         if (other.gameObject.layer == LayerMask.NameToLayer("Projectiles"))
         {
 
-            // Output a message to the console.
-            Debug.Log("Projectile hit segment: " + projectile.name);
-
             if (health > 0)
             {
                 health--;
@@ -65,6 +64,17 @@ public class Segment : MonoBehaviour
             else
             {
                 // Destroy the segment.
+
+                int randomNumber = UnityEngine.Random.Range(0, 50);
+
+                if (randomNumber == 40 && !GameMaster.instance.pillActive)
+                {
+                    int randomIndex = Random.Range(0, pillPrefabs.Length);
+                    GameObject prefabToInstantiate = pillPrefabs[randomIndex];
+                    Instantiate(prefabToInstantiate, transform.position, Quaternion.identity);
+                }
+
+
                 GameMaster.instance.IncrementScore(hits);
                 Destroy(gameObject);
             }

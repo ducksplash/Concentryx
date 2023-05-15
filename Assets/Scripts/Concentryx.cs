@@ -1,5 +1,7 @@
 using System.Collections;
 using UnityEngine;
+using System;
+
 
 public class Concentryx : MonoBehaviour
 {
@@ -11,6 +13,8 @@ public class Concentryx : MonoBehaviour
     public Sprite sprite; // The sprite to use for each segment.
     public Sprite alt_sprite; // The sprite to use for each segment.
     public float rotationSpeed = 10f;
+
+    public GameObject[] pillPrefabs;
 
     private void Start()
     {
@@ -69,6 +73,8 @@ public class Concentryx : MonoBehaviour
 
                 // add segment handler script
                 segmentObject.AddComponent<Segment>();
+
+                segmentObject.GetComponent<Segment>().pillPrefabs = pillPrefabs;
 
                 // set initial health
 

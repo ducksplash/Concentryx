@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BulletTime : MonoBehaviour
 {
-    public float countdownTime = 5f;
+    public float countdownTime = 3f;
     private Rigidbody2D rb;
 
     private Animator animator;

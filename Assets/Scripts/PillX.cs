@@ -25,9 +25,11 @@ public class PillX : MonoBehaviour
         Rigidbody2D rb = gameObject.AddComponent<Rigidbody2D>();
         rb.bodyType = RigidbodyType2D.Kinematic;
 
-        pilltype = gameObject.name.Substring(gameObject.name.Length - 1)[0].ToString();
+        string modifiedString = gameObject.name.Replace("(Clone)", "");
 
-        Debug.Log("Pill type: " + pilltype);
+
+        pilltype = modifiedString.Substring(modifiedString.Length - 1)[0].ToString();
+
 
         // Add a CircleCollider2D component to the pill object.
         CircleCollider2D collider = gameObject.AddComponent<CircleCollider2D>();
@@ -56,7 +58,6 @@ public class PillX : MonoBehaviour
         {
 
             // Output a message to the console.
-            Debug.Log("Projectile hit pill: " + projectile.name);
 
             if (health > 0)
             {
@@ -70,8 +71,11 @@ public class PillX : MonoBehaviour
             }
             else
             {
-                GameMaster.instance.CollectPill(pilltype);
-                GameMaster.instance.IncrementScore(hits);
+                if (!GameMaster.instance.pillActive)
+                {
+                    GameMaster.instance.CollectPill(pilltype);
+                }
+                GameMaster.instance.IncrementScore(hits * 2);
                 Destroy(gameObject);
             }
         }
