@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using System.Collections;
 using System.Linq;
@@ -34,6 +35,12 @@ public class GameMaster : MonoBehaviour
 
     public int scoreModifier = 1;
 
+
+    public int health = 100;
+
+    public Slider healthbar;
+
+
     private void Awake()
     {
         instance = this;
@@ -49,6 +56,8 @@ public class GameMaster : MonoBehaviour
 
         StartCoroutine(Countdown());
 
+        healthbar.value = health;
+
     }
 
     public void IncrementScore(int amount)
@@ -63,6 +72,43 @@ public class GameMaster : MonoBehaviour
         {
             StartCoroutine(FlashScore());
             StartCoroutine(DisplayFloatingText(amount * scoreModifier));
+        }
+
+    }
+
+
+    public void DecrementHealth(int amount)
+    {
+        // Increment the player score by the specified amount
+        health -= (amount);
+
+        // Update the score text to reflect the new player score
+        healthbar.value = health;
+
+        if (healthbar.value < 0)
+        {
+            health = 0;
+            healthbar.value = health;
+        }
+
+        if (healthbar.value < 70)
+        {
+            healthbar.GetComponentInChildren<Image>().color = Color.yellow;
+        }
+
+        if (healthbar.value < 50)
+        {
+            healthbar.GetComponentInChildren<Image>().color = new Color(1f, 0.65f, 0f);
+        }
+
+        if (healthbar.value < 25)
+        {
+            healthbar.GetComponentInChildren<Image>().color = Color.red;
+        }
+
+        if (!isFlashing) // only start the flash effect if not already flashing
+        {
+            StartCoroutine(FlashScore());
         }
 
     }

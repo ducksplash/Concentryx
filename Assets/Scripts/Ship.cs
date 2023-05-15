@@ -10,4 +10,28 @@ public class Ship : MonoBehaviour
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.AngleAxis(angle - 90f, Vector3.forward);
     }
+
+
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        Debug.Log("Collision detected!");
+
+        if (collision.gameObject.name.Contains("EnemyProjectile"))
+        {
+            Debug.Log("Enemy collision detected!");
+            collision.gameObject.GetComponent<BulletTime>().DestroyGameObject();
+
+            if (GameMaster.instance.health > 0)
+            {
+                GameMaster.instance.DecrementHealth(3);
+            }
+            else
+            {
+                Debug.Log("Game Over!");
+            }
+        }
+
+    }
+
 }

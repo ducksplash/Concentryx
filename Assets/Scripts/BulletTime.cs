@@ -9,12 +9,13 @@ public class BulletTime : MonoBehaviour
 
     void Start()
     {
-        animator = GetComponent<Animator>();
         Invoke("DestroyGameObject", countdownTime);
     }
 
-    void DestroyGameObject()
+    public void DestroyGameObject()
     {
+        animator = GetComponent<Animator>();
+        animator.SetTrigger("splode");
         rb = GetComponent<Rigidbody2D>();
         rb.velocity = Vector2.zero;
 
@@ -23,7 +24,7 @@ public class BulletTime : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        animator.SetTrigger("splode");
+
         DestroyGameObject();
     }
 

@@ -65,17 +65,23 @@ public class Segment : MonoBehaviour
             {
                 // Destroy the segment.
 
-                int randomNumber = UnityEngine.Random.Range(0, 50);
-
-                if (randomNumber == 40 && !GameMaster.instance.pillActive)
+                if (!projectile.name.Contains("EnemyProjectile"))
                 {
-                    int randomIndex = Random.Range(0, pillPrefabs.Length);
-                    GameObject prefabToInstantiate = pillPrefabs[randomIndex];
-                    Instantiate(prefabToInstantiate, transform.position, Quaternion.identity);
+
+                    int randomNumber = UnityEngine.Random.Range(0, 50);
+
+                    if (randomNumber == 40 && !GameMaster.instance.pillActive)
+                    {
+                        int randomIndex = Random.Range(0, pillPrefabs.Length);
+                        GameObject prefabToInstantiate = pillPrefabs[randomIndex];
+                        Instantiate(prefabToInstantiate, transform.position, Quaternion.identity);
+                    }
+
+
+                    GameMaster.instance.IncrementScore(hits);
+
                 }
 
-
-                GameMaster.instance.IncrementScore(hits);
                 Destroy(gameObject);
             }
         }
