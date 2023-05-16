@@ -5219,7 +5219,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a908ab1c40fe3e40b063e3e9be79a0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotateAroundObject: {fileID: 0}
+  Player: {fileID: 0}
   rotationSpeed: 10
   minChangeDirectionInterval: 3
   maxChangeDirectionInterval: 8
@@ -5241,7 +5241,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectilePrefab: {fileID: 1153927297093656384, guid: fbb8f5c7d408944498408e4f9fd2da28, type: 3}
   projectileSpeed: 10
-  rotateAroundObject: {fileID: 0}
+  Player: {fileID: 0}
   enemyProjectileDelay: 0.4
 --- !u!70 &2264219344330808549
 CapsuleCollider2D:
@@ -5256,9 +5256,9 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 1.06, y: 0.94}
-  m_Direction: 0
+  m_Offset: {x: 0.0072678337, y: 0.0004301659}
+  m_Size: {x: 0.7946404, y: 0.23760101}
+  m_Direction: 1
 --- !u!95 &2264219344330808550
 Animator:
   serializedVersion: 5
