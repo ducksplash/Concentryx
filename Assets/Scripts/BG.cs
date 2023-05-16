@@ -27,7 +27,7 @@ public class BG : MonoBehaviour
 
         while (true)
         {
-            changeTimer += Time.deltaTime;
+            changeTimer += Time.smoothDeltaTime;
 
             float t = Mathf.Clamp01(changeTimer / (changeDuration * 2f)); // Double the duration for a full cycle
             float currentContrast;
