@@ -15,6 +15,7 @@ public class Segment : MonoBehaviour
     public Color lightColor = Color.white; // The color to flash the brick
     private bool isFlashing;
 
+    public bool isDead;
     private SpriteRenderer spriteRenderer;
 
     public GameObject[] pillPrefabs;
@@ -78,8 +79,11 @@ public class Segment : MonoBehaviour
                     }
 
 
-                    GameMaster.instance.IncrementScore(hits);
-
+                    if (!isDead)
+                    {
+                        GameMaster.instance.IncrementScore(hits);
+                        isDead = true;
+                    }
                 }
 
                 Destroy(gameObject);

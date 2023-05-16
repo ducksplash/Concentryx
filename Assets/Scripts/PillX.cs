@@ -15,6 +15,7 @@ public class PillX : MonoBehaviour
     public Color lightColor = Color.white; // The color to flash the brick
     private bool isFlashing;
 
+    public bool isDead;
     private SpriteRenderer spriteRenderer;
 
     private string pilltype;
@@ -75,7 +76,14 @@ public class PillX : MonoBehaviour
                 {
                     GameMaster.instance.CollectPill(pilltype);
                 }
-                GameMaster.instance.IncrementScore(hits * 2);
+
+
+                if (!isDead)
+                {
+                    GameMaster.instance.IncrementScore(hits * 2);
+                    isDead = true;
+                }
+
                 Destroy(gameObject);
             }
         }

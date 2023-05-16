@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using System;
 
 
 public class Concentryx : MonoBehaviour
@@ -89,7 +88,7 @@ public class Concentryx : MonoBehaviour
             }
             else
             {
-                ringRB.angularVelocity = -rotationSpeed + segmentModifier;
+                ringRB.angularVelocity = -(rotationSpeed + segmentModifier);
             }
         }
 

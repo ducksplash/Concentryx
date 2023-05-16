@@ -36,6 +36,7 @@ public class GameMaster : MonoBehaviour
     public int scoreModifier = 1;
 
 
+    public CanvasGroup healthCanvas;
     public int health = 100;
 
     public Slider healthbar;
@@ -109,6 +110,7 @@ public class GameMaster : MonoBehaviour
         if (!isFlashing) // only start the flash effect if not already flashing
         {
             StartCoroutine(FlashScore());
+            StartCoroutine(FlashHealthBar());
         }
 
     }
@@ -126,13 +128,11 @@ public class GameMaster : MonoBehaviour
                 if (pilltype == "X")
                 {
                     projectileDelay = projectileDelay / 4;
-                    Debug.Log("projectileDelay: " + projectileDelay);
                 }
 
                 if (pilltype == "S")
                 {
                     scoreModifier = 2;
-                    Debug.Log("projectileDelay: " + projectileDelay);
                 }
 
 
@@ -177,13 +177,11 @@ public class GameMaster : MonoBehaviour
         if (pilltype == "X")
         {
             projectileDelay = 0.1f;
-            Debug.Log("projectileDelay: " + projectileDelay);
         }
 
         if (pilltype == "S")
         {
             scoreModifier = 1;
-            Debug.Log("projectileDelay: " + scoreModifier);
         }
 
 
@@ -215,6 +213,21 @@ public class GameMaster : MonoBehaviour
     }
 
 
+    private IEnumerator FlashHealthBar()
+    {
+
+        healthCanvas.alpha = 1f;
+
+
+        // Wait for the flash duration
+        yield return new WaitForSeconds(0.1f);
+
+
+        healthCanvas.alpha = 0f;
+
+    }
+
+
 
 
 
@@ -236,7 +249,7 @@ public class GameMaster : MonoBehaviour
         // Rise above the origin object
         while (floatingTextObj.transform.position.y < targetPosition.y)
         {
-            floatingTextObj.transform.position += Vector3.up * riseSpeed * Time.deltaTime;
+            floatingTextObj.transform.position += Vector3.up * riseSpeed * Time.smoothDeltaTime;
             yield return null;
         }
 
@@ -268,7 +281,7 @@ public class GameMaster : MonoBehaviour
         // Rise above the origin object
         while (floatingTextObj.transform.position.y > targetPosition.y)
         {
-            floatingTextObj.transform.position -= Vector3.up * riseSpeed * Time.deltaTime;
+            floatingTextObj.transform.position -= Vector3.up * riseSpeed * Time.smoothDeltaTime;
             yield return null;
         }
 

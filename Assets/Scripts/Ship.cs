@@ -15,11 +15,9 @@ public class Ship : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log("Collision detected!");
 
         if (collision.gameObject.name.Contains("EnemyProjectile"))
         {
-            Debug.Log("Enemy collision detected!");
             collision.gameObject.GetComponent<BulletTime>().DestroyGameObject();
 
             if (GameMaster.instance.health > 0)
@@ -28,7 +26,7 @@ public class Ship : MonoBehaviour
             }
             else
             {
-                Debug.Log("Game Over!");
+                //Debug.Log("Game Over!");
             }
         }
 

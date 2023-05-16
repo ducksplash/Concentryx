@@ -6,10 +6,16 @@ public class EnemyProjectile : MonoBehaviour
     public GameObject projectilePrefab;
     public float projectileSpeed = 10f;
 
-    public Transform rotateAroundObject;
+    public GameObject Player;
+
     private bool canFire = true;
 
     public float enemyProjectileDelay = 0.4f;
+
+    void Start()
+    {
+        Player = GameObject.FindGameObjectWithTag("Player");
+    }
 
     void Update()
     {
@@ -26,7 +32,7 @@ public class EnemyProjectile : MonoBehaviour
         GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
 
         // Calculate the direction from the projectile to the object being rotated around
-        Vector3 direction = rotateAroundObject.position - projectile.transform.position;
+        Vector3 direction = Player.transform.position - projectile.transform.position;
 
         // Set the rotation of the projectile to face the object being rotated around
         Quaternion rotation = Quaternion.LookRotation(Vector3.forward, direction);
