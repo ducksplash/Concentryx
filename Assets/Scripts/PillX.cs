@@ -72,14 +72,12 @@ public class PillX : MonoBehaviour
             }
             else
             {
-                if (!GameMaster.instance.pillActive)
-                {
-                    GameMaster.instance.CollectPill(pilltype);
-                }
-
 
                 if (!isDead)
                 {
+
+
+                    GameMaster.instance.CollectPill(pilltype);
                     GameMaster.instance.IncrementScore(hits * 2);
                     isDead = true;
                 }

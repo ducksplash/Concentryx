@@ -38,6 +38,7 @@ public class GameMaster : MonoBehaviour
 
     public CanvasGroup healthCanvas;
     public int health = 100;
+    public int maxHealth = 100;
 
     public Slider healthbar;
 
@@ -114,6 +115,29 @@ public class GameMaster : MonoBehaviour
         }
 
     }
+    public void IncrementHealth(int amount)
+    {
+
+        if ((health + amount) < maxHealth)
+        {
+            health += (amount);
+        }
+        else
+        {
+            health = maxHealth;
+        }
+
+
+        // Update the score text to reflect the new player score
+        healthbar.value = health;
+
+        if (!isFlashing) // only start the flash effect if not already flashing
+        {
+            StartCoroutine(FlashScore());
+            StartCoroutine(FlashHealthBar());
+        }
+
+    }
 
 
     public void CollectPill(string pilltype)
@@ -121,31 +145,51 @@ public class GameMaster : MonoBehaviour
 
         StartCoroutine(DisplayPillText(pilltype));
 
+
+        Debug.Log("Pill collected: " + pilltype);
+
         foreach (CanvasGroup canvasGroup in PillCanvases)
         {
+            // active pills with a timer
             if (canvasGroup.name == pilltype)
             {
-                if (pilltype == "X")
+                if (!pillActive)
                 {
-                    projectileDelay = projectileDelay / 4;
+                    if (pilltype == "X")
+                    {
+                        projectileDelay = projectileDelay / 4;
+                        PillAction(pilltype, canvasGroup);
+                    }
+
+                    if (pilltype == "S")
+                    {
+                        scoreModifier = 2;
+                        PillAction(pilltype, canvasGroup);
+                    }
                 }
-
-                if (pilltype == "S")
-                {
-                    scoreModifier = 2;
-                }
-
-
-                pillActive = true;
-                canvasGroup.alpha = 1;
-                pillTime = 15;
-                pillTimeText.GetComponent<CanvasGroup>().alpha = 1;
-                StartCoroutine(PillCountDown(canvasGroup, pilltype));
             }
         }
 
+
+        // passive pills without a timer
+
+        if (pilltype == "+")
+        {
+            Debug.Log("Health Pill");
+            IncrementHealth(15);
+        }
     }
 
+
+
+    private void PillAction(string pilltype, CanvasGroup canvasGroup)
+    {
+        pillActive = true;
+        canvasGroup.alpha = 1;
+        pillTime = 15;
+        pillTimeText.GetComponent<CanvasGroup>().alpha = 1;
+        StartCoroutine(PillCountDown(canvasGroup, pilltype));
+    }
 
 
     private IEnumerator Countdown()

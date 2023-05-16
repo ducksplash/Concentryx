@@ -22,7 +22,7 @@ public class Ship : MonoBehaviour
 
             if (GameMaster.instance.health > 0)
             {
-                GameMaster.instance.DecrementHealth(3);
+                GameMaster.instance.DecrementHealth(1);
             }
             else
             {
