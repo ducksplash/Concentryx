@@ -1014,7 +1014,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2264219344330808539, guid: fbeda00a30077e347885a440b7029a7d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.5062368
+      value: -4.12
       objectReference: {fileID: 0}
     - target: {fileID: 2264219344330808539, guid: fbeda00a30077e347885a440b7029a7d, type: 3}
       propertyPath: m_LocalPosition.y
@@ -6746,7 +6746,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -6766,7 +6766,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 1902339942}
   m_FillRect: {fileID: 1902339941}
   m_HandleRect: {fileID: 0}
@@ -7141,7 +7141,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -293}
-  m_SizeDelta: {x: 411.8, y: 22}
+  m_SizeDelta: {x: 411.8, y: 14}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &1954616807
 CanvasGroup:
@@ -7218,7 +7218,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2264219344330808539, guid: fbeda00a30077e347885a440b7029a7d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.76
+      value: 4.17
       objectReference: {fileID: 0}
     - target: {fileID: 2264219344330808539, guid: fbeda00a30077e347885a440b7029a7d, type: 3}
       propertyPath: m_LocalPosition.y

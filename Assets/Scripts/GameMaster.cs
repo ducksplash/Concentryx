@@ -81,40 +81,36 @@ public class GameMaster : MonoBehaviour
 
     public void DecrementHealth(int amount)
     {
-        // Increment the player score by the specified amount
-        health -= (amount);
-
-        // Update the score text to reflect the new player score
+        health -= amount;
+        health = Mathf.Max(health, 0);
         healthbar.value = health;
 
-        if (healthbar.value < 0 || health < 0)
+        Color healthColor = Color.green;
+        float healthValue = healthbar.value;
+
+        switch (healthValue)
         {
-            health = 0;
-            healthbar.value = health;
+            case var _ when healthValue < 70:
+                healthColor = Color.yellow;
+                break;
+            case var _ when healthValue < 50:
+                healthColor = new Color(1f, 0.65f, 0f);
+                break;
+            case var _ when healthValue < 25:
+                healthColor = Color.red;
+                break;
         }
 
-        if (healthbar.value < 70)
-        {
-            healthbar.GetComponentInChildren<Image>().color = Color.yellow;
-        }
+        healthbar.GetComponentInChildren<Image>().color = healthColor;
 
-        if (healthbar.value < 50)
-        {
-            healthbar.GetComponentInChildren<Image>().color = new Color(1f, 0.65f, 0f);
-        }
-
-        if (healthbar.value < 25)
-        {
-            healthbar.GetComponentInChildren<Image>().color = Color.red;
-        }
-
-        if (!isFlashing) // only start the flash effect if not already flashing
+        if (!isFlashing)
         {
             StartCoroutine(FlashScore());
             StartCoroutine(FlashHealthBar());
         }
-
     }
+
+
     public void IncrementHealth(int amount)
     {
 
