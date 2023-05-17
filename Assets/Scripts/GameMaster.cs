@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
+using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
 
@@ -25,20 +27,25 @@ public class GameMaster : MonoBehaviour
 
     public Material textMaterial;
 
-    public CanvasGroup[] PillCanvases;
     public int pillTime;
-    public TextMeshProUGUI pillTimeText;
 
-    public bool pillActive;
-
-    public float projectileDelay = 0.2f;
+    public float projectileDelay = 0.1f;
+    public float projectileDelayDefault = 0.1f;
+    public float projectileDelayBoosted = 0.05f;
 
     public int scoreModifier = 1;
+
+    public ScrollRect pillScroll;
+    public RectTransform pillContent;
+
+    public GameObject[] pillReadoutPrefabs;
 
 
     public CanvasGroup healthCanvas;
     public int health = 100;
     public int maxHealth = 100;
+
+    int startpilltime = 15;
 
     public Slider healthbar;
 
@@ -135,39 +142,24 @@ public class GameMaster : MonoBehaviour
 
     }
 
-
     public void CollectPill(string pilltype)
     {
-
         StartCoroutine(DisplayPillText(pilltype));
-
-
         Debug.Log("Pill collected: " + pilltype);
 
-        foreach (CanvasGroup canvasGroup in PillCanvases)
-        {
-            // active pills with a timer
-            if (canvasGroup.name == pilltype)
-            {
-                if (!pillActive)
-                {
-                    if (pilltype == "X")
-                    {
-                        projectileDelay = projectileDelay / 4;
-                        PillAction(pilltype, canvasGroup);
-                    }
 
-                    if (pilltype == "S")
-                    {
-                        scoreModifier = 2;
-                        PillAction(pilltype, canvasGroup);
-                    }
-                }
-            }
+        if (pilltype == "X")
+        {
+            projectileDelay = projectileDelayBoosted;
+            PillAction(pilltype);
         }
 
+        if (pilltype == "S")
+        {
+            scoreModifier = 2;
+            PillAction(pilltype);
+        }
 
-        // passive pills without a timer
 
         if (pilltype == "+")
         {
@@ -176,16 +168,76 @@ public class GameMaster : MonoBehaviour
         }
     }
 
-
-
-    private void PillAction(string pilltype, CanvasGroup canvasGroup)
+    private void PillAction(string pilltype)
     {
-        pillActive = true;
-        canvasGroup.alpha = 1;
-        pillTime = 15;
-        pillTimeText.GetComponent<CanvasGroup>().alpha = 1;
-        StartCoroutine(PillCountDown(canvasGroup, pilltype));
+        string expectedPill = "pilllabel" + pilltype.ToLower();
+        insertPillReadout(expectedPill, pilltype);
     }
+
+    public void insertPillReadout(string expectedPill, string pilltype)
+    {
+        GameObject pillReadoutClone = Instantiate(pillReadoutPrefabs[FindGameObjectIndex(expectedPill)], pillContent);
+
+        RectTransform pillReadoutCloneRectTransform = pillReadoutClone.GetComponent<RectTransform>();
+        pillReadoutCloneRectTransform.anchorMin = new Vector2(0.5f, 1f); // Anchored to the top
+        pillReadoutCloneRectTransform.anchorMax = new Vector2(0.5f, 1f); // Anchored to the top
+        pillReadoutCloneRectTransform.pivot = new Vector2(0.5f, 1f); // Pivot at the top
+        pillReadoutCloneRectTransform.anchoredPosition = Vector2.zero;
+
+        // Get the height of the new pill readout
+        float newPillHeight = pillReadoutCloneRectTransform.rect.height;
+
+        // Adjust the positions of existing pill readouts
+        for (int i = 0; i < pillContent.childCount - 1; i++)
+        {
+            RectTransform existingPillRectTransform = pillContent.GetChild(i).GetComponent<RectTransform>();
+            Vector2 currentPosition = existingPillRectTransform.anchoredPosition;
+            currentPosition.y -= newPillHeight; // Subtract newPillHeight instead of adding
+            existingPillRectTransform.anchoredPosition = currentPosition;
+        }
+
+        StartCoroutine(PillCountDown(pillReadoutClone, pilltype));
+
+        Canvas.ForceUpdateCanvases();
+        pillScroll.verticalNormalizedPosition = 1f; // Scroll to the top
+    }
+
+
+    public int FindGameObjectIndex(string name)
+    {
+        int index = Array.FindIndex(pillReadoutPrefabs, obj => obj.name == name);
+        Debug.Log("Index of " + name + " is " + index);
+        return index;
+    }
+
+    private IEnumerator PillCountDown(GameObject pillReadout, string pilltype)
+    {
+        GameObject childObject = pillReadout.transform.GetChild(0).gameObject;
+        TextMeshProUGUI pilltimereadout = childObject.GetComponent<TextMeshProUGUI>();
+
+        int pilltime = startpilltime;
+        pilltimereadout.text = pilltime.ToString();
+
+        while (pilltime > 0)
+        {
+            pilltime--;
+            yield return new WaitForSeconds(1f);
+            pilltimereadout.text = pilltime.ToString();
+        }
+
+        if (pilltype == "X")
+        {
+            projectileDelay = projectileDelayDefault;
+        }
+
+        if (pilltype == "S")
+        {
+            scoreModifier = 1;
+        }
+
+        Destroy(pillReadout);
+    }
+
 
 
     private IEnumerator Countdown()
@@ -197,36 +249,6 @@ public class GameMaster : MonoBehaviour
             yield return new WaitForSeconds(1f);
         }
     }
-
-
-
-    private IEnumerator PillCountDown(CanvasGroup pillCanvas, string pilltype)
-    {
-        while (pillTime > 0)
-        {
-            pillTime--;
-            pillTimeText.text = pillTime.ToString();
-            yield return new WaitForSeconds(1f);
-        }
-
-        pillActive = false;
-
-        pillCanvas.alpha = 0f;
-        pillTimeText.GetComponent<CanvasGroup>().alpha = 0;
-
-        if (pilltype == "X")
-        {
-            projectileDelay = 0.1f;
-        }
-
-        if (pilltype == "S")
-        {
-            scoreModifier = 1;
-        }
-
-
-    }
-
 
 
     private IEnumerator FlashScore()

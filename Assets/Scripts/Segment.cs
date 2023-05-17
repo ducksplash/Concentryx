@@ -71,7 +71,7 @@ public class Segment : MonoBehaviour
 
                     int randomNumber = UnityEngine.Random.Range(0, 50);
 
-                    if (randomNumber == 40 && !GameMaster.instance.pillActive)
+                    if (randomNumber == 25)
                     {
                         int randomIndex = Random.Range(0, pillPrefabs.Length);
                         GameObject prefabToInstantiate = pillPrefabs[randomIndex];

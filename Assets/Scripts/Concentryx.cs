@@ -13,6 +13,8 @@ public class Concentryx : MonoBehaviour
     public Sprite alt_sprite; // The sprite to use for each segment.
     public float rotationSpeed = 10f;
 
+    public Material segOneMaterial;
+
     public GameObject[] pillPrefabs;
 
     private void Start()
@@ -62,6 +64,10 @@ public class Concentryx : MonoBehaviour
                 {
                     spriteRenderer.sprite = alt_sprite;
                 }
+
+                segOneMaterial.EnableKeyword("_EMISSION");
+                spriteRenderer.material = segOneMaterial;
+
 
 
                 // Set the width of this sprite based on the spriteWidth property.
