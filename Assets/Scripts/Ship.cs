@@ -2,7 +2,26 @@ using UnityEngine;
 
 public class Ship : MonoBehaviour
 {
-    // Update is called once per frame
+
+
+    private ParticleSystem shieldParticleSystem;
+    public CircleCollider2D shipCollider;
+
+
+
+    private void Start()
+    {
+        shieldParticleSystem = GetComponent<ParticleSystem>();
+        shipCollider = GetComponent<CircleCollider2D>();
+
+
+    }
+
+
+
+
+
+
     void Update()
     {
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);

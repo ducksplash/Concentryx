@@ -51,11 +51,20 @@ public class GameMaster : MonoBehaviour
     public int health = 100;
     public int maxHealth = 100;
 
+    public CircleCollider2D shipCollider;
+    public float defaultCollider = 0.54f;
+    public float shieldCollider = 0.84f;
+
+
     int startpilltime = 15;
 
     public Slider healthbar;
 
-    public Image shieldImage;
+
+
+
+    public ParticleSystem shieldParticleSystem;
+
 
     private void Awake()
     {
@@ -74,9 +83,40 @@ public class GameMaster : MonoBehaviour
 
         healthbar.value = health;
 
-        shieldImage.enabled = false;
+
+
 
     }
+
+
+    //////  let's try something
+
+    public void InstantiateLevel()
+    {
+        // instantiate level parts here
+
+        // rings
+
+        // planets
+
+        // enemies
+
+    }
+
+
+    public void SpawnRings()
+    {
+        // spawn player here
+
+    }
+
+
+
+
+
+
+
+
 
     public void IncrementScore(int amount)
     {
@@ -194,7 +234,9 @@ public class GameMaster : MonoBehaviour
             Debug.Log("I Pill start" + pillTime);
             PillAction(pilltype);
             invulnerable = true;
-            shieldImage.enabled = true;
+
+            shieldParticleSystem.Play();
+            shipCollider.radius = shieldCollider;
 
             // disable projectiles
 
@@ -281,7 +323,8 @@ public class GameMaster : MonoBehaviour
         {
             Debug.Log("i Pill");
             invulnerable = false;
-            shieldImage.enabled = false;
+            shieldParticleSystem.Stop();
+            shipCollider.radius = defaultCollider;
         }
 
         Destroy(pillReadout);
