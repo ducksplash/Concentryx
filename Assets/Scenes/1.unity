@@ -439,7 +439,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.8
+      scalar: 0.95
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -11625,7 +11625,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   numSegments: 32
-  numRings: 1
+  numRings: 8
   innerRadius: 1.4
   outerRadius: 1.4
   spriteWidth: 30
