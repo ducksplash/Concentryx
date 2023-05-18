@@ -15,6 +15,7 @@ public class Segment : MonoBehaviour
     public Color lightColor = Color.white; // The color to flash the brick
     private bool isFlashing;
 
+
     public bool isDead;
     private SpriteRenderer spriteRenderer;
 
@@ -37,59 +38,73 @@ public class Segment : MonoBehaviour
         // Set the radius of the collider 
         collider.radius = spriteRenderer.bounds.extents.magnitude / 2f;
 
-        // Set the isTrigger property to true, so that collisions are detected without physical interaction.
-        collider.isTrigger = true;
+        // Set the isTrigger property to true
+        //collider.isTrigger = true;
     }
 
 
 
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnCollisionEnter2D(Collision2D other)
     {
         // Get the segment that was hit by the projectile.
         GameObject projectile = other.transform.gameObject;
 
         if (other.gameObject.layer == LayerMask.NameToLayer("Projectiles"))
         {
+            DamageSegment(projectile);
 
-            if (health > 0)
-            {
-                health--;
-                hits++;
-                if (!isFlashing) // only start the flash effect if not already flashing
-                {
-                    StartCoroutine(FlashBrick());
-                }
-
-            }
-            else
-            {
-                // Destroy the segment.
-
-                if (!projectile.name.Contains("EnemyProjectile"))
-                {
-
-                    int randomNumber = UnityEngine.Random.Range(0, 50);
-
-                    if (randomNumber == 25)
-                    {
-                        int randomIndex = Random.Range(0, pillPrefabs.Length);
-                        GameObject prefabToInstantiate = pillPrefabs[randomIndex];
-                        Instantiate(prefabToInstantiate, transform.position, Quaternion.identity);
-                    }
-
-
-                    if (!isDead)
-                    {
-                        GameMaster.instance.IncrementScore(hits);
-                        isDead = true;
-                    }
-                }
-
-                Destroy(gameObject);
-            }
         }
 
+    }
+
+
+    public void DamageSegment(GameObject projectile)
+    {
+        if (health > 0)
+        {
+            health--;
+            hits++;
+            if (!isFlashing) // only start the flash effect if not already flashing
+            {
+                StartCoroutine(FlashBrick());
+            }
+
+        }
+        else
+        {
+            // Destroy the segment.
+
+            if (!projectile.name.Contains("EnemyProjectile"))
+            {
+
+                int randomNumber = UnityEngine.Random.Range(0, 100);
+
+                if (randomNumber == 25 || randomNumber == 50)
+                {
+                    CreatePill();
+                }
+
+
+                if (!isDead)
+                {
+                    GameMaster.instance.IncrementScore(hits);
+                    isDead = true;
+                }
+            }
+
+            Destroy(gameObject);
+        }
+    }
+
+
+    public void CreatePill()
+    {
+        int randomIndex = Random.Range(0, pillPrefabs.Length);
+
+        GameObject prefabToInstantiate = pillPrefabs[randomIndex];
+
+        Instantiate(prefabToInstantiate, transform.position, Quaternion.identity);
     }
 
 

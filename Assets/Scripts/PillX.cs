@@ -20,6 +20,9 @@ public class PillX : MonoBehaviour
 
     private string pilltype;
 
+    public GameObject[] pillPrefabs;
+
+
     void Start()
     {
 
@@ -124,5 +127,17 @@ public class PillX : MonoBehaviour
 
         isFlashing = false;
     }
+
+
+
+
+    public void SpawnPill()
+    {
+
+    }
+
+
+
+
 
 }

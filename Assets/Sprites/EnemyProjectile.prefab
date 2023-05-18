@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4829132884454987985}
   - component: {fileID: 5440875546948274068}
+  - component: {fileID: 3402512444796300146}
   - component: {fileID: 8244074202099407371}
-  - component: {fileID: 4675354139885001929}
   - component: {fileID: 8662984254857609582}
   - component: {fileID: 8661630416350543983}
   m_Layer: 0
@@ -88,6 +88,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &3402512444796300146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1153927297093656384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fce2615409717147b4fd2fd8c84e43d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countdownTime: 1.5
 --- !u!50 &8244074202099407371
 Rigidbody2D:
   serializedVersion: 4
@@ -109,19 +122,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
---- !u!114 &4675354139885001929
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1153927297093656384}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aeaaef9e85f833646b854f7bc836b021, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  countdownTime: 1.5
 --- !u!70 &8662984254857609582
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

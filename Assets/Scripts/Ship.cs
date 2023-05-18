@@ -18,7 +18,7 @@ public class Ship : MonoBehaviour
 
         if (collision.gameObject.name.Contains("EnemyProjectile"))
         {
-            collision.gameObject.GetComponent<BulletTime>().DestroyGameObject();
+            collision.gameObject.GetComponent<EnemyBulletTime>().DestroyGameObject();
 
             if (GameMaster.instance.health > 0)
             {

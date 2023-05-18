@@ -62,6 +62,10 @@ public class EnemyShip : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
 
+
+        Debug.Log(collision.gameObject.name);
+
+
         if (!collision.gameObject.name.Contains("EnemyProjectile"))
         {
             collision.gameObject.GetComponent<BulletTime>().DestroyGameObject();
@@ -115,11 +119,6 @@ public class EnemyShip : MonoBehaviour
         {
             enemyHealthbar.GetComponentInChildren<Image>().color = Color.red;
         }
-
-        // if (!isFlashing) // only start the flash effect if not already flashing
-        // {
-        //     StartCoroutine(FlashScore());
-        // }
 
     }
 }

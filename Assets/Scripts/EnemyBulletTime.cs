@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BulletTime : MonoBehaviour
+public class EnemyBulletTime : MonoBehaviour
 {
     public float countdownTime = 3f;
     private Rigidbody2D rb;
@@ -24,7 +24,7 @@ public class BulletTime : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.name != "SpaceShip" && !other.gameObject.name.Contains("Projectile"))
+        if (other.gameObject.tag != "Enemy" && !other.gameObject.name.Contains("Projectile"))
         {
 
             DestroyGameObject();

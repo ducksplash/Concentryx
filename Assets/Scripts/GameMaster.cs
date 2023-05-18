@@ -37,8 +37,13 @@ public class GameMaster : MonoBehaviour
 
     public ScrollRect pillScroll;
     public RectTransform pillContent;
-
     public GameObject[] pillReadoutPrefabs;
+
+
+    // weapons
+    public string defaultWeapon = "Projectiles";
+    public string currentWeapon = "Projectiles";
+
 
 
     public CanvasGroup healthCanvas;
@@ -166,6 +171,18 @@ public class GameMaster : MonoBehaviour
             Debug.Log("Health Pill");
             IncrementHealth(15);
         }
+
+        if (pilltype == "F")
+        {
+            pillTime = 5;
+            Debug.Log("F Pill start" + pillTime);
+            PillAction(pilltype);
+            currentWeapon = "Flamethrower";
+
+            // disable projectiles
+
+
+        }
     }
 
     private void PillAction(string pilltype)
@@ -196,7 +213,7 @@ public class GameMaster : MonoBehaviour
             existingPillRectTransform.anchoredPosition = currentPosition;
         }
 
-        StartCoroutine(PillCountDown(pillReadoutClone, pilltype));
+        StartCoroutine(PillCountDown(pillReadoutClone, pilltype, pillTime));
 
         Canvas.ForceUpdateCanvases();
         pillScroll.verticalNormalizedPosition = 1f; // Scroll to the top
@@ -210,12 +227,14 @@ public class GameMaster : MonoBehaviour
         return index;
     }
 
-    private IEnumerator PillCountDown(GameObject pillReadout, string pilltype)
+    private IEnumerator PillCountDown(GameObject pillReadout, string pilltype, int superPillTime)
     {
         GameObject childObject = pillReadout.transform.GetChild(0).gameObject;
         TextMeshProUGUI pilltimereadout = childObject.GetComponent<TextMeshProUGUI>();
 
-        int pilltime = startpilltime;
+
+        int pilltime = (superPillTime > 0) ? superPillTime : startpilltime;
+
         pilltimereadout.text = pilltime.ToString();
 
         while (pilltime > 0)
@@ -233,6 +252,12 @@ public class GameMaster : MonoBehaviour
         if (pilltype == "S")
         {
             scoreModifier = 1;
+        }
+
+        if (pilltype == "F")
+        {
+            Debug.Log("F Pill");
+            currentWeapon = defaultWeapon;
         }
 
         Destroy(pillReadout);
@@ -298,28 +323,33 @@ public class GameMaster : MonoBehaviour
     private IEnumerator DisplayFloatingText(int val)
     {
 
-        Vector3 offset = Vector3.up * -1.5f; // Change the Y value as needed
-        GameObject floatingTextObj = Instantiate(textPrefab, transform.position + offset, Quaternion.identity);
-
-        TextMeshProUGUI textMesh = floatingTextObj.GetComponentInChildren<TextMeshProUGUI>();
-
-        Vector3 targetPosition = transform.position + Vector3.up * 5.0f;
-
-        textMesh.color = Color.white;
-        textMesh.text = val.ToString();
-
-        // Rise above the origin object
-        while (floatingTextObj.transform.position.y < targetPosition.y)
+        if (val > 0)
         {
-            floatingTextObj.transform.position += Vector3.up * riseSpeed * Time.smoothDeltaTime;
-            yield return null;
+
+            Vector3 offset = Vector3.up * -1.5f; // Change the Y value as needed
+            GameObject floatingTextObj = Instantiate(textPrefab, transform.position + offset, Quaternion.identity);
+
+            TextMeshProUGUI textMesh = floatingTextObj.GetComponentInChildren<TextMeshProUGUI>();
+
+            Vector3 targetPosition = transform.position + Vector3.up * 5.0f;
+
+            textMesh.color = Color.white;
+            textMesh.text = val.ToString();
+
+            // Rise above the origin object
+            while (floatingTextObj.transform.position.y < targetPosition.y)
+            {
+                floatingTextObj.transform.position += Vector3.up * riseSpeed * Time.smoothDeltaTime;
+                yield return null;
+            }
+
+            // Wait for the duration of the text
+            yield return new WaitForSeconds(lifeDuration);
+
+            // Destroy the floating text
+            Destroy(floatingTextObj);
         }
 
-        // Wait for the duration of the text
-        yield return new WaitForSeconds(lifeDuration);
-
-        // Destroy the floating text
-        Destroy(floatingTextObj);
     }
 
 

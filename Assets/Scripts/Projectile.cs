@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using System.Collections;
 
@@ -6,15 +7,55 @@ public class Projectile : MonoBehaviour
     public GameObject projectilePrefab;
     public float projectileSpeed = 10f;
 
-    private bool canFire = true;
+    public ParticleSystem flameThrower;
+
+    public bool canFire = true;
+
+    void Start()
+    {
+        flameThrower.Stop();
+    }
+
 
     void Update()
     {
         if (Input.GetMouseButton(0) && canFire)
         {
-            StartCoroutine(FireProjectile());
+
+
+
+            if (GameMaster.instance.currentWeapon == "Projectiles")
+            {
+                StartCoroutine(FireProjectile());
+            }
+
+
+
+
+            if (GameMaster.instance.currentWeapon == "Flamethrower")
+            {
+                flameThrower.Play();
+                Debug.Log("Flamethrower pew");
+            }
+
+
+
+
+
+
+
+
+        }
+
+        if (Input.GetMouseButtonUp(0) || GameMaster.instance.currentWeapon != "Flamethrower")
+        {
+
+            flameThrower.Stop();
+
         }
     }
+
+
 
     IEnumerator FireProjectile()
     {
@@ -31,6 +72,8 @@ public class Projectile : MonoBehaviour
 
         canFire = true;
     }
+
+
 
 
 }
