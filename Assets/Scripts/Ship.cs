@@ -4,21 +4,6 @@ public class Ship : MonoBehaviour
 {
 
 
-    private ParticleSystem shieldParticleSystem;
-    public CircleCollider2D shipCollider;
-
-
-
-    private void Start()
-    {
-        shieldParticleSystem = GetComponent<ParticleSystem>();
-        shipCollider = GetComponent<CircleCollider2D>();
-
-
-    }
-
-
-
 
 
 

@@ -22,29 +22,16 @@ public class Projectile : MonoBehaviour
         if (Input.GetMouseButton(0) && canFire)
         {
 
-
-
             if (GameMaster.instance.currentWeapon == "Projectiles")
             {
                 StartCoroutine(FireProjectile());
             }
-
-
-
 
             if (GameMaster.instance.currentWeapon == "Flamethrower")
             {
                 flameThrower.Play();
                 Debug.Log("Flamethrower pew");
             }
-
-
-
-
-
-
-
-
         }
 
         if (Input.GetMouseButtonUp(0) || GameMaster.instance.currentWeapon != "Flamethrower")
