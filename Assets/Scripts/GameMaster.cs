@@ -33,6 +33,7 @@ public class GameMaster : MonoBehaviour
     public float projectileDelayDefault = 0.1f;
     public float projectileDelayBoosted = 0.05f;
 
+    public bool invulnerable = false;
     public int scoreModifier = 1;
 
     public ScrollRect pillScroll;
@@ -54,6 +55,7 @@ public class GameMaster : MonoBehaviour
 
     public Slider healthbar;
 
+    public Image shieldImage;
 
     private void Awake()
     {
@@ -71,6 +73,8 @@ public class GameMaster : MonoBehaviour
         StartCoroutine(Countdown());
 
         healthbar.value = health;
+
+        shieldImage.enabled = false;
 
     }
 
@@ -183,6 +187,19 @@ public class GameMaster : MonoBehaviour
 
 
         }
+
+        if (pilltype == "I")
+        {
+            pillTime = 20;
+            Debug.Log("I Pill start" + pillTime);
+            PillAction(pilltype);
+            invulnerable = true;
+            shieldImage.enabled = true;
+
+            // disable projectiles
+
+
+        }
     }
 
     private void PillAction(string pilltype)
@@ -258,6 +275,13 @@ public class GameMaster : MonoBehaviour
         {
             Debug.Log("F Pill");
             currentWeapon = defaultWeapon;
+        }
+
+        if (pilltype == "I")
+        {
+            Debug.Log("i Pill");
+            invulnerable = false;
+            shieldImage.enabled = false;
         }
 
         Destroy(pillReadout);

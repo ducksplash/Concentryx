@@ -16,18 +16,23 @@ public class Ship : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
 
-        if (collision.gameObject.name.Contains("EnemyProjectile"))
+        if (!GameMaster.instance.invulnerable)
         {
-            collision.gameObject.GetComponent<EnemyBulletTime>().DestroyGameObject();
 
-            if (GameMaster.instance.health > 0)
+            if (collision.gameObject.name.Contains("EnemyProjectile"))
             {
-                GameMaster.instance.DecrementHealth(1);
+                collision.gameObject.GetComponent<EnemyBulletTime>().DestroyGameObject();
+
+                if (GameMaster.instance.health > 0)
+                {
+                    GameMaster.instance.DecrementHealth(1);
+                }
+                else
+                {
+                    //Debug.Log("Game Over!");
+                }
             }
-            else
-            {
-                //Debug.Log("Game Over!");
-            }
+
         }
 
     }

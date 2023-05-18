@@ -47,13 +47,13 @@ public class PillX : MonoBehaviour
         collider.radius = spriteRenderer.bounds.extents.magnitude / 2f;
 
         // Set the isTrigger property to true, so that collisions are detected without physical interaction.
-        collider.isTrigger = true;
+        //collider.isTrigger = true;
     }
 
 
 
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnCollisionEnter2D(Collision2D other)
     {
         // Get the pill that was hit by the projectile.
         GameObject projectile = other.transform.gameObject;
