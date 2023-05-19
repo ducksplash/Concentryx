@@ -55,11 +55,14 @@ public class GameMaster : MonoBehaviour
     public float defaultCollider = 0.54f;
     public float shieldCollider = 0.84f;
 
+    public GameObject lightningObject;
+
+    public bool usedLightning;
+
 
     int startpilltime = 15;
 
     public Slider healthbar;
-
 
 
 
@@ -84,6 +87,7 @@ public class GameMaster : MonoBehaviour
         healthbar.value = health;
 
 
+        lightningObject.SetActive(false);
 
 
     }
@@ -223,7 +227,6 @@ public class GameMaster : MonoBehaviour
             PillAction(pilltype);
             currentWeapon = "Flamethrower";
 
-            // disable projectiles
 
 
         }
@@ -238,10 +241,25 @@ public class GameMaster : MonoBehaviour
             shieldParticleSystem.Play();
             shipCollider.radius = shieldCollider;
 
-            // disable projectiles
 
 
         }
+
+        if (pilltype == "L")
+        {
+            if (!usedLightning)
+            {
+                StartCoroutine(StrikeLightning());
+            }
+
+        }
+    }
+
+    public IEnumerator StrikeLightning()
+    {
+        lightningObject.SetActive(true);
+        yield return new WaitForSeconds(0.5f);
+        usedLightning = true;
     }
 
     private void PillAction(string pilltype)

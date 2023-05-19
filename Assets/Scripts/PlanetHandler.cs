@@ -21,6 +21,9 @@ public class PlanetHandler : MonoBehaviour
     public int planetHits;
     public float reductionPercentage = 0.15f;
 
+    public Material planetMaterial;
+
+    public UnityEngine.Rendering.Universal.Light2D planetLight;
 
     public Image planetHealthbar;
 
@@ -35,6 +38,7 @@ public class PlanetHandler : MonoBehaviour
         healthCanvas = GetComponentInChildren<Canvas>();
         healthCanvas.worldCamera = Camera.main;
         planetaryCollider = GetComponent<CircleCollider2D>();
+        planetLight = GetComponent<UnityEngine.Rendering.Universal.Light2D>();
 
 
     }
@@ -53,6 +57,14 @@ public class PlanetHandler : MonoBehaviour
             if (planetHealth > 0)
             {
                 DecrementPlanetHealth(5);
+
+                if (!planetaryShieldParticleSystem)
+                {
+
+                    StartCoroutine(flashPlanet());
+
+                }
+
             }
             else
             {
@@ -72,6 +84,13 @@ public class PlanetHandler : MonoBehaviour
 
             }
         }
+    }
+
+    public IEnumerator flashPlanet()
+    {
+        planetLight.intensity = 1f;
+        yield return new WaitForSeconds(0.01f);
+        planetLight.intensity = 0f;
     }
 
 

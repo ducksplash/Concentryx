@@ -7,13 +7,14 @@ public class Projectile : MonoBehaviour
     public GameObject projectilePrefab;
     public float projectileSpeed = 10f;
 
-    public ParticleSystem flameThrower;
+    public GameObject flameThrower;
 
     public bool canFire = true;
 
     void Start()
     {
-        flameThrower.Stop();
+        flameThrower.GetComponent<ParticleSystem>().Stop();
+        flameThrower.SetActive(false);
     }
 
 
@@ -29,7 +30,8 @@ public class Projectile : MonoBehaviour
 
             if (GameMaster.instance.currentWeapon == "Flamethrower")
             {
-                flameThrower.Play();
+                flameThrower.GetComponent<ParticleSystem>().Play();
+                flameThrower.SetActive(true);
                 Debug.Log("Flamethrower pew");
             }
         }
@@ -37,7 +39,8 @@ public class Projectile : MonoBehaviour
         if (Input.GetMouseButtonUp(0) || GameMaster.instance.currentWeapon != "Flamethrower")
         {
 
-            flameThrower.Stop();
+            flameThrower.GetComponent<ParticleSystem>().Stop();
+            flameThrower.SetActive(false);
 
         }
     }

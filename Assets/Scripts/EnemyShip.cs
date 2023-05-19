@@ -77,23 +77,29 @@ public class EnemyShip : MonoBehaviour
             else
             {
 
-                animator.SetTrigger("shipsplode");
-
-                Debug.Log("shipsplode");
-
-                if (!isDead)
-                {
-                    GameMaster.instance.IncrementScore(enemyHits);
-                    isDead = true;
-
-                    Destroy(gameObject, animator.GetCurrentAnimatorStateInfo(0).length);
-
-                }
+                DestroyEnemyShip();
 
             }
         }
     }
 
+
+    public void DestroyEnemyShip()
+    {
+        animator.SetTrigger("shipsplode");
+
+        Debug.Log("shipsplode");
+
+        if (!isDead)
+        {
+            enemyHealthbar.value = 0;
+            GameMaster.instance.IncrementScore(enemyHits);
+            isDead = true;
+
+            Destroy(gameObject, animator.GetCurrentAnimatorStateInfo(0).length);
+
+        }
+    }
 
     public void DecrementEnemyHealth(int amount)
     {
