@@ -5,7 +5,7 @@ using UnityEngine;
 public class Concentryx : MonoBehaviour
 {
     public int numSegments = 32; // The number of segments in the ring.
-    public int numRings = 4; // The number of segments in the ring.
+    public int numLayers = 4; // The number of segments in the ring.
     public float innerRadius = 1.0f; // The inner radius of the ring.
     public float outerRadius = 2.0f; // The outer radius of the ring.
     public float spriteWidth = 0.1f; // The width of each sprite in the ring.
@@ -20,8 +20,16 @@ public class Concentryx : MonoBehaviour
     private void Start()
     {
 
+        // ConcentricRings();
+        // ConcentricRingsLumpy()
+        //LatticeHell();
+        LittleSquares();
 
-        for (int o = 0; o < numRings; o++)
+    }
+
+    public void ConcentricRings()
+    {
+        for (int o = 0; o < numLayers; o++)
         {
             // Create a new GameObject to hold the ring.
             GameObject ringObject = new GameObject("Ring " + o);
@@ -97,7 +105,255 @@ public class Concentryx : MonoBehaviour
                 ringRB.angularVelocity = -(rotationSpeed + segmentModifier);
             }
         }
-
     }
+
+
+
+    public void ConcentricRingsLumpy()
+    {
+        float segmentWidth = (outerRadius - innerRadius) / numSegments;
+
+        for (int o = 0; o < numLayers; o++)
+        {
+            // Calculate the dimensions of the rectangle for this ring.
+            float rectWidth = spriteWidth + segmentWidth;
+            float rectHeight = segmentWidth * (o + 1);
+
+            // Calculate the number of segments to distribute within this ring.
+            int segmentsInRing = numSegments + (o * 15);
+
+            // Calculate the angle step for each segment.
+            float angleStep = 360f / segmentsInRing;
+
+            // Create a new GameObject to hold the ring.
+            GameObject ringObject = new GameObject("Ring " + o);
+
+            Rigidbody2D ringRB = ringObject.AddComponent<Rigidbody2D>();
+            ringRB.bodyType = RigidbodyType2D.Kinematic;
+
+            if (o % 2 == 0)
+            {
+                ringRB.angularVelocity = rotationSpeed + (o * 15);
+            }
+            else
+            {
+                ringRB.angularVelocity = -(rotationSpeed + (o * 15));
+            }
+
+            for (int i = 0; i < segmentsInRing; i++)
+            {
+                // Calculate the angle for this segment.
+                float angle = i * angleStep;
+
+                // Calculate the position for the center of this segment.
+                Vector3 position = new Vector3(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad), 0f) * ((innerRadius + outerRadius + o) / 2f);
+
+                // Create a new GameObject to hold the sprite and collider for this segment.
+                GameObject segmentObject = new GameObject("Segment " + o + i);
+
+                // Set the parent of this GameObject to the ring object.
+                segmentObject.transform.parent = ringObject.transform;
+
+                // Set the position of this GameObject.
+                segmentObject.transform.localPosition = position;
+
+                // Create a new SpriteRenderer component for this segment.
+                SpriteRenderer spriteRenderer = segmentObject.AddComponent<SpriteRenderer>();
+
+                // Set the sprite for this SpriteRenderer.
+                if (o % 2 == 0)
+                {
+                    spriteRenderer.sprite = sprite;
+                }
+                else
+                {
+                    spriteRenderer.sprite = alt_sprite;
+                }
+
+                segOneMaterial.EnableKeyword("_EMISSION");
+                spriteRenderer.material = segOneMaterial;
+
+                // Set the size of this sprite based on the spriteWidth and segmentWidth properties.
+                spriteRenderer.size = new Vector2(spriteWidth, segmentWidth);
+
+                // Add segment handler script
+                Segment segmentScript = segmentObject.AddComponent<Segment>();
+                segmentScript.pillPrefabs = pillPrefabs;
+
+                // Set initial health
+                segmentScript.health += o;
+            }
+        }
+    }
+
+
+    public void LatticeHell()
+    {
+        for (int o = 0; o < 2; o++)
+        {
+            // Create a new GameObject to hold the square.
+            GameObject squareObject = new GameObject("Square " + o);
+
+            Rigidbody2D squareRB = squareObject.AddComponent<Rigidbody2D>();
+            squareRB.bodyType = RigidbodyType2D.Kinematic;
+
+            int segmentModifier = o;
+
+            // Calculate the size of the square for this layer.
+            float squareSize = spriteWidth / 2f;
+
+            // Calculate the number of rows and columns in the square.
+            int numRows = numSegments + segmentModifier;
+            int numCols = numSegments + segmentModifier;
+
+            // Calculate the size of each segment within the square.
+            float segmentWidth = squareSize / numCols;
+            float segmentHeight = squareSize / numRows;
+
+            for (int row = 0; row < numRows; row++)
+            {
+                for (int col = 0; col < numCols; col++)
+                {
+                    // Calculate the position for this segment within the square.
+                    float xPos = (col * segmentWidth) - (squareSize / 2f) + (segmentWidth / 2f);
+                    float yPos = (row * segmentHeight) - (squareSize / 2f) + (segmentHeight / 2f);
+
+                    // Create a new GameObject to hold the sprite and collider for this segment.
+                    GameObject segmentObject = new GameObject("Segment " + o + row + col);
+
+                    // Set the parent of this GameObject to the square object.
+                    segmentObject.transform.parent = squareObject.transform;
+
+                    // Set the position of this GameObject within the square.
+                    segmentObject.transform.localPosition = new Vector3(xPos, yPos, 0f);
+
+                    // Create a new SpriteRenderer component for this segment.
+                    SpriteRenderer spriteRenderer = segmentObject.AddComponent<SpriteRenderer>();
+
+                    // Set the sprite for this SpriteRenderer.
+                    if (o % 2 == 0)
+                    {
+                        spriteRenderer.sprite = sprite;
+                    }
+                    else
+                    {
+                        spriteRenderer.sprite = alt_sprite;
+                    }
+
+                    segOneMaterial.EnableKeyword("_EMISSION");
+                    spriteRenderer.material = segOneMaterial;
+
+                    // Set the size of this sprite based on the segment dimensions.
+                    spriteRenderer.size = new Vector2(segmentWidth, segmentHeight);
+
+                    // Add segment handler script.
+                    Segment segmentScript = segmentObject.AddComponent<Segment>();
+                    segmentScript.pillPrefabs = pillPrefabs;
+
+                    // Set initial health.
+                    segmentScript.health += o;
+                }
+            }
+
+            if (o % 2 == 0)
+            {
+                squareRB.angularVelocity = rotationSpeed + segmentModifier;
+            }
+            else
+            {
+                squareRB.angularVelocity = -(rotationSpeed + segmentModifier);
+            }
+        }
+    }
+
+
+
+
+    public void LittleSquares()
+    {
+
+        int numSegments = Random.Range(2, 8);
+
+        for (int o = 0; o < 5; o++)
+        {
+            // Create a new GameObject to hold the square.
+            GameObject squareObject = new GameObject("Square " + o);
+
+
+
+            float randomX = Random.Range(-5f, 5f);
+            float randomY = Random.Range(-4f, 4f);
+            squareObject.transform.position = transform.position + new Vector3(randomX, randomY, 0f);
+
+            Rigidbody2D squareRB = squareObject.AddComponent<Rigidbody2D>();
+            squareRB.bodyType = RigidbodyType2D.Kinematic;
+
+
+            // Calculate the size of the square for this layer.
+
+            float squaresizeRand = Random.Range(2f, 8f);
+            float squareSize = spriteWidth / squaresizeRand;
+
+            // Calculate the number of rows and columns in the square.
+            int numRows = numSegments;
+            int numCols = numSegments;
+
+            // Calculate the size of each segment within the square.
+            float segmentWidth = squareSize / numCols;
+            float segmentHeight = squareSize / numRows;
+
+            for (int row = 0; row < numRows; row++)
+            {
+                for (int col = 0; col < numCols; col++)
+                {
+                    // Calculate the position for this segment within the square.
+                    float xPos = (col * segmentWidth) - (squareSize / 2f) + (segmentWidth / 2f);
+                    float yPos = (row * segmentHeight) - (squareSize / 2f) + (segmentHeight / 2f);
+
+                    // Create a new GameObject to hold the sprite and collider for this segment.
+                    GameObject segmentObject = new GameObject("Segment " + o + row + col);
+
+                    // Set the parent of this GameObject to the square object.
+                    segmentObject.transform.parent = squareObject.transform;
+
+                    // Set the position of this GameObject within the square.
+                    segmentObject.transform.localPosition = new Vector3(xPos, yPos, 0f);
+
+                    // Create a new SpriteRenderer component for this segment.
+                    SpriteRenderer spriteRenderer = segmentObject.AddComponent<SpriteRenderer>();
+
+                    // Set the sprite for this SpriteRenderer.
+                    if (o % 2 == 0)
+                    {
+                        spriteRenderer.sprite = sprite;
+                    }
+                    else
+                    {
+                        spriteRenderer.sprite = alt_sprite;
+                    }
+
+                    segOneMaterial.EnableKeyword("_EMISSION");
+                    spriteRenderer.material = segOneMaterial;
+
+                    // Set the size of this sprite based on the segment dimensions.
+                    spriteRenderer.size = new Vector2(segmentWidth, segmentHeight);
+
+                    // Add segment handler script.
+                    Segment segmentScript = segmentObject.AddComponent<Segment>();
+                    segmentScript.pillPrefabs = pillPrefabs;
+
+                    // Set initial health.
+                    segmentScript.health += o;
+                }
+            }
+
+        }
+    }
+
+
+
+
+
+
 
 }
