@@ -10,10 +10,12 @@ public class Segment : MonoBehaviour
     public int hits = 0;
     public bool isDead;
 
-
+    public Color defaultMaterialColor;
 
     public bool isSpecial;
     private SpriteRenderer spriteRenderer;
+
+    private Material segMaterial;
 
     public GameObject[] pillPrefabs;
 
@@ -21,8 +23,14 @@ public class Segment : MonoBehaviour
     {
 
 
+
         Rigidbody2D rb = gameObject.AddComponent<Rigidbody2D>();
         rb.bodyType = RigidbodyType2D.Kinematic;
+
+        segMaterial = GetComponent<Renderer>().material;
+
+        defaultMaterialColor = segMaterial.color;
+
 
         // Add a CircleCollider2D component to the segment object.
         CircleCollider2D collider = gameObject.AddComponent<CircleCollider2D>();
@@ -63,6 +71,7 @@ public class Segment : MonoBehaviour
         {
             health--;
             hits++;
+            StartCoroutine(FlashPill());
         }
         else
         {
@@ -88,6 +97,17 @@ public class Segment : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+
+    public IEnumerator FlashPill()
+    {
+
+        segMaterial.color = Color.black;
+        yield return new WaitForSeconds(0.01f);
+        segMaterial.color = defaultMaterialColor;
+    }
+
+
 
     public void CreatePill()
     {

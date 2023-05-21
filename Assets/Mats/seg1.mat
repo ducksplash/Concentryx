@@ -242,7 +242,7 @@ Material:
     - _GlossinessSource: 0
     - _GlossyReflections: 0
     - _GlowInner: 0.05
-    - _GlowIntensity: 10
+    - _GlowIntensity: 9.47
     - _GlowOffset: 0
     - _GlowOuter: 0.05
     - _GlowPower: 0.75
@@ -250,7 +250,7 @@ Material:
     - _GlowThreshold: 1
     - _GradientScale: 5
     - _HaloIntensity: 1
-    - _HaloSize: 1
+    - _HaloSize: 0.642
     - _ImageType: 0
     - _Layout: 0
     - _LightAngle: 3.1416
@@ -323,13 +323,13 @@ Material:
     - _BaseColorAddSubDiff: {r: 0, g: 0, b: 0, a: 0}
     - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
     - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
-    - _Color: {r: 1, g: 1, b: 1, a: 0.50980395}
+    - _Color: {r: 0.6886792, g: 0.6886792, b: 0.6886792, a: 1}
     - _EMISSION_COLOR: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 1207.4768, g: 0, b: 4193.2373, a: 1}
     - _EnvMatrixRotation: {r: 0, g: 0, b: 0, a: 0}
     - _FaceColor: {r: 1, g: 0, b: 0, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
-    - _GlowColor: {r: 1, g: 1, b: 1, a: 1}
+    - _GlowColor: {r: 0.6792453, g: 0.6792453, b: 0.6792453, a: 1}
     - _GroundColor: {r: 0.6577053, g: 0, b: 1, a: 1}
     - _HaloColor: {r: 1, g: 1, b: 1, a: 1}
     - _HueVariation: {r: 1, g: 0.5, b: 0, a: 0.1}

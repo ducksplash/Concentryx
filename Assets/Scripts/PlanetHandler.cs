@@ -58,6 +58,8 @@ public class PlanetHandler : MonoBehaviour
             {
                 DecrementPlanetHealth(5);
 
+                GameMaster.instance.IncrementScore(10);
+
                 if (!planetaryShieldParticleSystem)
                 {
 
@@ -75,8 +77,8 @@ public class PlanetHandler : MonoBehaviour
 
                 if (!isDead)
                 {
-                    GameMaster.instance.IncrementScore(1000);
                     isDead = true;
+                    GameMaster.instance.IncrementScore(1000);
 
                     Destroy(gameObject, animator.GetCurrentAnimatorStateInfo(0).length);
 

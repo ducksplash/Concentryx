@@ -28,10 +28,10 @@ public class Concentryx : MonoBehaviour
     private void Start()
     {
 
-        //ConcentricRings();
+        ConcentricRings();
         //ConcentricRingsLumpy();
         //LatticeHell();
-        LittleSquares();
+        //LittleSquares();
 
     }
 

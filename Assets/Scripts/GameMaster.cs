@@ -41,6 +41,12 @@ public class GameMaster : MonoBehaviour
     public GameObject[] pillReadoutPrefabs;
 
 
+    public int rapidFireTime = 25;
+    public int scoreMultiplierTimer = 20;
+    public int invulnerabiltyTimer = 20;
+    public int flameThrowerTimer = 4;
+
+
     // weapons
     public string defaultWeapon = "Projectiles";
     public string currentWeapon = "Projectiles";
@@ -195,66 +201,48 @@ public class GameMaster : MonoBehaviour
 
     }
 
-    public void CollectPill(string pilltype)
+
+
+    public void CollectPill(string pillType)
     {
-        StartCoroutine(DisplayPillText(pilltype));
-        Debug.Log("Pill collected: " + pilltype);
+        StartCoroutine(DisplayPillText(pillType));
+        Debug.Log("Pill collected: " + pillType);
 
-
-        if (pilltype == "X")
+        switch (pillType)
         {
-            pillTime = 20;
-            projectileDelay = projectileDelayBoosted;
-            PillAction(pilltype);
+            case "X":
+                pillTime = rapidFireTime;
+                projectileDelay = projectileDelayBoosted;
+                break;
+            case "S":
+                pillTime = scoreMultiplierTimer;
+                scoreModifier = 2;
+                break;
+            case "+":
+                Debug.Log("Health Pill");
+                IncrementHealth(15);
+                return;
+            case "F":
+                pillTime = flameThrowerTimer;
+                Debug.Log("F Pill start" + pillTime);
+                currentWeapon = "Flamethrower";
+                break;
+            case "I":
+                pillTime = invulnerabiltyTimer;
+                Debug.Log("I Pill start" + pillTime);
+                invulnerable = true;
+                shieldParticleSystem.Play();
+                shipCollider.radius = shieldCollider;
+                break;
+            case "L":
+                if (!usedLightning)
+                {
+                    StartCoroutine(StrikeLightning());
+                }
+                return;
         }
 
-        if (pilltype == "S")
-        {
-            pillTime = 20;
-            scoreModifier = 2;
-            PillAction(pilltype);
-        }
-
-
-        if (pilltype == "+")
-        {
-            Debug.Log("Health Pill");
-            IncrementHealth(15);
-        }
-
-        if (pilltype == "F")
-        {
-            pillTime = 4;
-            Debug.Log("F Pill start" + pillTime);
-            PillAction(pilltype);
-            currentWeapon = "Flamethrower";
-
-
-
-        }
-
-        if (pilltype == "I")
-        {
-            pillTime = 10;
-            Debug.Log("I Pill start" + pillTime);
-            PillAction(pilltype);
-            invulnerable = true;
-
-            shieldParticleSystem.Play();
-            shipCollider.radius = shieldCollider;
-
-
-
-        }
-
-        if (pilltype == "L")
-        {
-            if (!usedLightning)
-            {
-                StartCoroutine(StrikeLightning());
-            }
-
-        }
+        PillAction(pillType);
     }
 
     public IEnumerator StrikeLightning()
@@ -264,14 +252,9 @@ public class GameMaster : MonoBehaviour
         usedLightning = true;
     }
 
-    private void PillAction(string pilltype)
+    private void PillAction(string pillType)
     {
-        string expectedPill = "pilllabel" + pilltype.ToLower();
-        insertPillReadout(expectedPill, pilltype);
-    }
-
-    public void insertPillReadout(string expectedPill, string pilltype)
-    {
+        string expectedPill = "pilllabel" + pillType.ToLower();
         GameObject pillReadoutClone = Instantiate(pillReadoutPrefabs[FindGameObjectIndex(expectedPill)], pillContent);
 
         RectTransform pillReadoutCloneRectTransform = pillReadoutClone.GetComponent<RectTransform>();
@@ -292,12 +275,69 @@ public class GameMaster : MonoBehaviour
             existingPillRectTransform.anchoredPosition = currentPosition;
         }
 
-        StartCoroutine(PillCountDown(pillReadoutClone, pilltype, pillTime));
+        StartCoroutine(PillCountDown(pillReadoutClone, pillType, pillTime));
 
         Canvas.ForceUpdateCanvases();
         pillScroll.verticalNormalizedPosition = 1f; // Scroll to the top
     }
 
+    private IEnumerator PillCountDown(GameObject pillReadout, string pillType, int superPillTime)
+    {
+        GameObject childObject = pillReadout.transform.GetChild(0).gameObject;
+        TextMeshProUGUI pillTimeReadout = childObject.GetComponent<TextMeshProUGUI>();
+
+        int pillTime = (superPillTime > 0) ? superPillTime : startpilltime;
+        pillTimeReadout.text = pillTime.ToString();
+
+        while (pillTime > 0)
+        {
+            pillTime--;
+
+            switch (pillType)
+            {
+                case "X":
+                    projectileDelay = projectileDelayBoosted;
+                    break;
+                case "S":
+                    scoreModifier = 2;
+                    break;
+                case "F":
+                    Debug.Log("F Pill");
+                    currentWeapon = "Flamethrower";
+                    break;
+                case "I":
+                    invulnerable = true;
+                    shieldParticleSystem.Play();
+                    shipCollider.radius = shieldCollider;
+                    break;
+            }
+
+            yield return new WaitForSeconds(1f);
+            pillTimeReadout.text = pillTime.ToString();
+        }
+
+        switch (pillType)
+        {
+            case "X":
+                projectileDelay = projectileDelayDefault;
+                break;
+            case "S":
+                scoreModifier = 1;
+                break;
+            case "F":
+                Debug.Log("F Pill");
+                currentWeapon = defaultWeapon;
+                break;
+            case "I":
+                Debug.Log("I Pill");
+                invulnerable = false;
+                shieldParticleSystem.Stop();
+                shipCollider.radius = defaultCollider;
+                break;
+        }
+
+        Destroy(pillReadout);
+    }
 
     public int FindGameObjectIndex(string name)
     {
@@ -306,49 +346,6 @@ public class GameMaster : MonoBehaviour
         return index;
     }
 
-    private IEnumerator PillCountDown(GameObject pillReadout, string pilltype, int superPillTime)
-    {
-        GameObject childObject = pillReadout.transform.GetChild(0).gameObject;
-        TextMeshProUGUI pilltimereadout = childObject.GetComponent<TextMeshProUGUI>();
-
-
-        int pilltime = (superPillTime > 0) ? superPillTime : startpilltime;
-
-        pilltimereadout.text = pilltime.ToString();
-
-        while (pilltime > 0)
-        {
-            pilltime--;
-            yield return new WaitForSeconds(1f);
-            pilltimereadout.text = pilltime.ToString();
-        }
-
-        if (pilltype == "X")
-        {
-            projectileDelay = projectileDelayDefault;
-        }
-
-        if (pilltype == "S")
-        {
-            scoreModifier = 1;
-        }
-
-        if (pilltype == "F")
-        {
-            Debug.Log("F Pill");
-            currentWeapon = defaultWeapon;
-        }
-
-        if (pilltype == "I")
-        {
-            Debug.Log("i Pill");
-            invulnerable = false;
-            shieldParticleSystem.Stop();
-            shipCollider.radius = defaultCollider;
-        }
-
-        Destroy(pillReadout);
-    }
 
 
 
