@@ -9,10 +9,18 @@ public class Concentryx : MonoBehaviour
     public float innerRadius = 1.0f; // The inner radius of the ring.
     public float outerRadius = 2.0f; // The outer radius of the ring.
     public float spriteWidth = 0.1f; // The width of each sprite in the ring.
-    public Sprite sprite; // The sprite to use for each segment.
-    public Sprite alt_sprite; // The sprite to use for each segment.
-    public float rotationSpeed = 10f;
 
+
+    public int dropRandomLower = 0;
+    public int dropRandomUpper = 50;
+
+    public int dropRandomCutoff = 45;
+
+    public Sprite mysterySprite;
+    public Sprite[] spriteSelection;
+
+    public float rotationSpeed = 10f;
+    public string liveLevelType = "none";
     public Material segOneMaterial;
 
     public GameObject[] pillPrefabs;
@@ -20,8 +28,8 @@ public class Concentryx : MonoBehaviour
     private void Start()
     {
 
-        // ConcentricRings();
-        // ConcentricRingsLumpy()
+        //ConcentricRings();
+        //ConcentricRingsLumpy();
         //LatticeHell();
         LittleSquares();
 
@@ -29,7 +37,16 @@ public class Concentryx : MonoBehaviour
 
     public void ConcentricRings()
     {
-        for (int o = 0; o < numLayers; o++)
+        float innerRadius = 1.3f; // The inner radius of the ring.
+        float outerRadius = 1.4f; // The outer radius of the ring.
+
+        int numRings = 6;
+
+        int numSegments = 16; // The number of segments in the ring.
+        float rotationSpeed = 10f;
+
+
+        for (int o = 0; o < numRings; o++)
         {
             // Create a new GameObject to hold the ring.
             GameObject ringObject = new GameObject("Ring " + o);
@@ -37,8 +54,9 @@ public class Concentryx : MonoBehaviour
             Rigidbody2D ringRB = ringObject.AddComponent<Rigidbody2D>();
             ringRB.bodyType = RigidbodyType2D.Kinematic;
 
-            int segmentModifier = (o * 15);
+            int segmentModifier = (o * 5);
 
+            Sprite SelectedSprite = spriteSelection[Random.Range(0, spriteSelection.Length)];
 
             // Create a new SpriteRenderer and Collider2D component for each segment of the ring.
             for (int i = 0; i < numSegments + segmentModifier; i++)
@@ -54,6 +72,9 @@ public class Concentryx : MonoBehaviour
                 // Create a new GameObject to hold the sprite and collider for this segment.
                 GameObject segmentObject = new GameObject("Segment " + o + i);
 
+                // add segment handler script
+
+                Segment segmentScript = segmentObject.AddComponent<Segment>();
                 // Set the parent of this GameObject to the ring object.
                 segmentObject.transform.parent = ringObject.transform;
 
@@ -63,14 +84,16 @@ public class Concentryx : MonoBehaviour
                 // Create a new SpriteRenderer component for this segment.
                 SpriteRenderer spriteRenderer = segmentObject.AddComponent<SpriteRenderer>();
 
-                // Set the sprite for this SpriteRenderer.
-                if (o % 2 == 0)
+                float specialRand = Random.Range(dropRandomLower, dropRandomUpper);
+                if (specialRand > dropRandomCutoff)
                 {
-                    spriteRenderer.sprite = sprite;
+                    segmentScript.isSpecial = true;
+                    spriteRenderer.sprite = mysterySprite;
                 }
                 else
                 {
-                    spriteRenderer.sprite = alt_sprite;
+                    segmentScript.isSpecial = false;
+                    spriteRenderer.sprite = SelectedSprite;
                 }
 
                 segOneMaterial.EnableKeyword("_EMISSION");
@@ -84,8 +107,6 @@ public class Concentryx : MonoBehaviour
                 // Set the rotation of this GameObject to match the angle of this segment.
                 segmentObject.transform.rotation = Quaternion.Euler(new Vector3(0.0f, 0.0f, angle - (angleStep / numSegments)));
 
-                // add segment handler script
-                segmentObject.AddComponent<Segment>();
 
                 segmentObject.GetComponent<Segment>().pillPrefabs = pillPrefabs;
 
@@ -140,6 +161,9 @@ public class Concentryx : MonoBehaviour
                 ringRB.angularVelocity = -(rotationSpeed + (o * 15));
             }
 
+            Sprite SelectedSprite = spriteSelection[Random.Range(0, spriteSelection.Length)];
+
+
             for (int i = 0; i < segmentsInRing; i++)
             {
                 // Calculate the angle for this segment.
@@ -151,6 +175,8 @@ public class Concentryx : MonoBehaviour
                 // Create a new GameObject to hold the sprite and collider for this segment.
                 GameObject segmentObject = new GameObject("Segment " + o + i);
 
+                // Add segment handler script
+                Segment segmentScript = segmentObject.AddComponent<Segment>();
                 // Set the parent of this GameObject to the ring object.
                 segmentObject.transform.parent = ringObject.transform;
 
@@ -160,14 +186,18 @@ public class Concentryx : MonoBehaviour
                 // Create a new SpriteRenderer component for this segment.
                 SpriteRenderer spriteRenderer = segmentObject.AddComponent<SpriteRenderer>();
 
-                // Set the sprite for this SpriteRenderer.
-                if (o % 2 == 0)
+
+
+                float specialRand = Random.Range(dropRandomLower, dropRandomUpper);
+                if (specialRand > dropRandomCutoff)
                 {
-                    spriteRenderer.sprite = sprite;
+                    segmentScript.isSpecial = true;
+                    spriteRenderer.sprite = mysterySprite;
                 }
                 else
                 {
-                    spriteRenderer.sprite = alt_sprite;
+                    segmentScript.isSpecial = false;
+                    spriteRenderer.sprite = SelectedSprite;
                 }
 
                 segOneMaterial.EnableKeyword("_EMISSION");
@@ -176,8 +206,6 @@ public class Concentryx : MonoBehaviour
                 // Set the size of this sprite based on the spriteWidth and segmentWidth properties.
                 spriteRenderer.size = new Vector2(spriteWidth, segmentWidth);
 
-                // Add segment handler script
-                Segment segmentScript = segmentObject.AddComponent<Segment>();
                 segmentScript.pillPrefabs = pillPrefabs;
 
                 // Set initial health
@@ -185,6 +213,8 @@ public class Concentryx : MonoBehaviour
             }
         }
     }
+
+
 
 
     public void LatticeHell()
@@ -200,7 +230,7 @@ public class Concentryx : MonoBehaviour
             int segmentModifier = o;
 
             // Calculate the size of the square for this layer.
-            float squareSize = spriteWidth / 2f;
+            float squareSize = 20f;
 
             // Calculate the number of rows and columns in the square.
             int numRows = numSegments + segmentModifier;
@@ -209,6 +239,9 @@ public class Concentryx : MonoBehaviour
             // Calculate the size of each segment within the square.
             float segmentWidth = squareSize / numCols;
             float segmentHeight = squareSize / numRows;
+
+
+            Sprite SelectedSprite = spriteSelection[Random.Range(0, spriteSelection.Length)];
 
             for (int row = 0; row < numRows; row++)
             {
@@ -221,6 +254,8 @@ public class Concentryx : MonoBehaviour
                     // Create a new GameObject to hold the sprite and collider for this segment.
                     GameObject segmentObject = new GameObject("Segment " + o + row + col);
 
+                    // Add segment handler script.
+                    Segment segmentScript = segmentObject.AddComponent<Segment>();
                     // Set the parent of this GameObject to the square object.
                     segmentObject.transform.parent = squareObject.transform;
 
@@ -231,14 +266,20 @@ public class Concentryx : MonoBehaviour
                     SpriteRenderer spriteRenderer = segmentObject.AddComponent<SpriteRenderer>();
 
                     // Set the sprite for this SpriteRenderer.
-                    if (o % 2 == 0)
+
+                    float specialRand = Random.Range(dropRandomLower, dropRandomUpper);
+                    if (specialRand > dropRandomCutoff)
                     {
-                        spriteRenderer.sprite = sprite;
+                        segmentScript.isSpecial = true;
+                        spriteRenderer.sprite = mysterySprite;
                     }
                     else
                     {
-                        spriteRenderer.sprite = alt_sprite;
+                        segmentScript.isSpecial = false;
+                        spriteRenderer.sprite = SelectedSprite;
                     }
+
+
 
                     segOneMaterial.EnableKeyword("_EMISSION");
                     spriteRenderer.material = segOneMaterial;
@@ -246,8 +287,6 @@ public class Concentryx : MonoBehaviour
                     // Set the size of this sprite based on the segment dimensions.
                     spriteRenderer.size = new Vector2(segmentWidth, segmentHeight);
 
-                    // Add segment handler script.
-                    Segment segmentScript = segmentObject.AddComponent<Segment>();
                     segmentScript.pillPrefabs = pillPrefabs;
 
                     // Set initial health.
@@ -268,50 +307,54 @@ public class Concentryx : MonoBehaviour
 
 
 
-
     public void LittleSquares()
     {
 
-        int numSegments = Random.Range(2, 8);
+        float innerRadius = 1.3f; // The inner radius of the ring.
+        float outerRadius = 1.4f; // The outer radius of the ring.
 
-        for (int o = 0; o < 5; o++)
+        int numRings = 6;
+
+        float rotationSpeed = 10f;
+
+
+        for (int o = 0; o < numRings; o++)
         {
+            int numSegments = Random.Range(2, 3);
             // Create a new GameObject to hold the square.
-            GameObject squareObject = new GameObject("Square " + o);
+            GameObject squareObject = new GameObject("Square" + o);
 
-
-
-            float randomX = Random.Range(-5f, 5f);
-            float randomY = Random.Range(-4f, 4f);
+            float randomX = Random.Range(-4f, 4f);
+            float randomY = Random.Range(-3f, 3f);
             squareObject.transform.position = transform.position + new Vector3(randomX, randomY, 0f);
 
             Rigidbody2D squareRB = squareObject.AddComponent<Rigidbody2D>();
             squareRB.bodyType = RigidbodyType2D.Kinematic;
 
-
             // Calculate the size of the square for this layer.
-
-            float squaresizeRand = Random.Range(2f, 8f);
+            float squaresizeRand = Random.Range(20f, 20f);
             float squareSize = spriteWidth / squaresizeRand;
 
             // Calculate the number of rows and columns in the square.
-            int numRows = numSegments;
-            int numCols = numSegments;
+            float numRows = numSegments * numSegments;
+            float numCols = numSegments * numSegments;
 
             // Calculate the size of each segment within the square.
-            float segmentWidth = squareSize / numCols;
-            float segmentHeight = squareSize / numRows;
+            float segmentWidth = numSegments / numRows;
+            float segmentHeight = numSegments / numCols;
 
+            Sprite SelectedSprite = spriteSelection[Random.Range(0, spriteSelection.Length)];
             for (int row = 0; row < numRows; row++)
             {
+
                 for (int col = 0; col < numCols; col++)
                 {
                     // Calculate the position for this segment within the square.
-                    float xPos = (col * segmentWidth) - (squareSize / 2f) + (segmentWidth / 2f);
-                    float yPos = (row * segmentHeight) - (squareSize / 2f) + (segmentHeight / 2f);
+                    float xPos = (col * segmentWidth) - (squareSize);
+                    float yPos = (row * segmentHeight) - (squareSize);
 
                     // Create a new GameObject to hold the sprite and collider for this segment.
-                    GameObject segmentObject = new GameObject("Segment " + o + row + col);
+                    GameObject segmentObject = new GameObject("Segment" + o + row + col);
 
                     // Set the parent of this GameObject to the square object.
                     segmentObject.transform.parent = squareObject.transform;
@@ -319,38 +362,45 @@ public class Concentryx : MonoBehaviour
                     // Set the position of this GameObject within the square.
                     segmentObject.transform.localPosition = new Vector3(xPos, yPos, 0f);
 
+                    // Add segment handler script.
+                    Segment segmentScript = segmentObject.AddComponent<Segment>();
                     // Create a new SpriteRenderer component for this segment.
                     SpriteRenderer spriteRenderer = segmentObject.AddComponent<SpriteRenderer>();
 
-                    // Set the sprite for this SpriteRenderer.
-                    if (o % 2 == 0)
+
+
+                    float specialRand = Random.Range(dropRandomLower, dropRandomUpper);
+                    if (specialRand > dropRandomCutoff)
                     {
-                        spriteRenderer.sprite = sprite;
+                        segmentScript.isSpecial = true;
+                        spriteRenderer.sprite = mysterySprite;
                     }
                     else
                     {
-                        spriteRenderer.sprite = alt_sprite;
+                        segmentScript.isSpecial = false;
+                        spriteRenderer.sprite = SelectedSprite;
                     }
+
+
+                    // Set the sprite for this SpriteRenderer.
 
                     segOneMaterial.EnableKeyword("_EMISSION");
                     spriteRenderer.material = segOneMaterial;
 
                     // Set the size of this sprite based on the segment dimensions.
-                    spriteRenderer.size = new Vector2(segmentWidth, segmentHeight);
+                    spriteRenderer.size = new Vector2(segmentWidth / 2, segmentHeight / 2);
 
-                    // Add segment handler script.
-                    Segment segmentScript = segmentObject.AddComponent<Segment>();
+
+
                     segmentScript.pillPrefabs = pillPrefabs;
 
                     // Set initial health.
-                    segmentScript.health += o;
+                    segmentScript.health = o;
                 }
-            }
 
+            }
         }
     }
-
-
 
 
 

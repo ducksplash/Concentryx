@@ -20,6 +20,8 @@ public class PillX : MonoBehaviour
 
     private string pilltype;
 
+    public float weight = 0;
+
     public GameObject[] pillPrefabs;
 
 

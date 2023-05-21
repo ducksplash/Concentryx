@@ -20,6 +20,8 @@ public class Ship : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
 
+        Debug.Log("Collision detected with " + collision.gameObject.name);
+
         if (!GameMaster.instance.invulnerable)
         {
 
@@ -37,6 +39,16 @@ public class Ship : MonoBehaviour
                 }
             }
 
+        }
+
+
+
+
+
+        if (collision.gameObject.name.Contains("Segment"))
+        {
+
+            Destroy(collision.gameObject);
         }
 
     }

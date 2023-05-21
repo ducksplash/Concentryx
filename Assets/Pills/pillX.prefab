@@ -232,6 +232,9 @@ MonoBehaviour:
   flashDuration: 0.1
   flashColor: {r: 0.9780209, g: 1, b: 0, a: 1}
   lightColor: {r: 0.23966962, g: 0, b: 0.5471698, a: 1}
+  isDead: 0
+  weight: 5
+  pillPrefabs: []
 --- !u!198 &6315077664584332580
 ParticleSystem:
   m_ObjectHideFlags: 0

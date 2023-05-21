@@ -106,6 +106,7 @@ MonoBehaviour:
   flashColor: {r: 0.121395506, g: 0.20200348, b: 0.8301887, a: 1}
   lightColor: {r: 0, g: 0.4783625, b: 0.54901963, a: 1}
   isDead: 0
+  weight: 0.1
   pillPrefabs: []
 --- !u!198 &1843011716137890702
 ParticleSystem:

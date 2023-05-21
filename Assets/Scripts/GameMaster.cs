@@ -203,12 +203,14 @@ public class GameMaster : MonoBehaviour
 
         if (pilltype == "X")
         {
+            pillTime = 20;
             projectileDelay = projectileDelayBoosted;
             PillAction(pilltype);
         }
 
         if (pilltype == "S")
         {
+            pillTime = 20;
             scoreModifier = 2;
             PillAction(pilltype);
         }
@@ -222,7 +224,7 @@ public class GameMaster : MonoBehaviour
 
         if (pilltype == "F")
         {
-            pillTime = 5;
+            pillTime = 4;
             Debug.Log("F Pill start" + pillTime);
             PillAction(pilltype);
             currentWeapon = "Flamethrower";
@@ -233,7 +235,7 @@ public class GameMaster : MonoBehaviour
 
         if (pilltype == "I")
         {
-            pillTime = 20;
+            pillTime = 10;
             Debug.Log("I Pill start" + pillTime);
             PillAction(pilltype);
             invulnerable = true;
