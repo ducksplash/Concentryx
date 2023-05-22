@@ -15479,9 +15479,10 @@ GameObject:
   - component: {fileID: 621348596}
   - component: {fileID: 621348598}
   - component: {fileID: 621348599}
+  - component: {fileID: 621348600}
   m_Layer: 0
   m_Name: Planet
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -20468,6 +20469,22 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
+--- !u!114 &621348600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 621348591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2db83a912de27e4e98c2a031d90a56b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectilePrefab: {fileID: 1153927297093656384, guid: fbb8f5c7d408944498408e4f9fd2da28, type: 3}
+  projectileSpeed: 10
+  player: {fileID: 0}
+  enemyProjectileDelay: 0.4
 --- !u!1 &671822877
 GameObject:
   m_ObjectHideFlags: 0
@@ -20878,7 +20895,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -100
-  m_Sprite: {fileID: 21300000, guid: ab887c33774b2ca4bb66d157bbf98aa6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 22ea96f8a3dd87141b273cb40b0919f6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

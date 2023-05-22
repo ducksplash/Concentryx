@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections;
 using System.Linq;
+using System;
 
 public class PlanetHandler : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class PlanetHandler : MonoBehaviour
     public float reductionPercentage = 0.15f;
     public Material planetMaterial;
     public Image planetHealthbar;
+
+    private EnemyProjectile enemyProjectileScript;
 
     private ParticleSystem planetaryShieldParticleSystem;
     private CircleCollider2D planetaryCollider;
@@ -25,12 +28,14 @@ public class PlanetHandler : MonoBehaviour
     private void Start()
     {
         planetaryShieldParticleSystem = GetComponent<ParticleSystem>();
+        enemyProjectileScript = GetComponent<EnemyProjectile>();
         animator = GetComponent<Animator>();
         healthCanvas = GetComponentInChildren<Canvas>();
         healthCanvas.worldCamera = Camera.main;
         planetaryCollider = GetComponent<CircleCollider2D>();
         planetLight = GetComponent<UnityEngine.Rendering.Universal.Light2D>();
         planetLight.intensity = 0f;
+        enemyProjectileScript.enabled = false;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -102,6 +107,8 @@ public class PlanetHandler : MonoBehaviour
             if (shieldsUp)
             {
                 Destroy(planetaryShieldParticleSystem);
+
+                enemyProjectileScript.enabled = true;
                 float reducedRadius = planetaryCollider.radius - (planetaryCollider.radius * reductionPercentage);
                 planetaryCollider.radius = reducedRadius;
                 shieldsUp = false;
