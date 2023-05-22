@@ -61,7 +61,20 @@ public class PlanetHandler : MonoBehaviour
                 StartCoroutine(Destroy());
             }
         }
+
+
+
+
+        if (collision.gameObject.name.Contains("Segment"))
+        {
+
+            Destroy(collision.gameObject);
+        }
     }
+
+
+
+
 
     private IEnumerator AddScore(int scoreadd)
     {

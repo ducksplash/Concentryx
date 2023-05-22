@@ -35,10 +35,9 @@ public class Segment : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Projectiles"))
-        {
-            DamageSegment(other.transform.gameObject);
-        }
+
+        DamageSegment(other.transform.gameObject);
+
     }
 
     public void DamageSegment(GameObject projectile)

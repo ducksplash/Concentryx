@@ -296,7 +296,7 @@ Transform:
   - {fileID: 164158367}
   - {fileID: 922803438}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &320808645
 GameObject:
@@ -412,7 +412,7 @@ ParticleSystem:
   m_GameObject: {fileID: 320808645}
   serializedVersion: 8
   lengthInSec: 0.05
-  simulationSpeed: 0.002
+  simulationSpeed: 0.004
   stopAction: 0
   cullingMode: 1
   ringBufferMode: 0
@@ -5339,7 +5339,7 @@ ParticleSystem:
   m_GameObject: {fileID: 454065844}
   serializedVersion: 8
   lengthInSec: 0.05
-  simulationSpeed: 0.002
+  simulationSpeed: 0.004
   stopAction: 0
   cullingMode: 1
   ringBufferMode: 0
@@ -10250,7 +10250,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &519420033
 MonoBehaviour:
@@ -10701,7 +10701,7 @@ ParticleSystem:
   m_GameObject: {fileID: 580466421}
   serializedVersion: 8
   lengthInSec: 0.05
-  simulationSpeed: 0.002
+  simulationSpeed: 0.004
   stopAction: 0
   cullingMode: 1
   ringBufferMode: 0
@@ -20332,7 +20332,7 @@ Transform:
   m_Children:
   - {fileID: 1777680729}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!58 &621348596
 CircleCollider2D:
@@ -20625,6 +20625,37 @@ MonoBehaviour:
   chainLength: 3
   lightnings: 10
   targetTag: Enemy
+--- !u!1 &822203521
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 822203522}
+  m_Layer: 0
+  m_Name: defaultParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &822203522
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 822203521}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -8.96, y: -0.32, z: -5.8241425}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 14
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &822545599
 GameObject:
   m_ObjectHideFlags: 0
@@ -26022,7 +26053,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1160164290}
   m_LocalRotation: {x: -0, y: -0, z: -0.3998906, w: 0.9165629}
-  m_LocalPosition: {x: -3.81, y: -1.299, z: 0}
+  m_LocalPosition: {x: -3.3, y: -1.25, z: 0}
   m_LocalScale: {x: 0.5856528, y: 0.5021979, z: 0.7860057}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -26054,7 +26085,7 @@ RectTransform:
   m_GameObject: {fileID: 1379343096}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.5079999, y: 4.86, z: 1.0666666}
+  m_LocalScale: {x: 1.508, y: 4.86, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1160164293}
@@ -26066,7 +26097,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -8.223448, y: -0.9054321}
+  m_AnchoredPosition: {x: -5.4532146, y: -0.18630289}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1429450518
@@ -26207,7 +26238,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1477129160
 MonoBehaviour:
@@ -26226,6 +26257,7 @@ MonoBehaviour:
   innerRadius: 1.3
   outerRadius: 1.3
   spriteWidth: 2
+  Player: {fileID: 4956001991301095822}
   dropRandomLower: 0
   dropRandomUpper: 50
   dropRandomCutoff: 45
@@ -26249,6 +26281,8 @@ MonoBehaviour:
   - {fileID: 2888271685259355414, guid: caceadd0905cc5b42ba03b40ef703131, type: 3}
   - {fileID: 6466880149065721876, guid: 5c7cb8daaa74288449b61bef236858d0, type: 3}
   - {fileID: 1843011716137890690, guid: b0a20b8de90c3ab42a0adaaae2b5882f, type: 3}
+  enemyPrefabs: []
+  planetPrefabs: []
 --- !u!1 &1568994336
 GameObject:
   m_ObjectHideFlags: 0
