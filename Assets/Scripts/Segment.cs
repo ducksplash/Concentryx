@@ -1,12 +1,9 @@
 using UnityEngine;
 using System.Collections;
-using UnityEngine.Rendering.Universal;
 
 public class Segment : MonoBehaviour
 {
-
     public int health = 3;
-
     public int hits = 0;
     public bool isDead;
 
@@ -14,56 +11,35 @@ public class Segment : MonoBehaviour
 
     public bool isSpecial;
     private SpriteRenderer spriteRenderer;
-
     private Material segMaterial;
 
     public GameObject[] pillPrefabs;
 
-    void Start()
+    private float flashTimer;
+    private bool isFlashing;
+
+    private void Start()
     {
-
-
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        segMaterial = GetComponent<Renderer>().material;
+        defaultMaterialColor = segMaterial.color;
 
         Rigidbody2D rb = gameObject.AddComponent<Rigidbody2D>();
         rb.bodyType = RigidbodyType2D.Kinematic;
 
-        segMaterial = GetComponent<Renderer>().material;
-
-        defaultMaterialColor = segMaterial.color;
-
-
-        // Add a CircleCollider2D component to the segment object.
         CircleCollider2D collider = gameObject.AddComponent<CircleCollider2D>();
-
-        spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
-
-        // Set the collider offset to the center of the segment
-        collider.offset = new Vector2(0f, 0f);
-
-        // Set the radius of the collider 
+        collider.offset = Vector2.zero;
         collider.radius = spriteRenderer.bounds.extents.magnitude / 2f;
-
-        // Set the isTrigger property to true
-        //collider.isTrigger = true;
     }
-
-
 
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        // Get the segment that was hit by the projectile.
-        GameObject projectile = other.transform.gameObject;
-
         if (other.gameObject.layer == LayerMask.NameToLayer("Projectiles"))
         {
-            DamageSegment(projectile);
-
+            DamageSegment(other.transform.gameObject);
         }
-
     }
-
-
 
     public void DamageSegment(GameObject projectile)
     {
@@ -71,25 +47,20 @@ public class Segment : MonoBehaviour
         {
             health--;
             hits++;
-            StartCoroutine(FlashPill());
+            StartFlashPill();
         }
         else
         {
-            // Destroy the segment.
-
             if (!projectile.name.Contains("EnemyProjectile"))
             {
-
-
                 if (isSpecial)
                 {
                     CreatePill();
                 }
 
-
                 if (!isDead)
                 {
-                    GameMaster.instance.IncrementScore(hits);
+                    StartCoroutine(AddScore(hits));
                     isDead = true;
                 }
             }
@@ -98,28 +69,45 @@ public class Segment : MonoBehaviour
         }
     }
 
-
-    public IEnumerator FlashPill()
+    private IEnumerator AddScore(int scoreadd)
     {
-
-        segMaterial.color = Color.black;
+        GameMaster.instance.IncrementScore(scoreadd);
         yield return new WaitForSeconds(0.01f);
-        segMaterial.color = defaultMaterialColor;
     }
 
+    private void StartFlashPill()
+    {
+        if (!isFlashing)
+        {
+            isFlashing = true;
+            flashTimer = 0.01f;
+            segMaterial.color = Color.black;
+        }
+    }
 
+    private void Update()
+    {
+        if (isFlashing)
+        {
+            flashTimer -= Time.deltaTime;
+            if (flashTimer <= 0f)
+            {
+                segMaterial.color = defaultMaterialColor;
+                isFlashing = false;
+            }
+        }
+    }
 
     public void CreatePill()
     {
         float totalWeight = 0f;
         foreach (GameObject prefab in pillPrefabs)
         {
-            // Assuming each prefab has a weight assigned using a custom script or editor properties
             float prefabWeight = prefab.GetComponent<PillX>().weight;
             totalWeight += prefabWeight;
         }
 
-        float randomValue = UnityEngine.Random.Range(0f, totalWeight);
+        float randomValue = Random.Range(0f, totalWeight);
         float weightSum = 0f;
         GameObject prefabToInstantiate = null;
 
@@ -127,7 +115,6 @@ public class Segment : MonoBehaviour
         {
             GameObject prefab = pillPrefabs[i];
             float prefabWeight = prefab.GetComponent<PillX>().weight;
-
             weightSum += prefabWeight;
 
             if (randomValue <= weightSum)
@@ -142,7 +129,4 @@ public class Segment : MonoBehaviour
             Instantiate(prefabToInstantiate, transform.position, Quaternion.identity);
         }
     }
-
-
-
 }

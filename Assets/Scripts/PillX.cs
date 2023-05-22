@@ -83,7 +83,7 @@ public class PillX : MonoBehaviour
 
 
                     GameMaster.instance.CollectPill(pilltype);
-                    GameMaster.instance.IncrementScore(hits * 2);
+                    StartCoroutine(AddScore(hits * 2));
                     isDead = true;
                 }
 
@@ -91,6 +91,12 @@ public class PillX : MonoBehaviour
             }
         }
 
+    }
+
+    private IEnumerator AddScore(int scoreadd)
+    {
+        GameMaster.instance.IncrementScore(scoreadd);
+        yield return new WaitForSeconds(0.01f);
     }
 
 

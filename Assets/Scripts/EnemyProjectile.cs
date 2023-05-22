@@ -1,49 +1,56 @@
-using UnityEngine;
+using System.Collections.Generic;
 using System.Collections;
+using UnityEngine;
 
 public class EnemyProjectile : MonoBehaviour
 {
     public GameObject projectilePrefab;
     public float projectileSpeed = 10f;
-
-    public GameObject Player;
+    public GameObject player;
 
     private bool canFire = true;
-
     public float enemyProjectileDelay = 0.4f;
+    private float fireTimer;
 
-    void Start()
+    private void Start()
     {
-        Player = GameObject.FindGameObjectWithTag("Player");
+        player = GameObject.FindGameObjectWithTag("Player");
+        fireTimer = enemyProjectileDelay;
     }
 
-    void Update()
+    private void Update()
     {
+        if (!canFire)
+        {
+            fireTimer -= Time.deltaTime;
+            if (fireTimer <= 0f)
+            {
+                canFire = true;
+                fireTimer = enemyProjectileDelay;
+            }
+        }
+
         if (canFire)
         {
-            StartCoroutine(FireProjectile());
+            FireProjectile();
+            canFire = false;
         }
     }
 
-    IEnumerator FireProjectile()
+    private void FireProjectile()
     {
-        canFire = false;
-
         GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
 
         // Calculate the direction from the projectile to the object being rotated around
-        Vector3 direction = Player.transform.position - projectile.transform.position;
+        Vector3 direction = player.transform.position - projectile.transform.position;
 
         // Set the rotation of the projectile to face the object being rotated around
         Quaternion rotation = Quaternion.LookRotation(Vector3.forward, direction);
         projectile.transform.rotation = rotation;
 
         // Set the velocity of the projectile to move towards the object being rotated around
-        projectile.GetComponent<Rigidbody2D>().velocity = direction.normalized * projectileSpeed;
+        Rigidbody2D projectileRigidbody = projectile.GetComponent<Rigidbody2D>();
+        projectileRigidbody.velocity = direction.normalized * projectileSpeed;
         projectile.layer = LayerMask.NameToLayer("Projectiles");
-
-        yield return new WaitForSeconds(enemyProjectileDelay);
-
-        canFire = true;
     }
 }

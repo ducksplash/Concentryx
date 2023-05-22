@@ -1,9 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-using System.Collections;
-using System.Linq;
-
 
 public class EnemyShip : MonoBehaviour
 {
@@ -28,7 +24,6 @@ public class EnemyShip : MonoBehaviour
         rotateClockwise = true;
         animator = GetComponent<Animator>();
         Player = GameObject.FindGameObjectWithTag("Player");
-
     }
 
     private void Update()
@@ -58,14 +53,8 @@ public class EnemyShip : MonoBehaviour
         directionTimer = Random.Range(minChangeDirectionInterval, maxChangeDirectionInterval);
     }
 
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
-
-
-        Debug.Log(collision.gameObject.name);
-
-
         if (!collision.gameObject.name.Contains("EnemyProjectile"))
         {
             collision.gameObject.GetComponent<BulletTime>().DestroyGameObject();
@@ -76,40 +65,32 @@ public class EnemyShip : MonoBehaviour
             }
             else
             {
-
                 DestroyEnemyShip();
-
             }
         }
     }
 
-
     public void DestroyEnemyShip()
     {
         animator.SetTrigger("shipsplode");
-
-        Debug.Log("shipsplode");
 
         if (!isDead)
         {
             enemyHealthbar.value = 0;
             GameMaster.instance.IncrementScore(enemyHits);
             isDead = true;
-
             Destroy(gameObject, animator.GetCurrentAnimatorStateInfo(0).length);
-
         }
     }
 
     public void DecrementEnemyHealth(int amount)
     {
         // Increment the Player score by the specified amount
-        enemyHealth -= (amount);
-        enemyHits += (amount);
+        enemyHealth -= amount;
+        enemyHits += amount;
 
         // Update the score text to reflect the new Player score
         enemyHealthbar.value = enemyHealth;
-
 
         if (enemyHealth < 8)
         {
@@ -125,6 +106,5 @@ public class EnemyShip : MonoBehaviour
         {
             enemyHealthbar.GetComponentInChildren<Image>().color = Color.red;
         }
-
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
+
 
 public class Projectile : MonoBehaviour
 {
@@ -9,45 +10,36 @@ public class Projectile : MonoBehaviour
 
     public GameObject flameThrower;
 
-    public bool canFire = true;
+    private bool canFire = true;
+    private bool isFiring;
 
-    void Start()
+    private void Start()
     {
         flameThrower.GetComponent<ParticleSystem>().Stop();
         flameThrower.SetActive(false);
     }
 
-
-    void Update()
+    private void Update()
     {
         if (Input.GetMouseButton(0) && canFire)
         {
-
             if (GameMaster.instance.currentWeapon == "Projectiles")
             {
-                StartCoroutine(FireProjectile());
+                FireProjectile();
             }
-
-            if (GameMaster.instance.currentWeapon == "Flamethrower")
+            else if (GameMaster.instance.currentWeapon == "Flamethrower")
             {
-                flameThrower.GetComponent<ParticleSystem>().Play();
-                flameThrower.SetActive(true);
-                Debug.Log("Flamethrower pew");
+                StartFlameThrower();
             }
         }
 
-        if (Input.GetMouseButtonUp(0) || GameMaster.instance.currentWeapon != "Flamethrower")
+        if ((Input.GetMouseButtonUp(0) || GameMaster.instance.currentWeapon != "Flamethrower") && isFiring)
         {
-
-            flameThrower.GetComponent<ParticleSystem>().Stop();
-            flameThrower.SetActive(false);
-
+            StopFlameThrower();
         }
     }
 
-
-
-    IEnumerator FireProjectile()
+    private void FireProjectile()
     {
         canFire = false;
 
@@ -58,12 +50,26 @@ public class Projectile : MonoBehaviour
         projectile.GetComponent<Rigidbody2D>().velocity = direction.normalized * projectileSpeed;
         projectile.layer = LayerMask.NameToLayer("Projectiles");
 
-        yield return new WaitForSeconds(GameMaster.instance.projectileDelay);
-
-        canFire = true;
+        StartCoroutine(ResetFireDelay());
     }
 
+    private void StartFlameThrower()
+    {
+        isFiring = true;
+        flameThrower.GetComponent<ParticleSystem>().Play();
+        flameThrower.SetActive(true);
+    }
 
+    private void StopFlameThrower()
+    {
+        isFiring = false;
+        flameThrower.GetComponent<ParticleSystem>().Stop();
+        flameThrower.SetActive(false);
+    }
 
-
+    private IEnumerator ResetFireDelay()
+    {
+        yield return new WaitForSeconds(GameMaster.instance.projectileDelay);
+        canFire = true;
+    }
 }

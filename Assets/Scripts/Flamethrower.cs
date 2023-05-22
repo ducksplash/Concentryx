@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class Flamethrower : MonoBehaviour
@@ -30,7 +31,7 @@ public class Flamethrower : MonoBehaviour
                 if (!collider.GetComponent<Segment>().isDead)
                 {
                     scoreadd = collider.GetComponent<Segment>().health;
-                    GameMaster.instance.IncrementScore(scoreadd);
+                    StartCoroutine(AddScore(scoreadd));
                     scoreadd = collider.GetComponent<Segment>().health = 0;
                     collider.GetComponent<Segment>().isDead = true;
                 }
@@ -53,7 +54,7 @@ public class Flamethrower : MonoBehaviour
                     if (!collider.GetComponent<EnemyShip>().isDead)
                     {
                         scoreadd = collider.GetComponent<EnemyShip>().enemyHealth;
-                        GameMaster.instance.IncrementScore(scoreadd);
+                        StartCoroutine(AddScore(scoreadd));
                         scoreadd = collider.GetComponent<EnemyShip>().enemyHealth = 0;
                         collider.GetComponent<EnemyShip>().isDead = true;
 
@@ -63,5 +64,11 @@ public class Flamethrower : MonoBehaviour
                 }
             }
         }
+    }
+
+    private IEnumerator AddScore(int scoreadd)
+    {
+        GameMaster.instance.IncrementScore(scoreadd);
+        yield return new WaitForSeconds(0.01f);
     }
 }

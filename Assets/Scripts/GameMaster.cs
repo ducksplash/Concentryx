@@ -206,7 +206,6 @@ public class GameMaster : MonoBehaviour
     public void CollectPill(string pillType)
     {
         StartCoroutine(DisplayPillText(pillType));
-        Debug.Log("Pill collected: " + pillType);
 
         switch (pillType)
         {
@@ -219,17 +218,14 @@ public class GameMaster : MonoBehaviour
                 scoreModifier = 2;
                 break;
             case "+":
-                Debug.Log("Health Pill");
                 IncrementHealth(15);
                 return;
             case "F":
                 pillTime = flameThrowerTimer;
-                Debug.Log("F Pill start" + pillTime);
                 currentWeapon = "Flamethrower";
                 break;
             case "I":
                 pillTime = invulnerabiltyTimer;
-                Debug.Log("I Pill start" + pillTime);
                 invulnerable = true;
                 shieldParticleSystem.Play();
                 shipCollider.radius = shieldCollider;
@@ -302,7 +298,6 @@ public class GameMaster : MonoBehaviour
                     scoreModifier = 2;
                     break;
                 case "F":
-                    Debug.Log("F Pill");
                     currentWeapon = "Flamethrower";
                     break;
                 case "I":
@@ -325,11 +320,9 @@ public class GameMaster : MonoBehaviour
                 scoreModifier = 1;
                 break;
             case "F":
-                Debug.Log("F Pill");
                 currentWeapon = defaultWeapon;
                 break;
             case "I":
-                Debug.Log("I Pill");
                 invulnerable = false;
                 shieldParticleSystem.Stop();
                 shipCollider.radius = defaultCollider;
@@ -342,7 +335,6 @@ public class GameMaster : MonoBehaviour
     public int FindGameObjectIndex(string name)
     {
         int index = Array.FindIndex(pillReadoutPrefabs, obj => obj.name == name);
-        Debug.Log("Index of " + name + " is " + index);
         return index;
     }
 
