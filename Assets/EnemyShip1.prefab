@@ -316,7 +316,7 @@ GameObject:
   - component: {fileID: 2264219344148071169}
   - component: {fileID: 2264219344148071168}
   m_Layer: 0
-  m_Name: Particle System
+  m_Name: jet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -345,7 +345,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2264219344148071174}
   serializedVersion: 8
-  lengthInSec: 10
+  lengthInSec: 0.05
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
@@ -420,7 +420,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.1
+      scalar: 0.2
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -527,7 +527,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 0.41093177, b: 0, a: 1}
+      maxColor: {r: 1, g: 0.14448223, b: 0, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -905,7 +905,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
-    maxNumParticles: 1000
+    maxNumParticles: 200
     customEmitterVelocity: {x: 0, y: 0, z: 0}
     size3D: 0
     rotation3D: 0
@@ -1171,7 +1171,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1000
+      scalar: 500
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -5226,6 +5226,7 @@ MonoBehaviour:
   maxChangeDirectionInterval: 8
   enemyHealth: 20
   enemyHits: 0
+  jet: {fileID: 2264219344148071174}
   isDead: 0
   enemyHealthbar: {fileID: 2264219344542214240}
 --- !u!114 &2264219344330808548
@@ -5242,7 +5243,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectilePrefab: {fileID: 1153927297093656384, guid: fbb8f5c7d408944498408e4f9fd2da28, type: 3}
   projectileSpeed: 10
-  Player: {fileID: 0}
+  player: {fileID: 0}
   enemyProjectileDelay: 0.4
 --- !u!70 &2264219344330808549
 CapsuleCollider2D:
@@ -5401,9 +5402,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 0}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 10
+  m_MaxValue: 20
   m_WholeNumbers: 1
-  m_Value: 10
+  m_Value: 20
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []

@@ -58,51 +58,71 @@ public class Concentryx : MonoBehaviour
 
         // 2 enemies, 1 planet
 
-        CreateEnemyShip();
+        CreateEnemyShip(2);
 
     }
-    public void CreateEnemyShip()
+
+    public void CreateEnemyShip(int numships = 1)
     {
-        Vector3 parentPosition = transform.position;
-        Vector3 parentScale = transform.localScale;
-        Vector3 parentSize = new Vector3(parentScale.x * 2, parentScale.y * 2, parentScale.z * 2);
-
-        Vector3 playerPosition = Player.transform.position;
-        Vector3 playerScale = Player.transform.localScale;
-        Vector3 playerSize = new Vector3(playerScale.x * 2, playerScale.y * 2, playerScale.z * 2);
-
-        float cellSize = Mathf.Min(parentSize.x, parentSize.y, parentSize.z) / 10f; // Adjust the cell size as needed
-        Vector3 cellOffset = new Vector3(cellSize, cellSize, cellSize);
-
-        Vector3 enemyPosition = Vector3.zero;
-        bool isValidPosition = false;
-        int maxAttempts = 100; // Increase the number of attempts if necessary
-        int attempts = 0;
-
-        while (!isValidPosition && attempts < maxAttempts)
+        for (int i = 0; i < numships; i++)
         {
-            Vector3 randomCell = new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f));
-            Vector3 cellPosition = parentPosition + Vector3.Scale(parentSize, randomCell);
+            Vector3 parentPosition = transform.position;
+            Vector3 parentScale = transform.localScale;
+            Vector3 parentSize = new Vector3(parentScale.x * 2, parentScale.y * 2, parentScale.z * 2);
 
-            // Check if the cell position overlaps with the player
-            if (!CheckOverlapWithPlayer(cellPosition, playerPosition, playerSize))
+            Vector3 playerPosition = Player.transform.position;
+            Vector3 playerScale = Player.transform.localScale;
+            Vector3 playerSize = new Vector3(playerScale.x * 2, playerScale.y * 2, playerScale.z * 2);
+
+            Camera mainCamera = Camera.main;
+            float cameraSize = mainCamera.orthographicSize;
+            float aspectRatio = mainCamera.aspect;
+
+            float boundingAreaReduction = 0.2f; // 20% reduction
+            float reducedParentSizeX = parentSize.x * (1f - boundingAreaReduction);
+            float reducedParentSizeY = parentSize.y * (1f - boundingAreaReduction);
+
+            float maxPositionOffsetX = (cameraSize * aspectRatio) - reducedParentSizeX / 2f;
+            float maxPositionOffsetY = cameraSize - reducedParentSizeY / 2f;
+
+            Vector3 enemyPosition = Vector3.zero;
+            bool isValidPosition = false;
+            int maxAttempts = 100;
+            int attempts = 0;
+
+            while (!isValidPosition && attempts < maxAttempts)
             {
-                enemyPosition = cellPosition;
-                isValidPosition = true;
+                float randomPositionOffsetX = Random.Range(-maxPositionOffsetX, maxPositionOffsetX);
+                float randomPositionOffsetY = Random.Range(-maxPositionOffsetY, maxPositionOffsetY);
+
+                enemyPosition = parentPosition + new Vector3(randomPositionOffsetX, randomPositionOffsetY, 0f);
+
+                if (!CheckOverlapWithPlayer(enemyPosition, playerPosition, playerSize))
+                {
+                    isValidPosition = true;
+                }
+
+                attempts++;
             }
 
-            attempts++;
-        }
+            if (!isValidPosition)
+            {
+                Debug.Log("Failed to find a valid position for the enemy ship.");
+                return;
+            }
 
-        if (!isValidPosition)
-        {
-            Debug.Log("Failed to find a valid position for the enemy ship.");
-            return;
-        }
+            GameObject enemyShip = Instantiate(enemyPrefabs[Random.Range(0, enemyPrefabs.Length)], enemyPosition, Quaternion.identity);
+            enemyShip.transform.parent = transform;
 
-        GameObject enemyShip = Instantiate(enemyPrefabs[Random.Range(0, enemyPrefabs.Length)], enemyPosition, Quaternion.identity);
-        enemyShip.transform.parent = transform;
+            // Calculate rotation towards the player and flip it
+            Vector3 directionToPlayer = playerPosition - enemyPosition;
+            float angle = Mathf.Atan2(directionToPlayer.y, directionToPlayer.x) * Mathf.Rad2Deg;
+            angle += 180f; // Add 180 degrees to flip the direction
+            enemyShip.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
+        }
     }
+
 
     private bool CheckOverlapWithPlayer(Vector3 enemyPosition, Vector3 playerPosition, Vector3 playerSize)
     {
@@ -119,7 +139,6 @@ public class Concentryx : MonoBehaviour
 
         return true;
     }
-
 
 
 

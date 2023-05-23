@@ -72,7 +72,7 @@ public class GameMaster : MonoBehaviour
 
 
 
-    public ParticleSystem shieldParticleSystem;
+    public GameObject shieldParticleSystem;
 
 
     private void Awake()
@@ -96,6 +96,9 @@ public class GameMaster : MonoBehaviour
         lightningObject.SetActive(false);
 
 
+
+        shieldParticleSystem.GetComponent<ParticleSystem>().Stop();
+        shieldParticleSystem.SetActive(false);
     }
 
 
@@ -227,7 +230,8 @@ public class GameMaster : MonoBehaviour
             case "I":
                 pillTime = invulnerabiltyTimer;
                 invulnerable = true;
-                shieldParticleSystem.Play();
+                shieldParticleSystem.SetActive(true);
+                shieldParticleSystem.GetComponent<ParticleSystem>().Play();
                 shipCollider.radius = shieldCollider;
                 break;
             case "L":
@@ -302,7 +306,8 @@ public class GameMaster : MonoBehaviour
                     break;
                 case "I":
                     invulnerable = true;
-                    shieldParticleSystem.Play();
+                    shieldParticleSystem.SetActive(true);
+                    shieldParticleSystem.GetComponent<ParticleSystem>().Play();
                     shipCollider.radius = shieldCollider;
                     break;
             }
@@ -324,7 +329,8 @@ public class GameMaster : MonoBehaviour
                 break;
             case "I":
                 invulnerable = false;
-                shieldParticleSystem.Stop();
+                shieldParticleSystem.SetActive(false);
+                shieldParticleSystem.GetComponent<ParticleSystem>().Stop();
                 shipCollider.radius = defaultCollider;
                 break;
         }

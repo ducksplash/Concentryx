@@ -112,11 +112,11 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _GlowIntensity: 0.561
-    - _GlowSize: 0.352
+    - _GlowIntensity: 0
+    - _GlowSize: 0.678
     - _GlowThreshold: 1
-    - _HaloIntensity: 0.584
-    - _HaloSize: 0.848
+    - _HaloIntensity: 0.82
+    - _HaloSize: 0.482
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
@@ -134,8 +134,8 @@ Material:
     - _Color: {r: 0, g: 0.9578204, b: 1, a: 1}
     - _EmissionColor: {r: 1024, g: 0, b: 0, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
-    - _GlowColor: {r: 1, g: 1, b: 0.18823531, a: 1}
-    - _HaloColor: {r: 1, g: 1, b: 0.57254905, a: 1}
+    - _GlowColor: {r: 0.08259169, g: 0.27454656, b: 0.6037736, a: 1}
+    - _HaloColor: {r: 0.13363299, g: 0.39695176, b: 0.7264151, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 0, g: 0.13710785, b: 1, a: 1}
   m_BuildTextureStacks: []

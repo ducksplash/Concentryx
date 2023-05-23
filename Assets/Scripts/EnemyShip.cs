@@ -13,6 +13,8 @@ public class EnemyShip : MonoBehaviour
     private float directionTimer;
     private bool rotateClockwise;
 
+    public GameObject jet;
+
     public bool isDead;
 
     public Slider enemyHealthbar;
@@ -24,6 +26,8 @@ public class EnemyShip : MonoBehaviour
         rotateClockwise = true;
         animator = GetComponent<Animator>();
         Player = GameObject.FindGameObjectWithTag("Player");
+        jet.SetActive(true);
+
     }
 
     private void Update()
@@ -79,6 +83,7 @@ public class EnemyShip : MonoBehaviour
             enemyHealthbar.value = 0;
             GameMaster.instance.IncrementScore(enemyHits);
             isDead = true;
+            jet.SetActive(false);
             Destroy(gameObject, animator.GetCurrentAnimatorStateInfo(0).length);
         }
     }
