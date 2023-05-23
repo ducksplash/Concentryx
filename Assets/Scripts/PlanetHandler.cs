@@ -56,6 +56,7 @@ public class PlanetHandler : MonoBehaviour
             animator.SetTrigger("planetsplode");
             if (!isDead)
             {
+                planetaryCollider.enabled = false;
                 StartCoroutine(AddScore(1000));
                 isDead = true;
                 StartCoroutine(Destroy());
