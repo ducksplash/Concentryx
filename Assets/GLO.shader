@@ -12,13 +12,14 @@ Shader "Custom/SpriteGlow"
  
     SubShader
     {
-        Tags { "Queue" = "Transparent" "RenderType" = "Transparent" }
+        Tags { "Queue" = "Transparent" }
         LOD 100
- 
-        Blend SrcAlpha OneMinusSrcAlpha
  
         Pass
         {
+            ZWrite Off
+            ZTest LEqual
+
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag

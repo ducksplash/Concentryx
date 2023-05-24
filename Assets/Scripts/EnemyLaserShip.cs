@@ -10,13 +10,14 @@ public class EnemyLaserShip : MonoBehaviour
     public int enemyHits = 0;
     public bool isDead;
 
-    public float durationInSeconds = 100f;
+    public float durationInSeconds = 60f;
 
 
 
     public Slider enemyHealthbar;
 
     public GameObject jet;
+    public GameObject laser;
 
     private Animator animator;
 
@@ -25,6 +26,7 @@ public class EnemyLaserShip : MonoBehaviour
         animator = GetComponent<Animator>();
         Player = GameObject.FindGameObjectWithTag("Player");
         jet.SetActive(true);
+        laser.SetActive(true);
         StartCoroutine(ShipFloatRight(durationInSeconds));
     }
 
@@ -45,6 +47,8 @@ public class EnemyLaserShip : MonoBehaviour
                 DestroyEnemyShip();
             }
         }
+
+
     }
 
     public void DestroyEnemyShip()
@@ -57,6 +61,7 @@ public class EnemyLaserShip : MonoBehaviour
             GameMaster.instance.IncrementScore(enemyHits);
             isDead = true;
             jet.SetActive(false);
+            laser.SetActive(false);
             Destroy(gameObject, animator.GetCurrentAnimatorStateInfo(0).length);
         }
     }

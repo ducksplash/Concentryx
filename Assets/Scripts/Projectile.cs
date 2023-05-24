@@ -43,12 +43,12 @@ public class Projectile : MonoBehaviour
     {
         canFire = false;
 
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 direction = (mousePos - transform.position).normalized;
+        Vector2 direction = transform.up; // Use the forward direction of the GameObject
         GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
         projectile.transform.rotation = transform.rotation;
         projectile.GetComponent<Rigidbody2D>().velocity = direction.normalized * projectileSpeed;
         projectile.layer = LayerMask.NameToLayer("Projectiles");
+
 
         StartCoroutine(ResetFireDelay());
     }

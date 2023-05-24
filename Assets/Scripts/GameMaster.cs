@@ -27,6 +27,8 @@ public class GameMaster : MonoBehaviour
 
     public Material textMaterial;
 
+    public GameObject radialControl;
+
     public int pillTime;
 
     public float projectileDelay = 0.1f;
@@ -51,6 +53,9 @@ public class GameMaster : MonoBehaviour
     public string defaultWeapon = "Projectiles";
     public string currentWeapon = "Projectiles";
 
+    public SpriteRenderer BGSprite;
+    public Sprite[] BGSpriteList;
+
 
 
     public CanvasGroup healthCanvas;
@@ -64,6 +69,14 @@ public class GameMaster : MonoBehaviour
     public GameObject lightningObject;
 
     public bool usedLightning;
+
+
+    public Sprite GUIDamageSprite0;
+    public Sprite GUIDamageSprite1;
+    public Sprite GUIDamageSprite2;
+    public Sprite GUIDamageSprite3;
+
+    public SpriteRenderer GUIForegroundSprite;
 
 
     int startpilltime = 15;
@@ -99,6 +112,37 @@ public class GameMaster : MonoBehaviour
 
         shieldParticleSystem.GetComponent<ParticleSystem>().Stop();
         shieldParticleSystem.SetActive(false);
+
+        if (BGSpriteList.Length > 0)
+        {
+            // Select a random index from the BGSpriteList
+            int randomIndex = UnityEngine.Random.Range(0, BGSpriteList.Length);
+
+            // Assign the randomly selected sprite to the BGSprite renderer
+            BGSprite.sprite = BGSpriteList[randomIndex];
+        }
+
+
+        if (PlayerPrefs.HasKey("handed"))
+        {
+            string handedness = PlayerPrefs.GetString("handed");
+
+
+            if (handedness == "left")
+            {
+                radialControl.transform.localPosition = new Vector3(563f, -275f, 0f);
+            }
+
+            else
+            {
+                radialControl.transform.localPosition = new Vector3(-563f, -275f, 0f);
+            }
+
+        }
+        else
+        {
+            radialControl.transform.localPosition = new Vector3(-563f, -275f, 0f);
+        }
     }
 
 
@@ -122,10 +166,6 @@ public class GameMaster : MonoBehaviour
         // spawn player here
 
     }
-
-
-
-
 
 
 
@@ -155,19 +195,23 @@ public class GameMaster : MonoBehaviour
         healthbar.value = health;
 
         Color healthColor = Color.green;
-        float healthValue = healthbar.value;
 
-        switch (healthValue)
+        if (health < 75)
         {
-            case var _ when healthValue < 70:
-                healthColor = Color.yellow;
-                break;
-            case var _ when healthValue < 50:
-                healthColor = new Color(1f, 0.65f, 0f);
-                break;
-            case var _ when healthValue < 25:
-                healthColor = Color.red;
-                break;
+            healthColor = Color.yellow;
+            GUIForegroundSprite.sprite = GUIDamageSprite1;
+        }
+
+        if (health < 50)
+        {
+            healthColor = new Color(1f, 0.65f, 0f);
+            GUIForegroundSprite.sprite = GUIDamageSprite2;
+        }
+
+        if (health < 25)
+        {
+            healthColor = Color.red;
+            GUIForegroundSprite.sprite = GUIDamageSprite3;
         }
 
         healthbar.GetComponentInChildren<Image>().color = healthColor;
@@ -178,6 +222,7 @@ public class GameMaster : MonoBehaviour
             StartCoroutine(FlashHealthBar());
         }
     }
+
 
 
     public void IncrementHealth(int amount)

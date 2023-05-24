@@ -4,52 +4,55 @@ using UnityEngine;
 
 public class EnemyLaser : MonoBehaviour
 {
-    public float projectileSpeed = 10f;
     public GameObject player;
 
-    private bool canFire = true;
-    public float enemyProjectileDelay = 0.4f;
-    private float fireTimer;
+    public GameObject laserObject;
+
+    public bool playerDamaged;
+
+    public float damageDelay = 5f;
+
 
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        fireTimer = enemyProjectileDelay;
     }
 
-    private void Update()
+
+    void OnTriggerExit2D(Collider2D collider)
     {
-        // if (!canFire)
-        // {
-        //     fireTimer -= Time.deltaTime;
-        //     if (fireTimer <= 0f)
-        //     {
-        //         canFire = true;
-        //         fireTimer = enemyProjectileDelay;
-        //     }
-        // }
+        if (collider.gameObject.name == "SpaceShip")
+        {
+            if (!playerDamaged)
+            {
+                playerDamaged = true;
+                if (gameObject.active)
+                {
+                    StartCoroutine(DamagePlayer(collider));
+                }
+            }
+        }
 
-        // if (canFire)
-        // {
-        //     //FireProjectile();
-        //     canFire = false;
-        // }
     }
 
-    private void FireProjectile()
+    public IEnumerator DamagePlayer(Collider2D collidee)
     {
-        // GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+        GameMaster.instance.DecrementHealth(10);
 
-        // // Calculate the direction from the projectile to the object being rotated around
-        // Vector3 direction = player.transform.position - projectile.transform.position;
+        if (collidee.GetComponent<SpriteRenderer>())
+        {
+            collidee.GetComponent<SpriteRenderer>().color = Color.red;
+            yield return new WaitForSeconds(0.1f);
+            collidee.GetComponent<SpriteRenderer>().color = Color.white;
+            yield return new WaitForSeconds(0.1f);
+            collidee.GetComponent<SpriteRenderer>().color = Color.red;
+            yield return new WaitForSeconds(0.1f);
+            collidee.GetComponent<SpriteRenderer>().color = Color.white;
+        }
 
-        // // Set the rotation of the projectile to face the object being rotated around
-        // Quaternion rotation = Quaternion.LookRotation(Vector3.forward, direction);
-        // projectile.transform.rotation = rotation;
-
-        // // Set the velocity of the projectile to move towards the object being rotated around
-        // Rigidbody2D projectileRigidbody = projectile.GetComponent<Rigidbody2D>();
-        // projectileRigidbody.velocity = direction.normalized * projectileSpeed;
-        // projectile.layer = LayerMask.NameToLayer("Projectiles");
+        yield return new WaitForSeconds(damageDelay);
+        playerDamaged = false;
     }
+
+
 }
