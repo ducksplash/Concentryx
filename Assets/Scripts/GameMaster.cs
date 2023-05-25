@@ -130,18 +130,18 @@ public class GameMaster : MonoBehaviour
 
             if (handedness == "left")
             {
-                radialControl.transform.localPosition = new Vector3(563f, -275f, 0f);
+                radialControl.transform.localPosition = new Vector3(915, -172, 0f);
             }
 
             else
             {
-                radialControl.transform.localPosition = new Vector3(-563f, -275f, 0f);
+                radialControl.transform.localPosition = new Vector3(315, -172, 0f);
             }
 
         }
         else
         {
-            radialControl.transform.localPosition = new Vector3(-563f, -275f, 0f);
+            radialControl.transform.localPosition = new Vector3(315, -172, 0f);
         }
     }
 
@@ -163,7 +163,7 @@ public class GameMaster : MonoBehaviour
 
     public void SpawnRings()
     {
-        // spawn player here
+        // spawn level furniture here
 
     }
 

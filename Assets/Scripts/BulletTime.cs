@@ -24,7 +24,7 @@ public class BulletTime : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.name != "SpaceShip" && !other.gameObject.name.Contains("Projectile"))
+        if (other.gameObject.name != "SpaceShip" && !other.gameObject.name.Contains("Projectile") && !other.gameObject.name.Contains("Thumbstick"))
         {
 
             DestroyGameObject();

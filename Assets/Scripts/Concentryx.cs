@@ -55,7 +55,7 @@ public class Concentryx : MonoBehaviour
 
         // 2 enemies, 1 planet
 
-        CreateEnemyShip(2);
+        // CreateEnemyShip(2);
 
     }
 
