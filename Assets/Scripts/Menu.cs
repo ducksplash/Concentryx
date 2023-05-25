@@ -1,4 +1,6 @@
 using UnityEngine;
+using RDG;
+
 
 public class Menu : MonoBehaviour
 {
@@ -26,6 +28,7 @@ public class Menu : MonoBehaviour
 
     public void Resume()
     {
+        TriggerVibrate();
         Debug.Log("Resume");
         ChangePage();
         Time.timeScale = 1f;
@@ -34,6 +37,7 @@ public class Menu : MonoBehaviour
 
     public void Pause()
     {
+        TriggerVibrate();
         Debug.Log("Pause");
         ChangePage(PauseMenuCanvas);
 
@@ -59,5 +63,11 @@ public class Menu : MonoBehaviour
         }
     }
 
+
+
+    public void TriggerVibrate()
+    {
+        Vibration.Vibrate(50, 255);
+    }
 
 }

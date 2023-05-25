@@ -26178,9 +26178,9 @@ MonoBehaviour:
   textMaterial: {fileID: 6454014653600419309, guid: 8313e91594fc7604a987603da962d8b8, type: 2}
   radialControl: {fileID: 87705459}
   pillTime: 15
-  projectileDelay: 0.1
-  projectileDelayDefault: 0.1
-  projectileDelayBoosted: 0.05
+  projectileDelay: 0.05
+  projectileDelayDefault: 0.05
+  projectileDelayBoosted: 0.01
   invulnerable: 0
   scoreModifier: 1
   pillScroll: {fileID: 1749503659}

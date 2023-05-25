@@ -20,7 +20,6 @@ public class RadialController : MonoBehaviour, IDragHandler
             transform.Rotate(0f, 0f, smoothedAngle * speedModifier);
             startDragPosition = localPosition;
             Ship.instance.Rotate(smoothedAngle * speedModifier);
-            Debug.Log("Rotation angle: " + smoothedAngle);
         }
     }
 

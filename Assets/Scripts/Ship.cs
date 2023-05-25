@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using RDG;
 
 public class Ship : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class Ship : MonoBehaviour
 
     public SpriteRenderer shipSprite;
     private Rigidbody2D rb;
+    private AndroidJavaObject vibrator;
 
     private float rotationSpeed = 180f; // Adjust the rotation speed as needed
     private void Awake()
@@ -21,6 +23,7 @@ public class Ship : MonoBehaviour
     {
         shipSprite = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
+
 
     }
 
@@ -57,6 +60,10 @@ public class Ship : MonoBehaviour
 
                 if (GameMaster.instance.health > 0)
                 {
+
+                    //
+                    Vibration.Vibrate(50, 255);
+
                     StartCoroutine(FlashPlayer());
                     GameMaster.instance.DecrementHealth(1);
                 }
