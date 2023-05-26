@@ -67,6 +67,7 @@ public class GameMaster : MonoBehaviour
 
 
 
+    public float targetAspectRatio = 16f / 9f;
 
 
 
@@ -102,10 +103,15 @@ public class GameMaster : MonoBehaviour
 
 
 
+
     private void Awake()
     {
         instance = this;
+
     }
+
+
+
 
     void Start()
     {
@@ -137,26 +143,26 @@ public class GameMaster : MonoBehaviour
         }
 
 
-        if (PlayerPrefs.HasKey("handed"))
-        {
-            string handedness = PlayerPrefs.GetString("handed");
+        // if (PlayerPrefs.HasKey("handed"))
+        // {
+        //     string handedness = PlayerPrefs.GetString("handed");
 
 
-            if (handedness == "left")
-            {
-                radialControl.transform.localPosition = new Vector3(915, -172, 0f);
-            }
+        //     if (handedness == "left")
+        //     {
+        //         radialControl.transform.localPosition = new Vector3(915, -172, 0f);
+        //     }
 
-            else
-            {
-                radialControl.transform.localPosition = new Vector3(315, -172, 0f);
-            }
+        //     else
+        //     {
+        //         radialControl.transform.localPosition = new Vector3(315, -172, 0f);
+        //     }
 
-        }
-        else
-        {
-            radialControl.transform.localPosition = new Vector3(315, -172, 0f);
-        }
+        // }
+        // else
+        // {
+        //     radialControl.transform.localPosition = new Vector3(315, -172, 0f);
+        // }
 
 
         if (Application.platform == RuntimePlatform.Android)
@@ -169,7 +175,10 @@ public class GameMaster : MonoBehaviour
             radialControl.SetActive(false);
             onMobile = false;
         }
+
+
     }
+
 
 
     //////  let's try something

@@ -89,7 +89,9 @@ public class ChainLightning : MonoBehaviour
             {
                 if (i < targetsCopy.Count && targetsCopy[i] && targetsCopy[i].gameObject.activeSelf)
                 {
-                    lightningBolts[i].DrawLightning(Vector2.zero, targetsCopy[i].position);
+                    Vector2 startpos = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
+
+                    lightningBolts[i].DrawLightning(startpos, targetsCopy[i].position);
                 }
                 else
                 {

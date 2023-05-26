@@ -33,6 +33,8 @@ public class Concentryx : MonoBehaviour
 
     public GameObject[] planetPrefabs;
 
+    public GameObject defaultParent;
+
     private void Start()
     {
 
@@ -324,6 +326,7 @@ public class Concentryx : MonoBehaviour
                     // Create a new SpriteRenderer component for this segment.
                     SpriteRenderer spriteRenderer = segment.AddComponent<SpriteRenderer>();
 
+
                     // Set the sprite and other properties based on the specific letter.
                     Sprite selectedSprite = spriteSelection[Random.Range(0, spriteSelection.Length)];
 
@@ -347,6 +350,12 @@ public class Concentryx : MonoBehaviour
 
                     spriteRenderer.sortingOrder = 1;
 
+
+                    // Create a new BoxCollider2D component for this segment.
+                    BoxCollider2D collider = segment.AddComponent<BoxCollider2D>();
+
+                    // Set the size of the BoxCollider2D to match the size of the SpriteRenderer.
+                    collider.size = spriteRenderer.bounds.size;
 
                     // Set the rotation of this GameObject to match the angle of this segment (90 degrees clockwise).
                     segment.transform.rotation = Quaternion.Euler(0.0f, 0.0f, -90.0f);
@@ -375,7 +384,7 @@ public class Concentryx : MonoBehaviour
 
         wordPosition.x = (xstart);
         wordPosition.y = (ystart);
-        wordObject.transform.position = wordPosition;
+        wordObject.transform.position = defaultParent.transform.position + wordPosition;
         Vector3 newScale = new Vector3(outputscale, outputscale, 1f); // Replace with your desired scale values
         wordObject.transform.localScale = newScale;
 

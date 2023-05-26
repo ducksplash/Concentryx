@@ -27,9 +27,6 @@ public class Segment : MonoBehaviour
         Rigidbody2D rb = gameObject.AddComponent<Rigidbody2D>();
         rb.bodyType = RigidbodyType2D.Kinematic;
 
-        CircleCollider2D collider = gameObject.AddComponent<CircleCollider2D>();
-        collider.offset = Vector2.zero;
-        collider.radius = spriteRenderer.bounds.extents.magnitude / 2f;
     }
 
 

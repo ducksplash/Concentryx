@@ -72,7 +72,7 @@ public class EnemyLaserShip : MonoBehaviour
         Vector3 startPosition = transform.position;
 
         // Calculate the target position on the right side of the screen
-        float targetX = Camera.main.orthographicSize * Camera.main.aspect + 3f;
+        float targetX = 972.09f;
         Vector3 targetPosition = new Vector3(targetX, startPosition.y, startPosition.z);
 
         float totalDistance = (targetPosition - startPosition).magnitude;
@@ -104,7 +104,7 @@ public class EnemyLaserShip : MonoBehaviour
         Vector3 startPosition = transform.position;
 
         // Calculate the target position on the left side of the screen
-        float targetX = -Camera.main.orthographicSize * Camera.main.aspect - 3f;
+        float targetX = 948.42f;
         Vector3 targetPosition = new Vector3(targetX, startPosition.y, startPosition.z);
 
         float totalDistance = (targetPosition - startPosition).magnitude;
