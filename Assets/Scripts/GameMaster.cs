@@ -11,7 +11,26 @@ public class GameMaster : MonoBehaviour
 {
     public static GameMaster instance;
 
+
+
+    [Header("Player Values")]
+
     public int playerScore = 0;
+    public bool invulnerable = false;
+    public int scoreModifier = 1;
+
+
+    public CanvasGroup healthCanvas;
+    public int health = 100;
+    public int maxHealth = 100;
+
+    public CircleCollider2D shipCollider;
+    public float defaultCollider = 0.54f;
+    public float shieldCollider = 0.84f;
+
+    public Slider healthbar;
+
+
     public TextMeshProUGUI scoreText;
 
     public int countdownTime = 500;
@@ -35,8 +54,6 @@ public class GameMaster : MonoBehaviour
     public float projectileDelayDefault = 0.1f;
     public float projectileDelayBoosted = 0.05f;
 
-    public bool invulnerable = false;
-    public int scoreModifier = 1;
 
     public ScrollRect pillScroll;
     public RectTransform pillContent;
@@ -49,6 +66,10 @@ public class GameMaster : MonoBehaviour
     public int flameThrowerTimer = 4;
 
 
+
+
+
+
     // weapons
     public string defaultWeapon = "Projectiles";
     public string currentWeapon = "Projectiles";
@@ -56,15 +77,7 @@ public class GameMaster : MonoBehaviour
     public SpriteRenderer BGSprite;
     public Sprite[] BGSpriteList;
 
-
-
-    public CanvasGroup healthCanvas;
-    public int health = 100;
-    public int maxHealth = 100;
-
-    public CircleCollider2D shipCollider;
-    public float defaultCollider = 0.54f;
-    public float shieldCollider = 0.84f;
+    public bool onMobile;
 
     public GameObject lightningObject;
 
@@ -81,11 +94,12 @@ public class GameMaster : MonoBehaviour
 
     int startpilltime = 15;
 
-    public Slider healthbar;
 
 
 
     public GameObject shieldParticleSystem;
+
+
 
 
     private void Awake()
@@ -142,6 +156,18 @@ public class GameMaster : MonoBehaviour
         else
         {
             radialControl.transform.localPosition = new Vector3(315, -172, 0f);
+        }
+
+
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            radialControl.SetActive(true);
+            onMobile = true;
+        }
+        else
+        {
+            radialControl.SetActive(false);
+            onMobile = false;
         }
     }
 

@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fce2615409717147b4fd2fd8c84e43d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countdownTime: 1.5
+  countdownTime: 1
 --- !u!50 &8244074202099407371
 Rigidbody2D:
   serializedVersion: 4

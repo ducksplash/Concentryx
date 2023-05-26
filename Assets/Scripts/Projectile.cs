@@ -13,10 +13,19 @@ public class Projectile : MonoBehaviour
     private bool canFire = true;
     private bool isFiring;
 
+    public int projectileCounter = 0;
+
+    public AudioSource audioSource;
+
+    public bool AudioPlaying;
+
     private void Start()
     {
         flameThrower.GetComponent<ParticleSystem>().Stop();
         flameThrower.SetActive(false);
+
+        audioSource = GetComponent<AudioSource>();
+
     }
 
     private void Update()
@@ -31,6 +40,17 @@ public class Projectile : MonoBehaviour
             {
                 StartFlameThrower();
             }
+            if (!AudioPlaying)
+            {
+                StartCoroutine(StartAudio());
+                AudioPlaying = true;
+            }
+        }
+
+        if (Input.GetMouseButtonUp(0) && AudioPlaying)
+        {
+            StartCoroutine(StopAudio());
+            AudioPlaying = false;
         }
 
         if ((Input.GetMouseButtonUp(0) || GameMaster.instance.currentWeapon != "Flamethrower") && isFiring)
@@ -49,6 +69,11 @@ public class Projectile : MonoBehaviour
         projectile.GetComponent<Rigidbody2D>().velocity = direction.normalized * projectileSpeed;
         projectile.layer = LayerMask.NameToLayer("Projectiles");
 
+        projectileCounter++;
+
+
+
+
 
         StartCoroutine(ResetFireDelay());
     }
@@ -59,6 +84,8 @@ public class Projectile : MonoBehaviour
         flameThrower.GetComponent<ParticleSystem>().Play();
         flameThrower.SetActive(true);
     }
+
+
 
     private void StopFlameThrower()
     {
@@ -71,5 +98,19 @@ public class Projectile : MonoBehaviour
     {
         yield return new WaitForSeconds(GameMaster.instance.projectileDelay);
         canFire = true;
+    }
+
+
+    private IEnumerator StartAudio()
+    {
+        audioSource.Play();
+        yield return new WaitForSeconds(0.1f);
+
+    }
+    private IEnumerator StopAudio()
+    {
+        audioSource.Stop();
+        yield return new WaitForSeconds(0.1f);
+
     }
 }

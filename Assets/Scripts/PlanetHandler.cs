@@ -65,6 +65,12 @@ public class PlanetHandler : MonoBehaviour
 
 
 
+        if (collision.gameObject.name.Contains("Projectile"))
+        {
+
+            Destroy(collision.gameObject);
+        }
+
 
         if (collision.gameObject.name.Contains("Segment"))
         {

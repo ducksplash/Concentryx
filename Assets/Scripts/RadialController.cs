@@ -8,19 +8,24 @@ public class RadialController : MonoBehaviour, IDragHandler
 
     public float speedModifier = 1f;
 
+
     public void OnDrag(PointerEventData eventData)
     {
-        Vector2 currentPosition = eventData.position;
-
-        if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            transform.parent.GetComponent<RectTransform>(), currentPosition, eventData.pressEventCamera, out Vector2 localPosition))
+        if (GameMaster.instance.onMobile)
         {
-            float angle = Vector2.SignedAngle(startDragPosition - (Vector2)transform.localPosition, localPosition - (Vector2)transform.localPosition);
-            float smoothedAngle = Mathf.LerpAngle(0f, angle, Time.deltaTime * rotationDamping);
-            transform.Rotate(0f, 0f, smoothedAngle * speedModifier);
-            startDragPosition = localPosition;
-            Ship.instance.Rotate(smoothedAngle * speedModifier);
+            Vector2 currentPosition = eventData.position;
+
+            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                transform.parent.GetComponent<RectTransform>(), currentPosition, eventData.pressEventCamera, out Vector2 localPosition))
+            {
+                float angle = Vector2.SignedAngle(startDragPosition - (Vector2)transform.localPosition, localPosition - (Vector2)transform.localPosition);
+                float smoothedAngle = Mathf.LerpAngle(0f, angle, Time.deltaTime * rotationDamping);
+                transform.Rotate(0f, 0f, smoothedAngle * speedModifier);
+                startDragPosition = localPosition;
+                Ship.instance.Rotate(smoothedAngle * speedModifier);
+            }
         }
+
     }
 
     public void OnBeginDrag(PointerEventData eventData)
