@@ -19,6 +19,18 @@ public class GameMaster : MonoBehaviour
     public bool invulnerable = false;
     public int scoreModifier = 1;
 
+    public int playerLevel;
+
+    public int playerXP;
+
+    public int toNextLevel = 1000;
+
+    public Image XPimg;
+
+    public TextMeshProUGUI levelryText;
+
+    public TextMeshProUGUI levelMenuText;
+    public TextMeshProUGUI levelToMenuText;
 
     public CanvasGroup healthCanvas;
     public int health = 100;
@@ -115,6 +127,24 @@ public class GameMaster : MonoBehaviour
 
     void Start()
     {
+
+        int playerLevel;
+
+        if (PlayerPrefs.HasKey("PlayerLevel"))
+        {
+            playerLevel = PlayerPrefs.GetInt("PlayerLevel");
+            levelryText.text = playerLevel.ToString();
+            levelMenuText.text = playerLevel.ToString();
+        }
+        else
+        {
+            // Default value if PlayerLevel doesn't exist in PlayerPrefs
+            playerLevel = 0;
+            levelryText.text = playerLevel.ToString();
+            levelMenuText.text = playerLevel.ToString();
+        }
+
+
         // Initialize the score text to display the current player score
         scoreText.text = playerScore.ToString();
 
@@ -204,6 +234,12 @@ public class GameMaster : MonoBehaviour
 
 
 
+    public void IncrementLevel()
+    {
+
+
+    }
+
 
 
     public void IncrementScore(int amount)
@@ -213,6 +249,36 @@ public class GameMaster : MonoBehaviour
 
         // Update the score text to reflect the new player score
         scoreText.text = playerScore.ToString();
+
+        playerXP += (amount * scoreModifier);
+        levelToMenuText.text = (toNextLevel - playerXP).ToString() + "XP";
+
+        if (playerXP >= toNextLevel)
+        {
+            playerLevel++;
+            levelryText.text = playerLevel.ToString();
+            levelMenuText.text = playerLevel.ToString();
+            playerXP = 0;
+            toNextLevel = Mathf.RoundToInt(toNextLevel * 1.3f);
+
+            levelToMenuText.text = (0).ToString() + "XP";
+            // get previuous
+            int originalHealth = maxHealth;
+
+            healthbar.maxValue = Mathf.RoundToInt(healthbar.maxValue * 1.2f);
+            maxHealth = Mathf.RoundToInt(maxHealth * 1.1f);
+
+            IncrementHealth(maxHealth - originalHealth);
+        }
+
+        if (toNextLevel == 0)
+        {
+            XPimg.fillAmount = 1f; // Completely filled when playerXP is equal to toNextLevel
+        }
+        else
+        {
+            XPimg.fillAmount = (float)playerXP / toNextLevel;
+        }
 
         if (!isFlashing) // only start the flash effect if not already flashing
         {
@@ -332,6 +398,8 @@ public class GameMaster : MonoBehaviour
         usedLightning = true;
     }
 
+
+
     private void PillAction(string pillType)
     {
         string expectedPill = "pilllabel" + pillType.ToLower();
@@ -360,6 +428,9 @@ public class GameMaster : MonoBehaviour
         Canvas.ForceUpdateCanvases();
         pillScroll.verticalNormalizedPosition = 1f; // Scroll to the top
     }
+
+
+
 
     private IEnumerator PillCountDown(GameObject pillReadout, string pillType, int superPillTime)
     {

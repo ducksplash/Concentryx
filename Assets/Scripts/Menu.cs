@@ -10,6 +10,7 @@ public class Menu : MonoBehaviour
     public GameObject GameMenu;
     public CanvasGroup MainMenuCanvas;
     public CanvasGroup PauseMenuCanvas;
+    public CanvasGroup LevelMenuCanvas;
 
 
 
@@ -34,6 +35,14 @@ public class Menu : MonoBehaviour
         Time.timeScale = 1f;
     }
 
+    public void LevelScreen()
+    {
+        TriggerVibrate();
+        Debug.Log("Level Screen");
+        ChangePage(LevelMenuCanvas);
+        Time.timeScale = 0f;
+    }
+
 
     public void Pause()
     {
@@ -48,6 +57,7 @@ public class Menu : MonoBehaviour
 
     public void ChangePage(CanvasGroup ToOpen = null)
     {
+
         CanvasGroup[] canvasGroups = GameMenu.GetComponentsInChildren<CanvasGroup>();
 
         foreach (CanvasGroup canvasGroup in canvasGroups)

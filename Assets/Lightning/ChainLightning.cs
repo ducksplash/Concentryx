@@ -5,6 +5,8 @@ using System.Collections;
 
 public class ChainLightning : MonoBehaviour
 {
+    public static ChainLightning instance;
+
     [Header("Prefabs")]
     public GameObject lineRendererPrefab;
     public GameObject lightRendererPrefab;
@@ -15,7 +17,7 @@ public class ChainLightning : MonoBehaviour
 
     private bool isCleaning;
 
-    public string targetTag = "Enemy";
+    public string targetTag;
 
     private float nextRefresh;
     private float segmentLength = 0.2f;
@@ -24,6 +26,12 @@ public class ChainLightning : MonoBehaviour
     private List<Transform> targets;
 
     private void Awake()
+    {
+        instance = this;
+    }
+
+
+    public void InitialiseLightning()
     {
         lightningBolts = new List<LightningBolt>();
         targets = new List<Transform>();
@@ -35,11 +43,7 @@ public class ChainLightning : MonoBehaviour
             lightningBolts.Add(tmpLightningBolt);
         }
 
-        BuildChain();
-    }
 
-    public void Start()
-    {
         GameObject[] enemies = GameObject.FindGameObjectsWithTag(targetTag);
 
         foreach (GameObject enemy in enemies)
@@ -49,7 +53,9 @@ public class ChainLightning : MonoBehaviour
 
         // Ensure chainLength matches targets count
         chainLength = Mathf.Min(chainLength, targets.Count);
+        BuildChain();
     }
+
 
     public void BuildChain()
     {

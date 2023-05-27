@@ -77,7 +77,7 @@ public class Concentryx : MonoBehaviour
             float cameraSize = mainCamera.orthographicSize;
             float aspectRatio = mainCamera.aspect;
 
-            float boundingAreaReduction = 0.3f; // 20%
+            float boundingAreaReduction = 0.4f; // 20%
             float reducedParentSizeX = parentSize.x * (1f - boundingAreaReduction);
             float reducedParentSizeY = parentSize.y * (1f - boundingAreaReduction);
 
@@ -117,8 +117,9 @@ public class Concentryx : MonoBehaviour
             float angle = Mathf.Atan2(directionToPlayer.y, directionToPlayer.x) * Mathf.Rad2Deg;
             angle += 180f; // Add 180 degrees to flip the direction
             enemyShip.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-
         }
+
+        ChainLightning.instance.InitialiseLightning();
     }
 
 

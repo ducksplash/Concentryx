@@ -139,13 +139,6 @@ public class PillX : MonoBehaviour
 
 
 
-    public void SpawnPill()
-    {
-
-    }
-
-
-
 
 
 }

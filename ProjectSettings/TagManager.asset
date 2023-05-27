@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Enemy
   - EnemyProjectile
+  - MovingEnemy
+  - Enemy2
   layers:
   - Default
   - TransparentFX
