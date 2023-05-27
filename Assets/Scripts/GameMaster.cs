@@ -78,7 +78,7 @@ public class GameMaster : MonoBehaviour
     public SpriteRenderer BGSprite;
     public Sprite[] BGSpriteList;
 
-    public bool onMobile;
+    public bool onMobile = true;
 
     public GameObject lightningObject;
 
@@ -165,16 +165,16 @@ public class GameMaster : MonoBehaviour
         // }
 
 
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            radialControl.SetActive(true);
-            onMobile = true;
-        }
-        else
-        {
-            radialControl.SetActive(false);
-            onMobile = false;
-        }
+        // if (Application.platform == RuntimePlatform.Android)
+        // {
+        //     radialControl.SetActive(true);
+        //     onMobile = true;
+        // }
+        // else
+        // {
+        //     radialControl.SetActive(false);
+        //     onMobile = false;
+        // }
 
 
     }

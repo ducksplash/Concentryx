@@ -77,7 +77,7 @@ public class Concentryx : MonoBehaviour
             float cameraSize = mainCamera.orthographicSize;
             float aspectRatio = mainCamera.aspect;
 
-            float boundingAreaReduction = 0.2f; // 20%
+            float boundingAreaReduction = 0.3f; // 20%
             float reducedParentSizeX = parentSize.x * (1f - boundingAreaReduction);
             float reducedParentSizeY = parentSize.y * (1f - boundingAreaReduction);
 

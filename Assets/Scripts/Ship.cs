@@ -31,21 +31,28 @@ public class Ship : MonoBehaviour
 
     void Update()
     {
-        if (!GameMaster.instance.onMobile)
-        {
-            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector3 direction = mousePos - transform.position;
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.AngleAxis(angle - 90f, Vector3.forward);
-        }
+        // if (!GameMaster.instance.onMobile)
+        // {
+        //     Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        //     Vector3 direction = mousePos - transform.position;
+        //     float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        //     transform.rotation = Quaternion.AngleAxis(angle - 90f, Vector3.forward);
+        // }
+    }
+    public void MoveShip(Vector2 direction)
+    {
+
+        // Calculate the angle in degrees based on the direction vector
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+        // Add an offset of 90 degrees to adjust for the rotation difference
+        angle -= 90f;
+
+        // Rotate the game object to the calculated angle
+        transform.rotation = Quaternion.Euler(0f, 0f, angle);
+
     }
 
-    public void Rotate(float angle)
-    {
-        float rotationInRadians = Mathf.Deg2Rad * angle;
-        float amplifiedRotation = rotationSpeed * rotationInRadians;
-        rb.MoveRotation(rb.rotation + amplifiedRotation);
-    }
 
 
 
