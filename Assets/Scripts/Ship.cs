@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using RDG;
+using RDG; // vibrate plugin
 
 public class Ship : MonoBehaviour
 {
@@ -12,7 +12,6 @@ public class Ship : MonoBehaviour
     private Rigidbody2D rb;
     private AndroidJavaObject vibrator;
 
-    private float rotationSpeed = 180f; // Adjust the rotation speed as needed
     private void Awake()
     {
         instance = this;

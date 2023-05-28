@@ -1,12 +1,9 @@
 using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 
-// Dont forget to add "using RDG;" to the top of your script!
 namespace RDG
 {
-    /// <summary>
-    /// Class for controlling Vibration. Automatically initializes before scene is loaded.
-    /// </summary>
+
     public static class Vibration
     {
         // Component Parameters
@@ -29,7 +26,7 @@ namespace RDG
         [SuppressMessage("Code quality", "IDE0051", Justification = "Called on scene load")]
         private static void Initialize()
         {
-            // Add APP VIBRATION PERMISSION to the Manifest
+
 #if UNITY_ANDROID
             if (Application.isConsolePlatform) { Handheld.Vibrate(); }
 #endif
@@ -76,11 +73,7 @@ namespace RDG
         #endregion
 
         #region Vibrate Public
-        /// <summary>
-        /// Vibrate for Milliseconds, with Amplitude (if available).
-        /// If amplitude is -1, amplitude is Disabled. If -1, device DefaultAmplitude is used. Otherwise, values between 1-255 are allowed.
-        /// If 'cancel' is true, Cancel() will be called automatically.
-        /// </summary>
+
         public static void Vibrate(long milliseconds, int amplitude = -1, bool cancel = false)
         {
             string funcToStr() => string.Format("Vibrate ({0}, {1}, {2})", milliseconds, amplitude, cancel);
@@ -120,12 +113,7 @@ namespace RDG
                 }
             }
         }
-        /// <summary>
-        /// Vibrate Pattern (pattern of durations, with format Off-On-Off-On and so on).
-        /// Amplitudes can be Null (for default) or array of Pattern array length with values between 1-255.
-        /// To cause the pattern to repeat, pass the index into the pattern array at which to start the repeat, or -1 to disable repeating.
-        /// If 'cancel' is true, Cancel() will be called automatically.
-        /// </summary>
+
         public static void Vibrate(long[] pattern, int[] amplitudes = null, int repeat = -1, bool cancel = false)
         {
             string funcToStr() => string.Format("Vibrate (({0}), ({1}), {2}, {3})", arrToStr(pattern), arrToStr(amplitudes), repeat, cancel);
@@ -181,10 +169,7 @@ namespace RDG
             }
         }
 
-        /// <summary>
-        /// Vibrate predefined effect (described in Vibration.PredefinedEffect). Available from Api Level >= 29.
-        /// If 'cancel' is true, Cancel() will be called automatically.
-        /// </summary>
+
         public static void VibratePredefined(int effectId, bool cancel = false)
         {
             string funcToStr() => string.Format("VibratePredefined ({0})", effectId);
@@ -234,25 +219,16 @@ namespace RDG
             return timings;
         }
 
-        /// <summary>
-        /// Returns Android Api Level
-        /// </summary>
+
         public static int GetApiLevel() => ApiLevel;
-        /// <summary>
-        /// Returns Default Amplitude of device, or 0.
-        /// </summary>
+
         public static int GetDefaultAmplitude() => defaultAmplitude;
 
-        /// <summary>
-        /// Returns true if device has vibrator
-        /// </summary>
+
         public static bool HasVibrator()
         {
             return vibrator != null && vibrator.Call<bool>("hasVibrator");
         }
-        /// <summary>
-        /// Return true if device supports amplitude control
-        /// </summary>
         public static bool HasAmplitudeControl()
         {
             if (HasVibrator() && doesSupportVibrationEffect())
@@ -265,9 +241,7 @@ namespace RDG
             }
         }
 
-        /// <summary>
-        /// Tries to cancel current vibration
-        /// </summary>
+
         public static void Cancel()
         {
             if (HasVibrator())
@@ -321,30 +295,21 @@ namespace RDG
         #endregion
 
         #region Vibration Effect
-        /// <summary>
-        /// Wrapper for public static VibrationEffect createOneShot (long milliseconds, int amplitude). API >= 26
-        /// </summary>
+
         private static AndroidJavaObject createEffect_OneShot(long milliseconds, int amplitude)
         {
             return vibrationEffectClass.CallStatic<AndroidJavaObject>("createOneShot", milliseconds, amplitude);
         }
-        /// <summary>
-        /// Wrapper for public static VibrationEffect createPredefined (int effectId). API >= 29
-        /// </summary>
+
         private static AndroidJavaObject createEffect_Predefined(int effectId)
         {
             return vibrationEffectClass.CallStatic<AndroidJavaObject>("createPredefined", effectId);
         }
-        /// <summary>
-        /// Wrapper for public static VibrationEffect createWaveform (long[] timings, int[] amplitudes, int repeat). API >= 26
-        /// </summary>
         private static AndroidJavaObject createEffect_Waveform(long[] timings, int[] amplitudes, int repeat)
         {
             return vibrationEffectClass.CallStatic<AndroidJavaObject>("createWaveform", timings, amplitudes, repeat);
         }
-        /// <summary>
-        /// Wrapper for public static VibrationEffect createWaveform (long[] timings, int repeat). API >= 26
-        /// </summary>
+
         private static AndroidJavaObject createEffect_Waveform(long[] timings, int repeat)
         {
             return vibrationEffectClass.CallStatic<AndroidJavaObject>("createWaveform", timings, repeat);

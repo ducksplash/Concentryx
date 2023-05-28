@@ -19,22 +19,26 @@ public class GameMaster : MonoBehaviour
     public bool invulnerable = false;
     public int scoreModifier = 1;
 
-    public int playerLevel;
+    public int playerRank;
 
     public int playerXP;
 
-    public int toNextLevel = 1000;
+    public int toNextRank = 1000;
 
     public Image XPimg;
 
-    public TextMeshProUGUI levelryText;
+    public TextMeshProUGUI rankeryText;
 
-    public TextMeshProUGUI levelMenuText;
-    public TextMeshProUGUI levelToMenuText;
+    public TextMeshProUGUI rankMenuText;
+    public TextMeshProUGUI rankToMenuText;
 
     public CanvasGroup healthCanvas;
-    public int health = 100;
-    public int maxHealth = 100;
+
+    public bool deviceVibrationEnabled;
+    public int health = 250;
+    public int maxHealth = 250;
+
+    public int defaultMaxHealth = 250;
 
     public CircleCollider2D shipCollider;
     public float defaultCollider = 0.54f;
@@ -128,20 +132,23 @@ public class GameMaster : MonoBehaviour
     void Start()
     {
 
-        int playerLevel;
 
-        if (PlayerPrefs.HasKey("PlayerLevel"))
+        // Load player rank and player XP from PlayerPrefs
+        playerRank = PlayerPrefs.GetInt("PlayerRank", 0);
+        playerXP = PlayerPrefs.GetInt("PlayerXP", 0);
+
+        // Update UI with loaded values
+        rankeryText.text = playerRank.ToString();
+        rankMenuText.text = playerRank.ToString();
+        rankToMenuText.text = (toNextRank - playerXP).ToString() + "XP";
+
+        if (toNextRank == 0)
         {
-            playerLevel = PlayerPrefs.GetInt("PlayerLevel");
-            levelryText.text = playerLevel.ToString();
-            levelMenuText.text = playerLevel.ToString();
+            XPimg.fillAmount = 1f; // Completely filled when playerXP is equal to toNextRank
         }
         else
         {
-            // Default value if PlayerLevel doesn't exist in PlayerPrefs
-            playerLevel = 0;
-            levelryText.text = playerLevel.ToString();
-            levelMenuText.text = playerLevel.ToString();
+            XPimg.fillAmount = (float)playerXP / toNextRank;
         }
 
 
@@ -250,35 +257,7 @@ public class GameMaster : MonoBehaviour
         // Update the score text to reflect the new player score
         scoreText.text = playerScore.ToString();
 
-        playerXP += (amount * scoreModifier);
-        levelToMenuText.text = (toNextLevel - playerXP).ToString() + "XP";
-
-        if (playerXP >= toNextLevel)
-        {
-            playerLevel++;
-            levelryText.text = playerLevel.ToString();
-            levelMenuText.text = playerLevel.ToString();
-            playerXP = 0;
-            toNextLevel = Mathf.RoundToInt(toNextLevel * 1.3f);
-
-            levelToMenuText.text = (0).ToString() + "XP";
-            // get previuous
-            int originalHealth = maxHealth;
-
-            healthbar.maxValue = Mathf.RoundToInt(healthbar.maxValue * 1.2f);
-            maxHealth = Mathf.RoundToInt(maxHealth * 1.1f);
-
-            IncrementHealth(maxHealth - originalHealth);
-        }
-
-        if (toNextLevel == 0)
-        {
-            XPimg.fillAmount = 1f; // Completely filled when playerXP is equal to toNextLevel
-        }
-        else
-        {
-            XPimg.fillAmount = (float)playerXP / toNextLevel;
-        }
+        ranking(amount * scoreModifier);
 
         if (!isFlashing) // only start the flash effect if not already flashing
         {
@@ -288,6 +267,75 @@ public class GameMaster : MonoBehaviour
 
     }
 
+
+    public void ranking(int amount)
+    {
+        playerXP += (int)(amount);
+        rankToMenuText.text = (toNextRank - playerXP).ToString() + "XP";
+
+        if (playerXP >= toNextRank)
+        {
+            playerRank++;
+            rankeryText.text = playerRank.ToString();
+            rankMenuText.text = playerRank.ToString();
+            playerXP = 0;
+            toNextRank = Mathf.RoundToInt(toNextRank * 1.3f);
+
+            rankToMenuText.text = (0).ToString() + "XP";
+            // get previous
+            int originalHealth = maxHealth;
+
+            healthbar.maxValue = Mathf.RoundToInt(healthbar.maxValue * 1.2f);
+            maxHealth = Mathf.RoundToInt(maxHealth * 1.1f);
+
+            IncrementHealth(maxHealth - originalHealth);
+        }
+
+        if (toNextRank == 0)
+        {
+            XPimg.fillAmount = 1f; // Completely filled when playerXP is equal to toNextRank
+        }
+        else
+        {
+            XPimg.fillAmount = (float)playerXP / toNextRank;
+        }
+
+        // Store player rank and player XP to PlayerPrefs
+        PlayerPrefs.SetInt("PlayerRank", playerRank);
+        PlayerPrefs.SetInt("PlayerXP", playerXP);
+        PlayerPrefs.Save();
+
+    }
+    public void ResetRank()
+    {
+        // Reset player rank and XP to defaults
+        playerRank = 0;
+        playerXP = 0;
+        toNextRank = 1000;
+        maxHealth = defaultMaxHealth;
+        healthbar.maxValue = defaultMaxHealth;
+        healthbar.value = defaultMaxHealth;
+        health = defaultMaxHealth;
+
+        // Update UI with default values
+        rankeryText.text = playerRank.ToString();
+        rankMenuText.text = playerRank.ToString();
+        rankToMenuText.text = (toNextRank - playerXP).ToString() + "XP";
+
+        if (toNextRank == 0)
+        {
+            XPimg.fillAmount = 1f; // Completely filled when playerXP is equal to toNextRank
+        }
+        else
+        {
+            XPimg.fillAmount = (float)playerXP / toNextRank;
+        }
+
+        // Store default player rank and XP to PlayerPrefs
+        PlayerPrefs.SetInt("PlayerRank", playerRank);
+        PlayerPrefs.SetInt("PlayerXP", playerXP);
+        PlayerPrefs.Save();
+    }
 
     public void DecrementHealth(int amount)
     {
@@ -367,7 +415,7 @@ public class GameMaster : MonoBehaviour
                 scoreModifier = 2;
                 break;
             case "+":
-                IncrementHealth(15);
+                IncrementHealth((UnityEngine.Random.Range(10, 50) * playerRank));
                 return;
             case "F":
                 pillTime = flameThrowerTimer;
@@ -600,8 +648,34 @@ public class GameMaster : MonoBehaviour
 
         Vector3 targetPosition = transform.position - Vector3.up * 15.0f;
 
-        textMesh.color = Color.red;
-        textMesh.text = val;
+
+        string pilltext = val;
+
+        switch (val) // set the text and color based on the pill type
+        {
+            case "X":
+                pilltext = "Rapid Fire";
+                break;
+            case "S":
+                pilltext = "2x Score";
+                break;
+            case "+":
+                pilltext = "Health";
+                break;
+            case "F":
+                pilltext = "The Heat Is On";
+                break;
+            case "I":
+                pilltext = "Shields Up";
+                break;
+            case "L":
+                pilltext = "Buzz Off";
+                break;
+        }
+
+
+        textMesh.color = Color.green;
+        textMesh.text = pilltext;
 
         // Rise above the origin object
         while (floatingTextObj.transform.position.y > targetPosition.y)
