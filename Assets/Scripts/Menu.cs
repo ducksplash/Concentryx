@@ -32,17 +32,21 @@ public class Menu : MonoBehaviour
     public Toggle VibrationToggle;
     public Toggle PostProcessingToggle;
 
+    public bool postProcessingEnabled;
+
     public AudioSource menuNoiseBox;
     public AudioClip[] menuNoises;
     public AudioMixer AudioMixer;
 
-    public Volume postProcessingVolume; // Reference to the Volume component
-    public bool isPostProcessingEnabled; // Initial state of post-processing
+    public GameObject postProcessingVolume; // Reference to the Volume component
 
     public float minVolume = -80f; // Minimum volume in decibels
 
     void Start()
     {
+
+
+
         // Set initial toggle value based on the device vibration setting
         if (!PlayerPrefs.HasKey("PlayerVibration"))
         {
@@ -53,28 +57,39 @@ public class Menu : MonoBehaviour
         else
         {
             int vibrationEnabled = PlayerPrefs.GetInt("PlayerVibration");
-            GameMaster.instance.deviceVibrationEnabled = vibrationEnabled == 1;
+            GameMaster.instance.deviceVibrationEnabled = vibrationEnabled == 1 ? true : false;
         }
+
+
 
         // Set initial toggle value based on the post-processing setting
         if (!PlayerPrefs.HasKey("PostProcessingEnabled"))
         {
-            isPostProcessingEnabled = true;
-            PlayerPrefs.SetInt("PostProcessingEnabled", 1); // Set the value to true (1)
-            PlayerPrefs.Save(); // Save the changes
+
+            Debug.Log("player prefs key not found");
+
+            postProcessingEnabled = true; // Save the changes
+
         }
         else
         {
-            isPostProcessingEnabled = PlayerPrefs.GetInt("PostProcessingEnabled") == 1;
-            PostProcessingToggle.isOn = isPostProcessingEnabled;
+            Debug.Log("player prefs key found");
+            postProcessingEnabled = PlayerPrefs.GetInt("PostProcessingEnabled") == 1 ? true : false;
+
+            Debug.Log("Post-processing enabled: " + postProcessingEnabled);
+
         }
+
+
 
         // Set the initial state of the vibration toggle
         VibrationToggle.isOn = GameMaster.instance.deviceVibrationEnabled;
 
         // Set the initial state of the post-processing toggle
-        SetPostProcessingEnabled(isPostProcessingEnabled);
-        PostProcessingToggle.isOn = isPostProcessingEnabled;
+        PostProcessingToggle.isOn = postProcessingEnabled;
+
+
+        postProcessingVolume.SetActive(postProcessingEnabled);
 
         // Set initial slider value based on the SFX volume
         float SFXvolume = PlayerPrefs.GetFloat("SFXVolume", 0f);
@@ -99,25 +114,17 @@ public class Menu : MonoBehaviour
 
     public void TogglePostProcessing()
     {
-        // Toggle the state of post-processing
-        isPostProcessingEnabled = !isPostProcessingEnabled;
 
-        // Set the new state of post-processing
-        SetPostProcessingEnabled(isPostProcessingEnabled);
-    }
 
-    private void SetPostProcessingEnabled(bool isEnabled)
-    {
-        if (postProcessingVolume != null)
-        {
-            // Enable or disable the Volume component
-            postProcessingVolume.enabled = isEnabled;
-        }
+        Debug.Log("Post-processing toggle called");
 
-        // Store the state in player prefs
-        PlayerPrefs.SetInt("PostProcessingEnabled", isEnabled ? 1 : 0);
+        postProcessingVolume.SetActive(postProcessingVolume.activeSelf ? false : true);
+
+        // Save the updated post-processing state in PlayerPrefs
+        PlayerPrefs.SetInt("PostProcessingEnabled", postProcessingVolume.activeSelf ? 1 : 0);
         PlayerPrefs.Save();
     }
+
 
     public void ToggleVibration()
     {
