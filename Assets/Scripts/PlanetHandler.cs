@@ -17,7 +17,7 @@ public class PlanetHandler : MonoBehaviour
 
     private EnemyProjectile enemyProjectileScript;
 
-    private ParticleSystem planetaryShieldParticleSystem;
+    public ParticleSystem planetaryShieldParticleSystem;
     private CircleCollider2D planetaryCollider;
     private Canvas healthCanvas;
     private UnityEngine.Rendering.Universal.Light2D planetLight;
@@ -27,7 +27,6 @@ public class PlanetHandler : MonoBehaviour
 
     private void Start()
     {
-        planetaryShieldParticleSystem = GetComponent<ParticleSystem>();
         enemyProjectileScript = GetComponent<EnemyProjectile>();
         animator = GetComponent<Animator>();
         healthCanvas = GetComponentInChildren<Canvas>();

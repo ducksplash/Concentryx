@@ -1,10 +1,9 @@
-// Importing the necessary Unity Engine library
 using UnityEngine;
 
-// Class representing the background object
+
 public class BG : MonoBehaviour
 {
-    // Reference to the background renderer component
+    // Get background renderer component
     public Renderer backgroundRenderer;
 
     // Minimum and maximum contrast values

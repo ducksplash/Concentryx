@@ -66,17 +66,13 @@ public class Menu : MonoBehaviour
         if (!PlayerPrefs.HasKey("PostProcessingEnabled"))
         {
 
-            Debug.Log("player prefs key not found");
-
             postProcessingEnabled = true; // Save the changes
 
         }
         else
         {
-            Debug.Log("player prefs key found");
-            postProcessingEnabled = PlayerPrefs.GetInt("PostProcessingEnabled") == 1 ? true : false;
 
-            Debug.Log("Post-processing enabled: " + postProcessingEnabled);
+            postProcessingEnabled = PlayerPrefs.GetInt("PostProcessingEnabled") == 1 ? true : false;
 
         }
 
@@ -114,10 +110,7 @@ public class Menu : MonoBehaviour
 
     public void TogglePostProcessing()
     {
-
-
-        Debug.Log("Post-processing toggle called");
-
+        // Toggle the post-processing volume
         postProcessingVolume.SetActive(postProcessingVolume.activeSelf ? false : true);
 
         // Save the updated post-processing state in PlayerPrefs
@@ -158,7 +151,6 @@ public class Menu : MonoBehaviour
         PlayerPrefs.SetFloat("SFXVolume", volume);
         PlayerPrefs.Save();
 
-        Debug.Log("SFX volume: " + volume);
     }
 
     //////////
@@ -176,7 +168,6 @@ public class Menu : MonoBehaviour
         PlayerPrefs.SetFloat("BGMVolume", volume);
         PlayerPrefs.Save();
 
-        Debug.Log("BGM volume: " + volume);
     }
 
 
@@ -185,14 +176,12 @@ public class Menu : MonoBehaviour
     public void Resume()
     {
         TriggerVibrate();
-        Debug.Log("Resume");
         ChangePage();
         Time.timeScale = 1f;
     }
 
     public void RankScreen()
     {
-        Debug.Log("Rank Screen");
         ChangePage(RankMenuCanvas);
         Time.timeScale = 0f;
     }
@@ -200,7 +189,6 @@ public class Menu : MonoBehaviour
 
     public void SettingsScreen()
     {
-        Debug.Log("Sett Screen");
         ChangePage(SettingsMenuCanvas);
         Time.timeScale = 0f;
     }
@@ -208,7 +196,6 @@ public class Menu : MonoBehaviour
 
     public void Pause()
     {
-        Debug.Log("Pause");
         ChangePage(PauseMenuCanvas);
 
         Time.timeScale = 0f;
@@ -216,14 +203,12 @@ public class Menu : MonoBehaviour
     }
     public void AreYouSure()
     {
-        Debug.Log("Sure");
         ChangePage(SureMenuCanvas);
 
         Time.timeScale = 0f;
     }
     public void XPSure()
     {
-        Debug.Log("Sure");
         ChangePage(XPSureCanvas);
 
         Time.timeScale = 0f;

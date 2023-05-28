@@ -24,7 +24,7 @@ public class GameMaster : MonoBehaviour
 
     public int playerXP;
 
-    public int toNextRank = 1000;
+    public int toNextRank;
 
     public Image XPimg;
 
@@ -50,6 +50,7 @@ public class GameMaster : MonoBehaviour
 
 
     public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI scoreTextRanks;
     public TextMeshProUGUI highScoreText;
 
 
@@ -144,11 +145,16 @@ public class GameMaster : MonoBehaviour
         // Load player rank and player XP from PlayerPrefs
         playerRank = PlayerPrefs.GetInt("PlayerRank", 0);
         playerXP = PlayerPrefs.GetInt("PlayerXP", 0);
+        toNextRank = PlayerPrefs.GetInt("ToNextRank", 1000);
+
 
         // Update UI with loaded values
         rankeryText.text = playerRank.ToString();
         rankMenuText.text = playerRank.ToString();
-        rankToMenuText.text = (toNextRank - playerXP).ToString() + "XP";
+
+        int minNextRank = (toNextRank - playerXP) < 0 ? 0 : (toNextRank - playerXP);
+
+        rankToMenuText.text = minNextRank.ToString() + "XP";
 
         rankSlider.maxValue = toNextRank;
         rankSlider.value = playerXP;
@@ -166,6 +172,9 @@ public class GameMaster : MonoBehaviour
         // Initialize the score text to display the current player score
         scoreText.text = playerScore.ToString();
 
+        scoreTextRanks.text = playerScore.ToString();
+
+        highScoreText.text = playerHighScore.ToString();
 
         timerText.text = currentTime.ToString();
 
@@ -267,8 +276,21 @@ public class GameMaster : MonoBehaviour
 
         // Update the score text to reflect the new player score
         scoreText.text = playerScore.ToString();
+        scoreTextRanks.text = playerScore.ToString();
+
+
+        if (playerScore > playerHighScore)
+        {
+            playerHighScore = playerScore;
+        }
+
+        highScoreText.text = playerHighScore.ToString();
+
 
         ranking(amount * scoreModifier);
+
+        PlayerPrefs.SetInt("PlayerHighScore", playerHighScore);
+        PlayerPrefs.Save();
 
         if (!isFlashing) // only start the flash effect if not already flashing
         {
@@ -310,8 +332,10 @@ public class GameMaster : MonoBehaviour
             XPimg.fillAmount = (float)playerXP / toNextRank;
         }
 
+
         // Store player rank and player XP to PlayerPrefs
         PlayerPrefs.SetInt("PlayerRank", playerRank);
+        PlayerPrefs.SetInt("ToNextRank", toNextRank);
         PlayerPrefs.SetInt("PlayerXP", playerXP);
         PlayerPrefs.Save();
     }
@@ -326,11 +350,18 @@ public class GameMaster : MonoBehaviour
         healthbar.maxValue = defaultMaxHealth;
         healthbar.value = defaultMaxHealth;
         health = defaultMaxHealth;
+        playerHighScore = 0;
+        playerScore = 0;
 
         // Update UI with default values
         rankeryText.text = playerRank.ToString();
         rankMenuText.text = playerRank.ToString();
         rankToMenuText.text = (toNextRank - playerXP).ToString() + "XP";
+        rankSlider.value = playerXP;
+        scoreTextRanks.text = playerScore.ToString();
+        scoreText.text = playerScore.ToString();
+        highScoreText.text = playerHighScore.ToString();
+
 
         if (toNextRank == 0)
         {
@@ -343,6 +374,8 @@ public class GameMaster : MonoBehaviour
 
         // Store default player rank and XP to PlayerPrefs
         PlayerPrefs.SetInt("PlayerRank", playerRank);
+        PlayerPrefs.SetInt("ToNextRank", toNextRank);
+        PlayerPrefs.SetInt("PlayerScore", playerScore);
         PlayerPrefs.SetInt("PlayerXP", playerXP);
         PlayerPrefs.Save();
     }

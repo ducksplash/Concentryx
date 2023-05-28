@@ -61,6 +61,19 @@ public class Concentryx : MonoBehaviour
 
     }
 
+
+
+    public void LevelByWord(string theword)
+    {
+        WordPlay(theword, 5, 0.7f, 7f, 3.5f, 0.8f); // word, gridsize, segmentwidth, xstart, ystart, outputscale
+    }
+
+
+
+
+
+
+
     public void CreateEnemyShip(int numships = 1)
     {
         for (int i = 0; i < numships; i++)
@@ -77,12 +90,9 @@ public class Concentryx : MonoBehaviour
             float cameraSize = mainCamera.orthographicSize;
             float aspectRatio = mainCamera.aspect;
 
-            float boundingAreaReduction = 0.4f; // 20%
-            float reducedParentSizeX = parentSize.x * (1f - boundingAreaReduction);
-            float reducedParentSizeY = parentSize.y * (1f - boundingAreaReduction);
 
-            float maxPositionOffsetX = (cameraSize * aspectRatio) - reducedParentSizeX / 2f;
-            float maxPositionOffsetY = cameraSize - reducedParentSizeY / 2f;
+            float maxPositionOffsetX = (cameraSize * aspectRatio) / 2;
+            float maxPositionOffsetY = cameraSize / 2;
 
             Vector3 enemyPosition = Vector3.zero;
             bool isValidPosition = false;
@@ -120,6 +130,7 @@ public class Concentryx : MonoBehaviour
         }
 
         ChainLightning.instance.InitialiseLightning();
+        Debug.Log("enemy created");
     }
 
 
@@ -138,6 +149,65 @@ public class Concentryx : MonoBehaviour
 
         return true;
     }
+
+
+
+
+    public void CreatePlanet(int numplanets = 1)
+    {
+        for (int i = 0; i < numplanets; i++)
+        {
+            Vector3 parentPosition = transform.position;
+            Vector3 parentScale = transform.localScale;
+            Vector3 parentSize = new Vector3(parentScale.x * 2, parentScale.y * 2, parentScale.z * 2);
+
+            Vector3 playerPosition = Player.transform.position;
+            Vector3 playerScale = Player.transform.localScale;
+            Vector3 playerSize = new Vector3(playerScale.x * 2, playerScale.y * 2, playerScale.z * 2);
+
+            Camera mainCamera = Camera.main;
+            float cameraSize = mainCamera.orthographicSize;
+            float aspectRatio = mainCamera.aspect;
+
+
+            float maxPositionOffsetX = (cameraSize * aspectRatio) / 2;
+            float maxPositionOffsetY = cameraSize / 2;
+
+            Vector3 planetPosition = Vector3.zero;
+            bool isValidPosition = false;
+            int maxAttempts = 100;
+            int attempts = 0;
+
+            while (!isValidPosition && attempts < maxAttempts)
+            {
+                float randomPositionOffsetX = Random.Range(-maxPositionOffsetX, maxPositionOffsetX);
+                float randomPositionOffsetY = Random.Range(-maxPositionOffsetY, maxPositionOffsetY);
+
+                planetPosition = parentPosition + new Vector3(randomPositionOffsetX, randomPositionOffsetY, 0f);
+
+                if (!CheckOverlapWithPlayer(planetPosition, playerPosition, playerSize))
+                {
+                    isValidPosition = true;
+                }
+
+                attempts++;
+            }
+
+            if (!isValidPosition)
+            {
+                return;
+            }
+
+
+            GameObject planetPrefab = Instantiate(planetPrefabs[Random.Range(0, planetPrefabs.Length)], planetPosition, Quaternion.identity);
+
+
+            planetPrefab.transform.parent = transform;
+
+        }
+        Debug.Log("planet created");
+    }
+
 
 
 

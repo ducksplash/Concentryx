@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections;
 
-
 public class ChainLightning : MonoBehaviour
 {
     public static ChainLightning instance;
@@ -15,8 +14,6 @@ public class ChainLightning : MonoBehaviour
     public int chainLength;
     public int lightnings;
 
-    private bool isCleaning;
-
     public string targetTag;
 
     private float nextRefresh;
@@ -25,11 +22,18 @@ public class ChainLightning : MonoBehaviour
     private List<LightningBolt> lightningBolts;
     private List<Transform> targets;
 
+    private bool isFiring;
+    private bool isCleaning;
+
     private void Awake()
     {
         instance = this;
     }
 
+    private void Start()
+    {
+        // InitialiseLightning();
+    }
 
     public void InitialiseLightning()
     {
@@ -43,7 +47,6 @@ public class ChainLightning : MonoBehaviour
             lightningBolts.Add(tmpLightningBolt);
         }
 
-
         GameObject[] enemies = GameObject.FindGameObjectsWithTag(targetTag);
 
         foreach (GameObject enemy in enemies)
@@ -55,7 +58,6 @@ public class ChainLightning : MonoBehaviour
         chainLength = Mathf.Min(chainLength, targets.Count);
         BuildChain();
     }
-
 
     public void BuildChain()
     {
@@ -83,9 +85,11 @@ public class ChainLightning : MonoBehaviour
         }
     }
 
-
     private void Update()
     {
+        if (isFiring)
+            return;
+
         if (Time.time > nextRefresh)
         {
             // Create a copy of the targets list
@@ -96,7 +100,6 @@ public class ChainLightning : MonoBehaviour
                 if (i < targetsCopy.Count && targetsCopy[i] && targetsCopy[i].gameObject.activeSelf)
                 {
                     Vector2 startpos = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
-
                     lightningBolts[i].DrawLightning(startpos, targetsCopy[i].position);
                 }
                 else
@@ -118,10 +121,6 @@ public class ChainLightning : MonoBehaviour
         }
     }
 
-
-
-
-
     private IEnumerator CleanSweep()
     {
         isCleaning = true; // Set a flag to indicate the cleaning process is active
@@ -142,9 +141,39 @@ public class ChainLightning : MonoBehaviour
         }
 
         isCleaning = false; // Reset the flag after the cleaning process is finished
+        isFiring = false; // Reset the firing flag
     }
 
+    public void ResetChain()
+    {
+        foreach (var lightningBolt in lightningBolts)
+        {
+            lightningBolt.Deactivate();
+        }
 
+        targets.Clear();
+        BuildChain();
 
+        isFiring = false;
+        isCleaning = false;
+    }
 
+    public void FireChain()
+    {
+        if (!isFiring)
+        {
+            isFiring = true;
+            StartCoroutine(FireChainCoroutine());
+        }
+    }
+
+    private IEnumerator FireChainCoroutine()
+    {
+        // Start the lightning firing sequence
+        // ...
+
+        yield return new WaitForSeconds(5f);
+
+        isFiring = false;
+    }
 }
