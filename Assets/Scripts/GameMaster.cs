@@ -16,6 +16,7 @@ public class GameMaster : MonoBehaviour
     [Header("Player Values")]
 
     public int playerScore = 0;
+    public int playerHighScore = 0;
     public bool invulnerable = false;
     public int scoreModifier = 1;
 
@@ -45,9 +46,13 @@ public class GameMaster : MonoBehaviour
     public float shieldCollider = 0.84f;
 
     public Slider healthbar;
+    public Slider rankSlider;
 
 
     public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI highScoreText;
+
+
 
     public int countdownTime = 500;
     public TextMeshProUGUI timerText;
@@ -132,6 +137,9 @@ public class GameMaster : MonoBehaviour
     void Start()
     {
 
+        playerHighScore = PlayerPrefs.GetInt("PlayerHighScore", 0);
+
+
 
         // Load player rank and player XP from PlayerPrefs
         playerRank = PlayerPrefs.GetInt("PlayerRank", 0);
@@ -141,6 +149,9 @@ public class GameMaster : MonoBehaviour
         rankeryText.text = playerRank.ToString();
         rankMenuText.text = playerRank.ToString();
         rankToMenuText.text = (toNextRank - playerXP).ToString() + "XP";
+
+        rankSlider.maxValue = toNextRank;
+        rankSlider.value = playerXP;
 
         if (toNextRank == 0)
         {
@@ -267,33 +278,32 @@ public class GameMaster : MonoBehaviour
 
     }
 
-
     public void ranking(int amount)
     {
-        playerXP += (int)(amount);
+        playerXP += amount;
+
         rankToMenuText.text = (toNextRank - playerXP).ToString() + "XP";
+        rankSlider.value = playerXP;
 
         if (playerXP >= toNextRank)
         {
             playerRank++;
             rankeryText.text = playerRank.ToString();
             rankMenuText.text = playerRank.ToString();
+
+            toNextRank = Mathf.CeilToInt(toNextRank * 1.3f);
             playerXP = 0;
-            toNextRank = Mathf.RoundToInt(toNextRank * 1.3f);
 
-            rankToMenuText.text = (0).ToString() + "XP";
-            // get previous
+            // Update health values
             int originalHealth = maxHealth;
-
-            healthbar.maxValue = Mathf.RoundToInt(healthbar.maxValue * 1.2f);
-            maxHealth = Mathf.RoundToInt(maxHealth * 1.1f);
-
+            healthbar.maxValue = Mathf.CeilToInt(healthbar.maxValue * 1.2f);
+            maxHealth = Mathf.CeilToInt(maxHealth * 1.1f);
             IncrementHealth(maxHealth - originalHealth);
         }
 
         if (toNextRank == 0)
         {
-            XPimg.fillAmount = 1f; // Completely filled when playerXP is equal to toNextRank
+            XPimg.fillAmount = 0f; // Completely filled when playerXP is equal to toNextRank
         }
         else
         {
@@ -304,8 +314,8 @@ public class GameMaster : MonoBehaviour
         PlayerPrefs.SetInt("PlayerRank", playerRank);
         PlayerPrefs.SetInt("PlayerXP", playerXP);
         PlayerPrefs.Save();
-
     }
+
     public void ResetRank()
     {
         // Reset player rank and XP to defaults
@@ -336,6 +346,7 @@ public class GameMaster : MonoBehaviour
         PlayerPrefs.SetInt("PlayerXP", playerXP);
         PlayerPrefs.Save();
     }
+
 
     public void DecrementHealth(int amount)
     {
