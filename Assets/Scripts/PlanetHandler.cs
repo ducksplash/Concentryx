@@ -13,18 +13,20 @@ public class PlanetHandler : MonoBehaviour
     public bool isDead;
     public float reductionPercentage = 0.15f;
 
-    public float rotationSpeed = 1f;
+    public float rotationSpeed = 0.7f;
 
     public Material planetMaterial;
     public Image planetHealthbar;
 
     public GameObject PlanetSphere;
 
+
     public Coroutine planetRotationCoroutine;
 
     private EnemyProjectile enemyProjectileScript;
 
     public ParticleSystem planetaryShieldParticleSystem;
+    public ParticleSystem atmosphereParticleSystem;
     private CircleCollider2D planetaryCollider;
     private Canvas healthCanvas;
     private UnityEngine.Rendering.Universal.Light2D planetLight;
@@ -57,7 +59,9 @@ public class PlanetHandler : MonoBehaviour
             StartCoroutine(AddScore(10));
 
             if (!planetaryShieldParticleSystem)
+            {
                 StartCoroutine(FlashPlanet());
+            }
         }
         else
         {
@@ -93,10 +97,15 @@ public class PlanetHandler : MonoBehaviour
     private IEnumerator SlowlyRotate()
     {
 
+        float ranDirX = (float)UnityEngine.Random.Range(0, 2) == 0 ? -1 : 1;
+        float ranDirY = (float)UnityEngine.Random.Range(0, 2) == 0 ? -1 : 1;
+
+
+
         while (true)
         {
 
-            PlanetSphere.transform.Rotate((rotationSpeed * 0.3f) * Time.deltaTime, rotationSpeed * Time.deltaTime, 0f);
+            PlanetSphere.transform.Rotate(((rotationSpeed * 0.4f) * Time.deltaTime) * ranDirY, (rotationSpeed * Time.deltaTime) * ranDirY, 0f);
             yield return null;
 
         }
@@ -155,6 +164,15 @@ public class PlanetHandler : MonoBehaviour
                 shieldsUp = false;
             }
             planetHealthbar.color = Color.red;
+        }
+
+
+        if (planetHealth < 150)
+        {
+            if (atmosphereParticleSystem != null)
+            {
+                Destroy(atmosphereParticleSystem);
+            }
         }
     }
 }
