@@ -54,7 +54,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 2af657fbeb2b32142a24d9ecea977805, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskTex:
@@ -135,8 +135,8 @@ Material:
     - _Color: {r: 0, g: 0.9578204, b: 1, a: 1}
     - _EmissionColor: {r: 1024, g: 0, b: 0, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
-    - _GlowColor: {r: 0.08259169, g: 0.27454656, b: 0.6037736, a: 1}
-    - _HaloColor: {r: 0.13363299, g: 0.39695176, b: 0.7264151, a: 1}
+    - _GlowColor: {r: 1, g: 0.8378446, b: 0, a: 1}
+    - _HaloColor: {r: 1, g: 0.19320287, b: 0, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 0, g: 0.13710785, b: 1, a: 1}
   m_BuildTextureStacks: []

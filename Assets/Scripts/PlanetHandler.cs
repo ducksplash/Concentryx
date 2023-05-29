@@ -12,8 +12,15 @@ public class PlanetHandler : MonoBehaviour
     public bool shieldsUp = true;
     public bool isDead;
     public float reductionPercentage = 0.15f;
+
+    public float rotationSpeed = 1f;
+
     public Material planetMaterial;
     public Image planetHealthbar;
+
+    public GameObject PlanetSphere;
+
+    public Coroutine planetRotationCoroutine;
 
     private EnemyProjectile enemyProjectileScript;
 
@@ -35,6 +42,8 @@ public class PlanetHandler : MonoBehaviour
         planetLight = GetComponent<UnityEngine.Rendering.Universal.Light2D>();
         planetLight.intensity = 0f;
         enemyProjectileScript.enabled = false;
+
+        planetRotationCoroutine = StartCoroutine(SlowlyRotate());
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -58,6 +67,8 @@ public class PlanetHandler : MonoBehaviour
                 planetaryCollider.enabled = false;
                 StartCoroutine(AddScore(1000));
                 isDead = true;
+                StopCoroutine(planetRotationCoroutine);
+                planetRotationCoroutine = null;
                 StartCoroutine(Destroy());
             }
         }
@@ -79,7 +90,17 @@ public class PlanetHandler : MonoBehaviour
     }
 
 
+    private IEnumerator SlowlyRotate()
+    {
 
+        while (true)
+        {
+
+            PlanetSphere.transform.Rotate((rotationSpeed * 0.3f) * Time.deltaTime, rotationSpeed * Time.deltaTime, 0f);
+            yield return null;
+
+        }
+    }
 
 
     private IEnumerator AddScore(int scoreadd)
@@ -90,6 +111,7 @@ public class PlanetHandler : MonoBehaviour
     private IEnumerator Destroy()
     {
         yield return new WaitForSeconds(0.1f);
+        Destroy(PlanetSphere);
         Destroy(gameObject, animator.GetCurrentAnimatorStateInfo(0).length);
 
     }

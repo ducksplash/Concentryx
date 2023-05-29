@@ -5339,6 +5339,63 @@ Transform:
   m_Father: {fileID: 2264219344210646867}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
+--- !u!1001 &187298950
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 8069387534014273889, guid: 21a750e76947fc9479798f7d07f4d058, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8069387534014273889, guid: 21a750e76947fc9479798f7d07f4d058, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 963.2723
+      objectReference: {fileID: 0}
+    - target: {fileID: 8069387534014273889, guid: 21a750e76947fc9479798f7d07f4d058, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 541.3273
+      objectReference: {fileID: 0}
+    - target: {fileID: 8069387534014273889, guid: 21a750e76947fc9479798f7d07f4d058, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8069387534014273889, guid: 21a750e76947fc9479798f7d07f4d058, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8069387534014273889, guid: 21a750e76947fc9479798f7d07f4d058, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8069387534014273889, guid: 21a750e76947fc9479798f7d07f4d058, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8069387534014273889, guid: 21a750e76947fc9479798f7d07f4d058, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8069387534014273889, guid: 21a750e76947fc9479798f7d07f4d058, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8069387534014273889, guid: 21a750e76947fc9479798f7d07f4d058, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8069387534014273889, guid: 21a750e76947fc9479798f7d07f4d058, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8069387534014273917, guid: 21a750e76947fc9479798f7d07f4d058, type: 3}
+      propertyPath: m_Name
+      value: Planet3
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 21a750e76947fc9479798f7d07f4d058, type: 3}
 --- !u!1 &195741870
 GameObject:
   m_ObjectHideFlags: 0
@@ -11696,120 +11753,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 384201605}
   m_CullTransparentMesh: 1
---- !u!1001 &392863595
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 7579975924105851061, guid: 21a750e76947fc9479798f7d07f4d058, type: 3}
-      propertyPath: shader
-      value: 
-      objectReference: {fileID: 4800000, guid: 2037e235044d0f84092c090670eb03b2, type: 3}
-    - target: {fileID: 7579975924105851061, guid: 21a750e76947fc9479798f7d07f4d058, type: 3}
-      propertyPath: cloudScale.x
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 7579975924105851061, guid: 21a750e76947fc9479798f7d07f4d058, type: 3}
-      propertyPath: cloudScale.y
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 7579975924105851061, guid: 21a750e76947fc9479798f7d07f4d058, type: 3}
-      propertyPath: cloudSpeed.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7579975924105851061, guid: 21a750e76947fc9479798f7d07f4d058, type: 3}
-      propertyPath: cloudSpeed.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7579975924105851061, guid: 21a750e76947fc9479798f7d07f4d058, type: 3}
-      propertyPath: cloudTexture
-      value: 
-      objectReference: {fileID: 2800000, guid: 95ea6d45ad3c3b54fbef06cf5db5a835, type: 3}
-    - target: {fileID: 7579975924105851061, guid: 21a750e76947fc9479798f7d07f4d058, type: 3}
-      propertyPath: waterColor.b
-      value: 0.6320754
-      objectReference: {fileID: 0}
-    - target: {fileID: 7579975924105851061, guid: 21a750e76947fc9479798f7d07f4d058, type: 3}
-      propertyPath: waterColor.g
-      value: 0.3965379
-      objectReference: {fileID: 0}
-    - target: {fileID: 7579975924105851061, guid: 21a750e76947fc9479798f7d07f4d058, type: 3}
-      propertyPath: waterColor.r
-      value: 0.3965379
-      objectReference: {fileID: 0}
-    - target: {fileID: 7579975924105851061, guid: 21a750e76947fc9479798f7d07f4d058, type: 3}
-      propertyPath: waterTexture
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7579975924105851061, guid: 21a750e76947fc9479798f7d07f4d058, type: 3}
-      propertyPath: landmassColor.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7579975924105851061, guid: 21a750e76947fc9479798f7d07f4d058, type: 3}
-      propertyPath: landmassColor.g
-      value: 0.39607844
-      objectReference: {fileID: 0}
-    - target: {fileID: 7579975924105851061, guid: 21a750e76947fc9479798f7d07f4d058, type: 3}
-      propertyPath: landmassColor.r
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7579975924105851061, guid: 21a750e76947fc9479798f7d07f4d058, type: 3}
-      propertyPath: landmassTexture
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8069387534014273889, guid: 21a750e76947fc9479798f7d07f4d058, type: 3}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8069387534014273889, guid: 21a750e76947fc9479798f7d07f4d058, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 953.5676
-      objectReference: {fileID: 0}
-    - target: {fileID: 8069387534014273889, guid: 21a750e76947fc9479798f7d07f4d058, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 541.4723
-      objectReference: {fileID: 0}
-    - target: {fileID: 8069387534014273889, guid: 21a750e76947fc9479798f7d07f4d058, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8069387534014273889, guid: 21a750e76947fc9479798f7d07f4d058, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8069387534014273889, guid: 21a750e76947fc9479798f7d07f4d058, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8069387534014273889, guid: 21a750e76947fc9479798f7d07f4d058, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8069387534014273889, guid: 21a750e76947fc9479798f7d07f4d058, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8069387534014273889, guid: 21a750e76947fc9479798f7d07f4d058, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8069387534014273889, guid: 21a750e76947fc9479798f7d07f4d058, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8069387534014273889, guid: 21a750e76947fc9479798f7d07f4d058, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8069387534014273917, guid: 21a750e76947fc9479798f7d07f4d058, type: 3}
-      propertyPath: m_Name
-      value: Planet3
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 7579975924105851061, guid: 21a750e76947fc9479798f7d07f4d058, type: 3}
-  m_SourcePrefab: {fileID: 100100000, guid: 21a750e76947fc9479798f7d07f4d058, type: 3}
 --- !u!1 &419423576
 GameObject:
   m_ObjectHideFlags: 0
@@ -26836,7 +26779,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -1
+  m_SortingOrder: -90
   m_Sprite: {fileID: 21300000, guid: 536c72f57453a124d9af00bdb4935d58, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -27007,7 +26950,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -18
+  m_SortingOrder: -80
   m_RenderMode: 4
   m_MeshDistribution: 0
   m_SortMode: 1
@@ -27022,14 +26965,14 @@ ParticleSystemRenderer:
   m_RenderAlignment: 2
   m_Pivot: {x: 0, y: 0, z: 0}
   m_Flip: {x: 0, y: 0, z: 0}
-  m_UseCustomVertexStreams: 0
+  m_UseCustomVertexStreams: 1
   m_EnableGPUInstancing: 1
   m_ApplyActiveColorSpace: 1
   m_AllowRoll: 1
   m_FreeformStretching: 0
   m_RotateWithStretchDirection: 1
-  m_VertexStreams: 00010304
-  m_Mesh: {fileID: 6971144018687242118, guid: 8eacdfe287a9fd247b612d6758f5c5af, type: 3}
+  m_VertexStreams: 000102030409
+  m_Mesh: {fileID: 3237046608918968389, guid: 8eacdfe287a9fd247b612d6758f5c5af, type: 3}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
@@ -27228,7 +27171,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.7169812, g: 0, b: 0, a: 1}
+      maxColor: {r: 0, g: 0, b: 0, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -27290,7 +27233,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 100
+      scalar: 80
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -27751,9 +27694,9 @@ ParticleSystem:
     m_TextureBilinearFiltering: 0
     randomDirectionAmount: 1
     sphericalDirectionAmount: 0
-    randomPositionAmount: 2
+    randomPositionAmount: 3
     radius:
-      value: 1
+      value: 6
       mode: 0
       spread: 0
       speed:
@@ -28302,7 +28245,7 @@ ParticleSystem:
         m_RotationOrder: 4
     separateAxes: 0
   ColorModule:
-    enabled: 1
+    enabled: 0
     gradient:
       serializedVersion: 2
       minMaxState: 1
@@ -30392,7 +30335,7 @@ ParticleSystem:
     x:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: 17.453293
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -30445,7 +30388,7 @@ ParticleSystem:
     y:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: 17.453293
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -30498,7 +30441,7 @@ ParticleSystem:
     curve:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.7853982
+      scalar: 17.453293
       minScalar: 0.7853982
       maxCurve:
         serializedVersion: 2
@@ -30548,7 +30491,7 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    separateAxes: 0
+    separateAxes: 1
     range: {x: 0, y: 1}
   ColorBySpeedModule:
     enabled: 0

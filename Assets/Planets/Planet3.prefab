@@ -4853,7 +4853,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6098091106055539719}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 4151621958628188828, guid: 995acc3c4bf196a4186143bb28365e48, type: 3}
 --- !u!23 &8404692770525897412
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -5100,6 +5100,7 @@ GameObject:
   - component: {fileID: 8069387534014273892}
   - component: {fileID: 8069387534014273893}
   - component: {fileID: 8069387534014273898}
+  - component: {fileID: 8608558537938025471}
   m_Layer: 0
   m_Name: Planet3
   m_TagString: Enemy
@@ -5142,8 +5143,10 @@ MonoBehaviour:
   shieldsUp: 1
   isDead: 0
   reductionPercentage: 0.35
-  planetMaterial: {fileID: 2100000, guid: b8139996adc7fe34f9096f09233429b1, type: 2}
+  rotationSpeed: 10
+  planetMaterial: {fileID: 2100000, guid: e9470ceeea191484490ecd837fff2231, type: 2}
   planetHealthbar: {fileID: 8069387532671414410}
+  PlanetSphere: {fileID: 6098091106055539719}
   planetaryShieldParticleSystem: {fileID: 843210162275472023}
 --- !u!58 &8069387534014273894
 CircleCollider2D:
@@ -5277,3 +5280,55 @@ MonoBehaviour:
   projectileSpeed: 10
   player: {fileID: 0}
   enemyProjectileDelay: 0.4
+--- !u!212 &8608558537938025471
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8069387534014273917}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 80ed1a80caca8574baa5ad5ccf3cbbac, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: -14
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 4.07, y: 4.13}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
