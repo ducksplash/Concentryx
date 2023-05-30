@@ -23,7 +23,8 @@ public class EnemyLaserShipMovement : MonoBehaviour
     private bool isRunning = false;
     Quaternion initialRotation;
 
-
+    public GameObject jet;
+    public GameObject laser;
     private void Start()
     {
 
@@ -63,7 +64,7 @@ public class EnemyLaserShipMovement : MonoBehaviour
 
         float totalDistance = (targetPosition - startPosition).magnitude;
         int numSteps = Mathf.RoundToInt(durationInSeconds * 300f);
-
+        jet.SetActive(true);
         for (int step = 0; step <= numSteps; step++)
         {
             float t = (float)step / numSteps;
@@ -78,6 +79,7 @@ public class EnemyLaserShipMovement : MonoBehaviour
 
         // Ensure the object reaches the target position exactly
         emenyLaserShip.transform.localPosition = targetPosition;
+        jet.SetActive(false);
 
     }
 

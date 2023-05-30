@@ -9941,7 +9941,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0019423962, y: 49.855473}
+  m_Offset: {x: -0.08387381, y: 177.2573}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -9952,7 +9952,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.2413011, y: 100.244194}
+  m_Size: {x: 2.7886806, y: 355.04785}
   m_EdgeRadius: 0
 --- !u!50 &2914923435823232825
 Rigidbody2D:
@@ -10083,7 +10083,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e25275957ebf834bb7c71de4a96a371, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  durationInSeconds: 3
+  durationInSeconds: 1.5
   emenyLaserShip: {fileID: 3972170562902603255}
   targetPositions:
   - {fileID: 2914923435763873931}
@@ -10094,6 +10094,8 @@ MonoBehaviour:
   - {fileID: 2914923436424395290}
   - {fileID: 2914923436054584515}
   - {fileID: 2914923435263236991}
+  jet: {fileID: 2914923435158185473}
+  laser: {fileID: 2914923435823232819}
 --- !u!1 &3972170561685539851
 GameObject:
   m_ObjectHideFlags: 0
