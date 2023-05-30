@@ -71,6 +71,19 @@ public class Concentryx : MonoBehaviour
 
 
 
+    public void CreateEnemyWaller(int numships = 1)
+    {
+
+        for (int i = 0; i < numships; i++)
+        {
+
+            GameObject enemyShip = Instantiate(enemyPrefabs[1]);
+            //enemyShip.transform.parent = laserEnemyParent.transform;
+
+        }
+
+    }
+
 
 
 
@@ -119,7 +132,7 @@ public class Concentryx : MonoBehaviour
                 return;
             }
 
-            GameObject enemyShip = Instantiate(enemyPrefabs[Random.Range(0, enemyPrefabs.Length)], enemyPosition, Quaternion.identity);
+            GameObject enemyShip = Instantiate(enemyPrefabs[0], enemyPosition, Quaternion.identity);
             enemyShip.transform.parent = transform;
 
             // Calculate rotation towards the player and flip it
