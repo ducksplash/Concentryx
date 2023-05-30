@@ -4,22 +4,13 @@ using UnityEngine;
 
 public class EnemyLaser : MonoBehaviour
 {
-    public GameObject player;
-
     public GameObject laserObject;
 
     public bool playerDamaged;
 
     public float damageDelay = 5f;
 
-
-    private void Start()
-    {
-        player = GameObject.FindGameObjectWithTag("Player");
-    }
-
-
-    void OnTriggerExit2D(Collider2D collider)
+    void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.gameObject.name == "SpaceShip")
         {
@@ -43,9 +34,9 @@ public class EnemyLaser : MonoBehaviour
         {
             collidee.GetComponent<SpriteRenderer>().color = Color.red;
             yield return new WaitForSeconds(0.1f);
-            collidee.GetComponent<SpriteRenderer>().color = Color.white;
+            collidee.GetComponent<SpriteRenderer>().color = Color.green;
             yield return new WaitForSeconds(0.1f);
-            collidee.GetComponent<SpriteRenderer>().color = Color.red;
+            collidee.GetComponent<SpriteRenderer>().color = Color.blue;
             yield return new WaitForSeconds(0.1f);
             collidee.GetComponent<SpriteRenderer>().color = Color.white;
         }

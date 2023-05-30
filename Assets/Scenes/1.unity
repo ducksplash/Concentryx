@@ -446,10 +446,10 @@ Transform:
   - {fileID: 730534744}
   - {fileID: 613283504}
   - {fileID: 726060947}
-  - {fileID: 1163034211}
-  - {fileID: 914323935}
   - {fileID: 208229538}
   - {fileID: 1940232380}
+  - {fileID: 1163034211}
+  - {fileID: 914323935}
   m_Father: {fileID: 1615785715}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5371,8 +5371,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 138167456}
   m_LocalRotation: {x: -0, y: -0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -0.914, z: 0}
-  m_LocalScale: {x: 0.17249998, y: 0.053910002, z: 1}
+  m_LocalPosition: {x: 0, y: -0.9139676, z: 0}
+  m_LocalScale: {x: 0.17249998, y: 0.053910017, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2264219344210646867}
@@ -5675,7 +5675,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 86680637}
-  m_RootOrder: 6
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &221390660
 GameObject:
@@ -24962,7 +24962,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 86680637}
-  m_RootOrder: 5
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &922870090
 GameObject:
@@ -32132,7 +32132,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 86680637}
-  m_RootOrder: 4
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1180031775
 GameObject:
@@ -38825,9 +38825,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1469617554}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.752, z: 0}
-  m_LocalScale: {x: 0.045281243, y: 0.08221275, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.75202096, z: 0}
+  m_LocalScale: {x: 0.04528125, y: 0.08221275, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2264219344210646867}
@@ -38988,7 +38988,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 10
+      scalar: 20
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -39041,7 +39041,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 30
+      scalar: 80
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -39095,7 +39095,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 0.16531092, b: 0, a: 1}
+      maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -39157,7 +39157,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 3
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -39473,7 +39473,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
-    maxNumParticles: 350
+    maxNumParticles: 400
     customEmitterVelocity: {x: 0, y: 0, z: 0}
     size3D: 0
     rotation3D: 0
@@ -39618,7 +39618,7 @@ ParticleSystem:
     m_TextureBilinearFiltering: 0
     randomDirectionAmount: 0
     sphericalDirectionAmount: 0
-    randomPositionAmount: 1
+    randomPositionAmount: 0
     radius:
       value: 0.1
       mode: 3
@@ -43650,7 +43650,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c08f441a41e4cde4b9c0c059bff6c9c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   laserObject: {fileID: 0}
   playerDamaged: 0
   damageDelay: 5
@@ -44981,25 +44980,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e25275957ebf834bb7c71de4a96a371, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shipOrientation: 0
-  Player: {fileID: 2264219344210646870}
-  enemyHealth: 100
-  enemyHits: 0
-  isDead: 0
-  durationInSeconds: 5
-  enemyHealthbar: {fileID: 2264219344128451560}
-  jet: {fileID: 138167456}
-  laser: {fileID: 1469617554}
+  shipOrientation: 3
+  durationInSeconds: 3
   emenyLaserShip: {fileID: 2264219344210646870}
   targetPositions:
   - {fileID: 1409702442}
   - {fileID: 730534743}
   - {fileID: 613283503}
   - {fileID: 726060946}
-  - {fileID: 1163034210}
-  - {fileID: 914323934}
   - {fileID: 208229537}
   - {fileID: 1940232379}
+  - {fileID: 1163034210}
+  - {fileID: 914323934}
 --- !u!1 &1646700107
 GameObject:
   m_ObjectHideFlags: 0
@@ -47093,7 +47085,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 86680637}
-  m_RootOrder: 7
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1949610555
 GameObject:
@@ -53128,7 +53120,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2264219342993043114}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.029, y: -0.272, z: 0}
+  m_LocalPosition: {x: -0.029025609, y: -0.27201337, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -53370,7 +53362,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2264219343896412836}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.016260162, y: 0.016260162, z: 0.016260162}
   m_ConstrainProportionsScale: 0
@@ -53505,9 +53497,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 0}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 100
+  m_MaxValue: 200
   m_WholeNumbers: 1
-  m_Value: 100
+  m_Value: 200
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -53631,6 +53623,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2264219344210646867}
+  - component: {fileID: 2264219344210646896}
   - component: {fileID: 2264219344210646865}
   - component: {fileID: 2264219344210646893}
   - component: {fileID: 2264219344210646895}
@@ -53695,6 +53688,25 @@ CircleCollider2D:
   m_Offset: {x: 0, y: -0.42863744}
   serializedVersion: 2
   m_Radius: 0.43136257
+--- !u!114 &2264219344210646896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2264219344210646870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fcfbb59f541be3459339f881361b6da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyHealth: 200
+  enemyHits: 0
+  jet: {fileID: 138167456}
+  laser: {fileID: 1469617554}
+  isDead: 0
+  enemyHealthbar: {fileID: 2264219344128451560}
+  movementScript: {fileID: 1615785716}
 --- !u!1 &2695926708952811353
 GameObject:
   m_ObjectHideFlags: 0
