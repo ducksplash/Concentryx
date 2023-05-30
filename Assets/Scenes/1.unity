@@ -43576,6 +43576,7 @@ MonoBehaviour:
   - {fileID: 8069387534014273917, guid: 21a750e76947fc9479798f7d07f4d058, type: 3}
   - {fileID: 8069387534014273917, guid: 1af7621ee47b65e4b9e6c3c161ae84b4, type: 3}
   - {fileID: 8069387534014273917, guid: de40c8783cdc81a439eb4b75eb2ab4ae, type: 3}
+  - {fileID: 8069387534014273917, guid: 67d887ed6a353c6479060d9ec57ada34, type: 3}
   defaultParent: {fileID: 822203521}
 --- !u!1 &1491654048
 GameObject:
