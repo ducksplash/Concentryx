@@ -26,7 +26,7 @@ public class Concentryx : MonoBehaviour
     public string liveLevelType = "none";
     public Material segOneMaterial;
 
-
+    public GridLayouts gridLayouts;
     public GameObject[] pillPrefabs;
 
     public GameObject[] enemyPrefabs;
@@ -34,6 +34,7 @@ public class Concentryx : MonoBehaviour
     public GameObject[] planetPrefabs;
 
     public GameObject defaultParent;
+    public GameObject gridParent;
 
     private void Start()
     {
@@ -44,15 +45,90 @@ public class Concentryx : MonoBehaviour
 
 
 
+        //ArrangeInstances(gridLayouts.GetGridPattern("Default"));
 
 
     }
 
 
+
+    public void ArrangeInstances(string binaryString)
+    {
+
+        CreateEnemyShip(2);
+        int width = 64; // Width of the grid
+        int height = Mathf.CeilToInt((float)binaryString.Length / width); // Height of the grid
+        float spacing = 0.28f; // Spacing between each instantiated sprite
+
+        GameObject gridObject = new GameObject("GridObject");
+
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                int index = y * width + x;
+                if (index < binaryString.Length && binaryString[index] == '1')
+                {
+                    Vector3 position = gridParent.transform.position + new Vector3(x * spacing, -y * (spacing * 1.7f), 0f);
+                    GameObject segmentObject = new GameObject("Segment " + y + x);
+                    segmentObject.transform.position = position;
+
+                    SpriteRenderer spriteRenderer = segmentObject.AddComponent<SpriteRenderer>();
+                    Segment segmentScript = segmentObject.AddComponent<Segment>();
+
+                    // Set the sprite and other properties based on the specific letter.
+                    Sprite selectedSprite = spriteSelection[Random.Range(0, spriteSelection.Length)];
+
+                    float specialRand = Random.Range(dropRandomLower, dropRandomUpper);
+                    if (specialRand > dropRandomCutoff)
+                    {
+                        segmentScript.isSpecial = true;
+                        spriteRenderer.sprite = mysterySprite;
+                    }
+                    else
+                    {
+                        segmentScript.isSpecial = false;
+                        spriteRenderer.sprite = selectedSprite;
+                    }
+
+                    segOneMaterial.EnableKeyword("_EMISSION");
+                    spriteRenderer.material = segOneMaterial;
+                    spriteRenderer.sortingLayerName = "Default";
+                    spriteRenderer.sortingOrder = -10;
+
+
+                    // Create a new BoxCollider2D component for this segment.
+                    BoxCollider2D collider = segmentObject.AddComponent<BoxCollider2D>();
+
+                    // Set the size of the BoxCollider2D to match the size of the SpriteRenderer.
+                    collider.size = spriteRenderer.bounds.size;
+
+
+                    // Set the pill prefabs and initial health for the segment.
+                    segmentObject.GetComponent<Segment>().pillPrefabs = pillPrefabs;
+                    segmentObject.GetComponent<Segment>().health = 3;
+
+                    segmentObject.transform.parent = gridObject.transform;
+                }
+            }
+        }
+        gridObject.transform.parent = gridParent.transform;
+
+
+    }
+
+
+
+
+
+
+
+
+
     public void LevelPatternMutantCarrot()
     {
-        WordPlay("mutant", 5, 0.7f, 7f, 3.5f, 0.8f); // word, gridsize, segmentwidth, xstart, ystart, outputscale
-        WordPlay("carrot", 5, 0.7f, 7f, -3f, 0.8f); // word, gridsize, segmentwidth, xstart, ystart, outputscale
+        WordPlay("mutant", 5, 0.7f, 7f, 3.5f, 1f); // word, gridsize, segmentwidth, xstart, ystart, outputscale
+        WordPlay("carrot", 5, 0.7f, 7f, -3f, 1f); // word, gridsize, segmentwidth, xstart, ystart, outputscale
 
 
         // 2 enemies, 1 planet
@@ -393,7 +469,7 @@ public class Concentryx : MonoBehaviour
                 if (segmentCode == 1)
                 {
                     // Calculate the position for this segment based on its row and column.
-                    Vector3 position = new Vector3((col - (gridSize - 1) / 2.0f) * (segmentWidth / 1.5f), -row * (segmentWidth / 2.5f), 0.0f);
+                    Vector3 position = new Vector3((col - (gridSize - 1) / 2.0f) * (segmentWidth / 2.5f), -row * (segmentWidth / 1.5f), 0.0f);
 
                     // Create a new GameObject to hold the segment.
                     GameObject segment = new GameObject("Segment " + i);
@@ -429,8 +505,6 @@ public class Concentryx : MonoBehaviour
                     segOneMaterial.EnableKeyword("_EMISSION");
                     spriteRenderer.material = segOneMaterial;
 
-                    // Set the width of this sprite based on the segmentWidth property.
-                    spriteRenderer.size = new Vector2(segmentWidth, segmentWidth);
 
                     spriteRenderer.sortingOrder = 1;
 
@@ -442,7 +516,7 @@ public class Concentryx : MonoBehaviour
                     collider.size = spriteRenderer.bounds.size;
 
                     // Set the rotation of this GameObject to match the angle of this segment (90 degrees clockwise).
-                    segment.transform.rotation = Quaternion.Euler(0.0f, 0.0f, -90.0f);
+                    //segment.transform.rotation = Quaternion.Euler(0.0f, 0.0f, -90.0f);
 
                     // Set the pill prefabs and initial health for the segment.
                     segment.GetComponent<Segment>().pillPrefabs = pillPrefabs;
@@ -453,13 +527,12 @@ public class Concentryx : MonoBehaviour
                     // Create an empty game object for 'off' segments.
                     GameObject emptySegment = new GameObject("Segment " + i);
                     emptySegment.transform.parent = segmentObject.transform;
-                    emptySegment.transform.localPosition = new Vector3((col - (gridSize - 1) / 2.0f) * (segmentWidth / 1.5f), -row * (segmentWidth / 2.5f), 0.0f);
-                    emptySegment.transform.rotation = Quaternion.Euler(0.0f, 0.0f, -90.0f);
+                    emptySegment.transform.localPosition = new Vector3((col - (gridSize - 1) / 2.0f) * (segmentWidth / 2.5f), -row * (segmentWidth / 1.5f), 0.0f);
                 }
             }
 
             // Update the word position for the next letter.
-            wordPosition.x += (gridSize / 1.8f);
+            wordPosition.x += (gridSize / 2f);
             // Update the position of the wo1.2frdObject.
             wordObject.transform.position = wordPosition;
         }
@@ -468,7 +541,7 @@ public class Concentryx : MonoBehaviour
 
         wordPosition.x = (xstart);
         wordPosition.y = (ystart);
-        wordObject.transform.position = defaultParent.transform.position + wordPosition;
+        wordObject.transform.position = gridParent.transform.position + wordPosition;
         Vector3 newScale = new Vector3(outputscale, outputscale, 1f); // Replace with your desired scale values
         wordObject.transform.localScale = newScale;
 
@@ -819,6 +892,9 @@ public class Concentryx : MonoBehaviour
 
         return segments;
     }
+
+
+
 
 
 }
