@@ -14,16 +14,17 @@ public class ChainLightning : MonoBehaviour
     public int chainLength;
     public int lightnings;
 
+    public Coroutine EnemySweepRoutine;
     public string targetTag;
 
     private float nextRefresh;
     private float segmentLength = 0.2f;
 
-    private List<LightningBolt> lightningBolts;
-    private List<Transform> targets;
+    [SerializeField] private List<LightningBolt> lightningBolts;
+    [SerializeField] private List<Transform> targets;
 
-    private bool isFiring;
-    private bool isCleaning;
+    public bool engaged;
+    private bool isKilling;
 
     private void Awake()
     {
@@ -33,61 +34,58 @@ public class ChainLightning : MonoBehaviour
     private void Start()
     {
         // InitialiseLightning();
+        engaged = false;
     }
+
 
     public void InitialiseLightning()
     {
-        lightningBolts = new List<LightningBolt>();
-        targets = new List<Transform>();
-
-        for (int i = 0; i < chainLength; i++)
+        if (targets != null)
         {
-            LightningBolt tmpLightningBolt = new LightningBolt(segmentLength, i);
-            tmpLightningBolt.Init(lightnings, lineRendererPrefab, lightRendererPrefab);
-            lightningBolts.Add(tmpLightningBolt);
+            targets.Clear();
+        }
+        else
+        {
+            targets = new List<Transform>();
+        }
+
+        if (lightningBolts != null)
+        {
+            lightningBolts.Clear();
+        }
+        else
+        {
+            lightningBolts = new List<LightningBolt>();
         }
 
         GameObject[] enemies = GameObject.FindGameObjectsWithTag(targetTag);
-
-        foreach (GameObject enemy in enemies)
+        if (enemies.Length > 0)
         {
-            targets.Add(enemy.transform);
-        }
+            foreach (GameObject enemy in enemies)
+            {
+                targets.Add(enemy.transform);
+            }
 
-        // Ensure chainLength matches targets count
-        chainLength = Mathf.Min(chainLength, targets.Count);
-        BuildChain();
-    }
+            // Ensure chainLength matches targets count
+            chainLength = targets.Count;
 
-    public void BuildChain()
-    {
-        targets.Clear();
+            Debug.Log("Chain Length: " + chainLength);
 
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag(targetTag);
-
-        foreach (GameObject enemy in enemies)
-        {
-            targets.Add(enemy.transform);
-        }
-
-        // Ensure chainLength matches targets count
-        chainLength = Mathf.Min(chainLength, targets.Count);
-
-        for (int i = 0; i < chainLength; i++)
-        {
-            lightningBolts[i].Activate();
-        }
-
-        // Deactivate any remaining LightningBolt instances if target count is reduced
-        for (int i = chainLength; i < lightningBolts.Count; i++)
-        {
-            lightningBolts[i].Deactivate();
+            for (int i = 0; i < chainLength; i++)
+            {
+                LightningBolt tmpLightningBolt = new LightningBolt(segmentLength, i);
+                tmpLightningBolt.Init(lightnings, lineRendererPrefab, lightRendererPrefab);
+                lightningBolts.Add(tmpLightningBolt);
+            }
         }
     }
 
     private void Update()
     {
-        if (isFiring)
+        if (!engaged)
+            return;
+
+        if (targets == null || targets.Count < 1)
             return;
 
         if (Time.time > nextRefresh)
@@ -99,6 +97,7 @@ public class ChainLightning : MonoBehaviour
             {
                 if (i < targetsCopy.Count && targetsCopy[i] && targetsCopy[i].gameObject.activeSelf)
                 {
+                    lightningBolts[i].Activate();
                     Vector2 startpos = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
                     lightningBolts[i].DrawLightning(startpos, targetsCopy[i].position);
                 }
@@ -110,20 +109,19 @@ public class ChainLightning : MonoBehaviour
                     }
                 }
             }
-
             nextRefresh = Time.time + 0.01f;
         }
 
         // Start killing enemies after iterating over targets
-        if (!isCleaning)
+        if (!isKilling)
         {
-            StartCoroutine(CleanSweep());
+            EnemySweepRoutine = StartCoroutine(EnemySweep());
         }
     }
 
-    private IEnumerator CleanSweep()
+    private IEnumerator EnemySweep()
     {
-        isCleaning = true; // Set a flag to indicate the cleaning process is active
+        isKilling = true; // Set a flag to indicate the killing process is active
 
         yield return new WaitForSeconds(0.5f);
 
@@ -132,48 +130,27 @@ public class ChainLightning : MonoBehaviour
 
         for (int i = 0; i < targets.Count; i++)
         {
-            yield return new WaitForSeconds(0.5f);
 
             if (targets[i] != null && targets[i].gameObject != null && targets[i].gameObject.GetComponent<EnemyShip>() != null)
             {
                 targets[i].gameObject.GetComponent<EnemyShip>().DestroyEnemyShip();
             }
-        }
 
-        isCleaning = false; // Reset the flag after the cleaning process is finished
-        isFiring = false; // Reset the firing flag
+            yield return new WaitForSeconds(0.6f);
+        }
+        StartCoroutine(ResetChain());
     }
 
-    public void ResetChain()
+    public IEnumerator ResetChain()
     {
-        foreach (var lightningBolt in lightningBolts)
+        yield return EnemySweepRoutine;
+        foreach (LightningBolt lightningBolt in lightningBolts)
         {
-            lightningBolt.Deactivate();
+            lightningBolt.DestroyLightning();
         }
-
-        targets.Clear();
-        BuildChain();
-
-        isFiring = false;
-        isCleaning = false;
-    }
-
-    public void FireChain()
-    {
-        if (!isFiring)
-        {
-            isFiring = true;
-            StartCoroutine(FireChainCoroutine());
-        }
-    }
-
-    private IEnumerator FireChainCoroutine()
-    {
-        // Start the lightning firing sequence
-        // ...
-
-        yield return new WaitForSeconds(5f);
-
-        isFiring = false;
+        lightningBolts = new List<LightningBolt>();
+        targets = new List<Transform>();
+        isKilling = false;
+        engaged = false;
     }
 }

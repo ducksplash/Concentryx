@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-
+using UnityEngine.UI;
+using TMPro;
 
 public class Concentryx : MonoBehaviour
 {
@@ -36,16 +37,21 @@ public class Concentryx : MonoBehaviour
     public GameObject defaultParent;
     public GameObject gridParent;
 
+    public TextMeshProUGUI levelText1;
+    public TextMeshProUGUI levelText2;
+    public TextMeshProUGUI levelText3;
+    public string[] WordList = { "mutant", "carrot", " foot " };
+
     private void Start()
     {
 
         //ConcentricRings();
-        LevelPatternMutantCarrot();
+        //LevelPatternPhrase(WordList);
         //Pot();
 
 
 
-        //ArrangeInstances(gridLayouts.GetGridPattern("Default"));
+        ArrangeInstances(gridLayouts.GetGridPattern("Default"));
 
 
     }
@@ -55,7 +61,6 @@ public class Concentryx : MonoBehaviour
     public void ArrangeInstances(string binaryString)
     {
 
-        CreateEnemyShip(2);
         int width = 64; // Width of the grid
         int height = Mathf.CeilToInt((float)binaryString.Length / width); // Height of the grid
         float spacing = 0.28f; // Spacing between each instantiated sprite
@@ -125,23 +130,28 @@ public class Concentryx : MonoBehaviour
 
 
 
-    public void LevelPatternMutantCarrot()
+    public void LevelPatternPhrase(string[] wordlist)
     {
-        WordPlay("mutant", 5, 0.7f, 7f, 3.5f, 1f); // word, gridsize, segmentwidth, xstart, ystart, outputscale
-        WordPlay("carrot", 5, 0.7f, 7f, -3f, 1f); // word, gridsize, segmentwidth, xstart, ystart, outputscale
 
+        float yLevel = -1.0f;
+        foreach (string word in wordlist)
+        {
+            WordPlay(word, 5, 0.7f, 15f, yLevel, 1f); // word, gridsize, segmentwidth, xstart, ystart, outputscale
+            yLevel -= 2.5f;
+        }
 
-        // 2 enemies, 1 planet
-
-        CreateEnemyShip(2);
 
     }
 
 
 
-    public void LevelByWord(string theword)
+    public void LevelByGUI(string theword)
     {
-        WordPlay(theword, 5, 0.7f, 7f, 3.5f, 0.8f); // word, gridsize, segmentwidth, xstart, ystart, outputscale
+        string word1 = levelText1.text;
+        string word2 = levelText2.text;
+        string word3 = levelText3.text;
+
+        LevelPatternPhrase(new string[] { word1, word2, word3 });
     }
 
 

@@ -22,9 +22,11 @@ public class LightningBolt
         for (int i = 0; i < lineRendererCount; i++)
         {
             lineRenderer[i] = GameObject.Instantiate(lineRendererPrefab, Vector3.zero, Quaternion.identity).GetComponent<LineRenderer>();
+            lineRenderer[i].gameObject.tag = "LightningBolt";
             lineRenderer[i].enabled = false;
         }
         lightRenderer = GameObject.Instantiate(lightRendererPrefab, Vector3.zero, Quaternion.identity).GetComponent<LineRenderer>();
+        lightRenderer.gameObject.tag = "LightningBolt";
         IsActive = false;
     }
 
@@ -101,6 +103,25 @@ public class LightningBolt
         }
         // Disable the lightRenderer
         lightRenderer.enabled = false;
+        IsActive = false;
+    }
+
+    public void DestroyLightning()
+    {
+        // Destroy all LineRenderer clones and disable the lightRenderer
+        for (int i = 0; i < lineRenderer.Length; i++)
+        {
+            // Destroy the LineRenderer clone
+            if (lineRenderer[i] != null)
+            {
+                lineRenderer[i].enabled = false;
+                lineRenderer[i].gameObject.SetActive(false);
+                GameObject.Destroy(lineRenderer[i].gameObject);
+            }
+        }
+        // Disable the lightRenderer
+        lightRenderer.enabled = false;
+        GameObject.Destroy(lightRenderer.gameObject);
         IsActive = false;
     }
 

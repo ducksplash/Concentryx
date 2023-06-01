@@ -104,8 +104,6 @@ public class GameMaster : MonoBehaviour
 
     public GameObject lightningObject;
 
-    public bool usedLightning;
-
 
     public Sprite GUIDamageSprite0;
     public Sprite GUIDamageSprite1;
@@ -473,10 +471,9 @@ public class GameMaster : MonoBehaviour
                 shipCollider.radius = shieldCollider;
                 break;
             case "L":
-                if (!usedLightning)
-                {
-                    StartCoroutine(StrikeLightning());
-                }
+
+                StartCoroutine(StrikeLightning());
+
                 return;
         }
 
@@ -486,8 +483,8 @@ public class GameMaster : MonoBehaviour
     public IEnumerator StrikeLightning()
     {
         lightningObject.SetActive(true);
+        ChainLightning.instance.engaged = true;
         yield return new WaitForSeconds(0.5f);
-        usedLightning = true;
     }
 
 

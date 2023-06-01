@@ -8,7 +8,7 @@ public class GridLayouts : MonoBehaviour
 {
     public Dictionary<string, string> GridPatterns = new Dictionary<string, string>();
 
-    private void Start()
+    private void Awake()
     {
         GridPatterns.Add("Default", "0000000000000000000000111111111111111111100000000000000000000000" +
                               "0000000000000000000111111111111111111111111110000000000000000000" +

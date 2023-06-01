@@ -8,6 +8,7 @@ TagManager:
   - EnemyProjectile
   - MovingEnemy
   - Enemy2
+  - LightningBolt
   layers:
   - Default
   - TransparentFX
