@@ -35,6 +35,9 @@ public class PlanetHandler : MonoBehaviour
     private Color defaultColor;
     private Color defaultEmissionColor;
 
+    private bool isHeatingUp = false;
+
+
     private const float healthFillAmount = 0.001f; // Pre-calculated fill amount based on 1000 health
 
     private void Start()
@@ -184,6 +187,14 @@ public class PlanetHandler : MonoBehaviour
     }
 
 
+    public void StartHeatingUp()
+    {
+        if (!isHeatingUp)
+        {
+            isHeatingUp = true;
+            StartCoroutine(HeatUp());
+        }
+    }
     public IEnumerator HeatUp()
     {
         Debug.Log("HeatUp() called");
@@ -212,7 +223,6 @@ public class PlanetHandler : MonoBehaviour
             yield return null;
         }
 
-
         yield return new WaitForSeconds(0.05f);
 
         Destroy(planetaryShieldParticleSystem);
@@ -224,6 +234,7 @@ public class PlanetHandler : MonoBehaviour
         planetMaterial.color = defaultColor;
         planetMaterial.SetColor("_EmissionColor", defaultEmissionColor);
         StartCoroutine(Destroy());
-    }
 
+        isHeatingUp = false; // Reset the flag
+    }
 }
