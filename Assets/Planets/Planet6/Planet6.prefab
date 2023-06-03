@@ -9976,7 +9976,7 @@ MonoBehaviour:
   isDead: 0
   reductionPercentage: 0.35
   rotationSpeed: 2
-  planetMaterial: {fileID: 2100000, guid: 27f9aa7a822452e41b57e776e3aa4af0, type: 2}
+  planetMaterial: {fileID: 2100000, guid: 4105cc0a111ca724088ce7eec787179d, type: 2}
   planetHealthbar: {fileID: 8069387532671414410}
   PlanetSphere: {fileID: 1963884144419007108}
   planetaryShieldParticleSystem: {fileID: 843210162275472023}

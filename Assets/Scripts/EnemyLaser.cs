@@ -17,7 +17,7 @@ public class EnemyLaser : MonoBehaviour
             if (!playerDamaged)
             {
                 playerDamaged = true;
-                if (gameObject.active)
+                if (gameObject.activeSelf)
                 {
                     StartCoroutine(DamagePlayer(collider));
                 }

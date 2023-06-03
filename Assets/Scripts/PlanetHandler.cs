@@ -32,6 +32,9 @@ public class PlanetHandler : MonoBehaviour
     private UnityEngine.Rendering.Universal.Light2D planetLight;
     private Animator animator;
 
+    private Color defaultColor;
+    private Color defaultEmissionColor;
+
     private const float healthFillAmount = 0.001f; // Pre-calculated fill amount based on 1000 health
 
     private void Start()
@@ -46,6 +49,10 @@ public class PlanetHandler : MonoBehaviour
         enemyProjectileScript.enabled = false;
 
         planetRotationCoroutine = StartCoroutine(SlowlyRotate());
+
+        defaultColor = planetMaterial.color;
+        defaultEmissionColor = planetMaterial.GetColor("_EmissionColor");
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -102,7 +109,7 @@ public class PlanetHandler : MonoBehaviour
 
 
 
-        while (true)
+        while (PlanetSphere != null)
         {
 
             PlanetSphere.transform.Rotate(((rotationSpeed * 0.4f) * Time.deltaTime) * ranDirY, (rotationSpeed * Time.deltaTime) * ranDirY, 0f);
@@ -175,4 +182,48 @@ public class PlanetHandler : MonoBehaviour
             }
         }
     }
+
+
+    public IEnumerator HeatUp()
+    {
+        Debug.Log("HeatUp() called");
+
+        Color startColor = planetMaterial.color;
+        Color targetColor = Color.yellow;
+        float duration = 3f;
+        float elapsedTime = 0f;
+
+        Color startEmissionColor = planetMaterial.GetColor("_EmissionColor");
+        Color targetEmissionColor = Color.yellow;
+
+        while (elapsedTime < duration)
+        {
+            float t = elapsedTime / duration;
+            Color newColor = Color.Lerp(startColor, targetColor, t);
+            Color newEmissionColor = Color.Lerp(startEmissionColor, targetEmissionColor, t);
+
+            planetMaterial.color = newColor;
+            planetMaterial.SetColor("_EmissionColor", newEmissionColor);
+
+            planetHealthbar.fillAmount -= 0.0015f;
+
+            elapsedTime += Time.deltaTime;
+
+            yield return null;
+        }
+
+
+        yield return new WaitForSeconds(0.05f);
+
+        Destroy(planetaryShieldParticleSystem);
+
+        yield return new WaitForSeconds(0.05f);
+
+        Destroy(atmosphereParticleSystem);
+        animator.SetTrigger("planetsplode");
+        planetMaterial.color = defaultColor;
+        planetMaterial.SetColor("_EmissionColor", defaultEmissionColor);
+        StartCoroutine(Destroy());
+    }
+
 }

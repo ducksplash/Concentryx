@@ -17,7 +17,6 @@ public class Flamethrower : MonoBehaviour
     private void OnParticleCollision(GameObject other)
     {
 
-        Debug.Log(other);
 
         if (other == null || flameParticleSystem == null)
             return;
@@ -68,6 +67,25 @@ public class Flamethrower : MonoBehaviour
 
 
                         Destroy(collider.gameObject);
+                    }
+                }
+            }
+
+            if (collider.name.Contains("Planet"))
+            {
+                if (collider.GetComponent<PlanetHandler>())
+                {
+                    int scoreadd = 0;
+                    if (!collider.GetComponent<PlanetHandler>().isDead)
+                    {
+                        scoreadd = collider.GetComponent<PlanetHandler>().planetHealth;
+                        StartCoroutine(AddScore(scoreadd));
+                        scoreadd = collider.GetComponent<PlanetHandler>().planetHealth = 0;
+                        collider.GetComponent<PlanetHandler>().isDead = true;
+
+                        StartCoroutine(collider.GetComponent<PlanetHandler>().HeatUp());
+
+                        //   Destroy(collider.gameObject);
                     }
                 }
             }

@@ -16,7 +16,7 @@ Material:
   - _FLIPBOOKBLENDING_OFF
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 1
+  m_DoubleSidedGI: 0
   m_CustomRenderQueue: 2000
   stringTagMap:
     RenderType: Opaque
@@ -272,7 +272,7 @@ Material:
     - _CloudPanSpeed: 0
     - _ColorMode: 0
     - _Contrast: 1
-    - _Cull: 1
+    - _Cull: 2
     - _Cutoff: 0
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
@@ -341,14 +341,14 @@ Material:
     - Vector2_A15C6754: {r: 1, g: 1, b: 0, a: 0}
     - _AtmosphereColor: {r: 0, g: 0.11161316, b: 0.3301887, a: 1}
     - _BASE_COLOR: {r: 1, g: 1, b: 1, a: 1}
-    - _BaseColor: {r: 0, g: 0, b: 0, a: 1}
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColorAddSubDiff: {r: 0, g: 0, b: 0, a: 0}
     - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
     - _CityLightColor: {r: 1, g: 1, b: 1, a: 1}
     - _CloudColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 0, g: 0, b: 0, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EMISSION_COLOR: {r: 0, g: 0, b: 0, a: 0}
-    - _EmissionColor: {r: 1.6055588, g: 1.6055588, b: 1.6055588, a: 1}
+    - _EmissionColor: {r: 1.3351377, g: 1.3351377, b: 1.3351377, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _GlowColor: {r: 1, g: 1, b: 1, a: 1}
     - _HaloColor: {r: 1, g: 1, b: 1, a: 1}
