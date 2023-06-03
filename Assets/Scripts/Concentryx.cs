@@ -42,6 +42,7 @@ public class Concentryx : MonoBehaviour
     public TextMeshProUGUI levelText3;
     public string[] WordList = { "mutant", "carrot", " foot " };
 
+
     private void Start()
     {
 
@@ -51,18 +52,19 @@ public class Concentryx : MonoBehaviour
 
 
 
-        ArrangeInstances(gridLayouts.GetGridPattern("Default"));
+
+        ArrangeInstances(gridLayouts.GetGridPattern("Boxed In"));
 
 
     }
 
 
 
-    public void ArrangeInstances(string binaryString)
+    public void ArrangeInstances(string[] InstanceParameters)
     {
 
         int width = 64; // Width of the grid
-        int height = Mathf.CeilToInt((float)binaryString.Length / width); // Height of the grid
+        int height = Mathf.CeilToInt((float)InstanceParameters[1].Length / width); // Height of the grid
         float spacing = 0.28f; // Spacing between each instantiated sprite
 
         GameObject gridObject = new GameObject("GridObject");
@@ -72,7 +74,7 @@ public class Concentryx : MonoBehaviour
             for (int x = 0; x < width; x++)
             {
                 int index = y * width + x;
-                if (index < binaryString.Length && binaryString[index] == '1')
+                if (index < InstanceParameters[1].Length && InstanceParameters[1][index] == '1')
                 {
                     Vector3 position = gridParent.transform.position + new Vector3(x * spacing, -y * (spacing * 1.7f), 0f);
                     GameObject segmentObject = new GameObject("Segment " + y + x);
@@ -81,8 +83,40 @@ public class Concentryx : MonoBehaviour
                     SpriteRenderer spriteRenderer = segmentObject.AddComponent<SpriteRenderer>();
                     Segment segmentScript = segmentObject.AddComponent<Segment>();
 
-                    // Set the sprite and other properties based on the specific letter.
-                    Sprite selectedSprite = spriteSelection[Random.Range(0, spriteSelection.Length)];
+
+                    // get sprite colour pattern
+                    Sprite selectedSprite = GetSprite(x, y, 0);
+
+
+                    switch (InstanceParameters[0])
+                    {
+                        case "Meow":
+                            selectedSprite = GetSprite(x, y, 6);
+                            break;
+
+                        case "Fleg":
+                            selectedSprite = GetSprite(x, y, 5);
+                            break;
+
+                        case "Quack":
+                            selectedSprite = GetSprite(x, y, 7);
+                            break;
+
+                        case "Sunrise":
+                            selectedSprite = GetSprite(x, y, 7);
+                            break;
+
+                        case "Boxed In":
+                            selectedSprite = GetSprite(x, y, 3);
+                            break;
+
+                        default:
+                            selectedSprite = GetSprite(x, y, 0);
+                            break;
+                    }
+
+
+                    // insert mystery/bonus drops
 
                     float specialRand = Random.Range(dropRandomLower, dropRandomUpper);
                     if (specialRand > dropRandomCutoff)
@@ -124,34 +158,183 @@ public class Concentryx : MonoBehaviour
 
 
 
-
-
-
-
-
-
-    public void LevelPatternPhrase(string[] wordlist)
+    public Sprite GetSprite(int x, int y, int pattern = 0)
     {
 
-        float yLevel = -1.0f;
-        foreach (string word in wordlist)
+        Sprite selectedSprite = spriteSelection[0];
+
+        // random
+        if (pattern == 0)
         {
-            WordPlay(word, 5, 0.7f, 15f, yLevel, 1f); // word, gridsize, segmentwidth, xstart, ystart, outputscale
-            yLevel -= 2.5f;
+            selectedSprite = spriteSelection[Random.Range(0, spriteSelection.Length)];
         }
+
+
+        // old TV close up
+        if (pattern == 1)
+        {
+
+
+            if (y % 2 == 0)
+            {
+                selectedSprite = spriteSelection[3];
+            }
+            else
+            {
+
+                if (x % 2 == 0)
+                {
+                    selectedSprite = spriteSelection[0];
+                }
+                else
+                {
+                    selectedSprite = spriteSelection[1];
+                }
+            }
+
+        }
+
+        // blue, black, horizontal
+        if (pattern == 2)
+        {
+
+            if (y % 2 == 0)
+            {
+                selectedSprite = spriteSelection[3];
+            }
+            else
+            {
+
+                if (x % 2 == 0)
+                {
+                    selectedSprite = spriteSelection[1];
+                }
+                else
+                {
+                    selectedSprite = spriteSelection[1];
+                }
+            }
+
+        }
+
+
+        // blue, black, vertical
+        if (pattern == 3)
+        {
+
+            if (x % 2 == 0)
+            {
+                selectedSprite = spriteSelection[3];
+            }
+            else
+            {
+
+                if (y % 2 == 0)
+                {
+                    selectedSprite = spriteSelection[1];
+                }
+                else
+                {
+                    selectedSprite = spriteSelection[1];
+                }
+            }
+
+        }
+
+
+
+
+        // blue stripe on white vertical
+        if (pattern == 4)
+        {
+
+            if (x < 20 || x > 40)
+            {
+                selectedSprite = spriteSelection[5];
+            }
+            else
+            {
+
+                if (x < 20 || x > 40)
+                {
+                    selectedSprite = spriteSelection[2];
+                }
+                else
+                {
+                    selectedSprite = spriteSelection[1];
+                }
+            }
+
+        }
+
+
+
+        if (pattern == 5)
+        {
+            int totalSections = 3;
+            int sectionWidth = 64 / totalSections;
+
+            if (x >= sectionWidth && x < sectionWidth * 2)
+            {
+                selectedSprite = spriteSelection[5];
+            }
+            else if (x >= sectionWidth * 2)
+            {
+                selectedSprite = spriteSelection[6];
+            }
+            else
+            {
+                selectedSprite = spriteSelection[4];
+            }
+        }
+
+
+        // black
+        if (pattern == 6)
+        {
+
+            selectedSprite = spriteSelection[3];
+
+        }
+
+
+        // yellow
+        if (pattern == 7)
+        {
+
+            selectedSprite = spriteSelection[2];
+
+        }
+
+
+        return selectedSprite;
 
 
     }
 
 
 
-    public void LevelByGUI(string theword)
+
+
+
+
+
+    public void LevelPatternPhrase()
     {
+
         string word1 = levelText1.text;
         string word2 = levelText2.text;
         string word3 = levelText3.text;
 
-        LevelPatternPhrase(new string[] { word1, word2, word3 });
+
+        float yLevel = -1.0f;
+        foreach (string word in new string[] { word3, word2, word1 })
+        {
+            WordPlay(word, 5, 0.7f, 15f, yLevel, 1f); // word, gridsize, segmentwidth, xstart, ystart, outputscale
+            yLevel -= 2.5f;
+        }
+
+
     }
 
 
@@ -248,6 +431,9 @@ public class Concentryx : MonoBehaviour
 
         return true;
     }
+
+
+
 
 
 
@@ -433,6 +619,8 @@ public class Concentryx : MonoBehaviour
 
 
 
+
+
     public void WordPlay(string word = "test", int gridSize = 5, float segmentWidth = 0.7f, float xstart = 7f, float ystart = 0f, float outputscale = 1f)
     {
 
@@ -479,7 +667,7 @@ public class Concentryx : MonoBehaviour
                 if (segmentCode == 1)
                 {
                     // Calculate the position for this segment based on its row and column.
-                    Vector3 position = new Vector3((col - (gridSize - 1) / 2.0f) * (segmentWidth / 2.5f), -row * (segmentWidth / 1.5f), 0.0f);
+                    Vector3 position = new Vector3((col - (gridSize - 1) / 2.0f) * (segmentWidth / 2f), -row * (segmentWidth / 1.5f), 0.0f);
 
                     // Create a new GameObject to hold the segment.
                     GameObject segment = new GameObject("Segment " + i);
@@ -498,6 +686,7 @@ public class Concentryx : MonoBehaviour
 
 
                     // Set the sprite and other properties based on the specific letter.
+
                     Sprite selectedSprite = spriteSelection[Random.Range(0, spriteSelection.Length)];
 
                     float specialRand = Random.Range(dropRandomLower, dropRandomUpper);
@@ -516,7 +705,7 @@ public class Concentryx : MonoBehaviour
                     spriteRenderer.material = segOneMaterial;
 
 
-                    spriteRenderer.sortingOrder = 1;
+                    spriteRenderer.sortingOrder = -11;
 
 
                     // Create a new BoxCollider2D component for this segment.
@@ -537,23 +726,21 @@ public class Concentryx : MonoBehaviour
                     // Create an empty game object for 'off' segments.
                     GameObject emptySegment = new GameObject("Segment " + i);
                     emptySegment.transform.parent = segmentObject.transform;
-                    emptySegment.transform.localPosition = new Vector3((col - (gridSize - 1) / 2.0f) * (segmentWidth / 2.5f), -row * (segmentWidth / 1.5f), 0.0f);
+                    emptySegment.transform.localPosition = new Vector3((col - (gridSize - 1) / 2.0f) * (segmentWidth / 2f), -row * (segmentWidth / 1.5f), 0.0f);
                 }
             }
 
             // Update the word position for the next letter.
             wordPosition.x += (gridSize / 2f);
-            // Update the position of the wo1.2frdObject.
+            // Update the position of the word object.
             wordObject.transform.position = wordPosition;
         }
 
         // Set final position
 
-        wordPosition.x = (xstart);
         wordPosition.y = (ystart);
         wordObject.transform.position = gridParent.transform.position + wordPosition;
-        Vector3 newScale = new Vector3(outputscale, outputscale, 1f); // Replace with your desired scale values
-        wordObject.transform.localScale = newScale;
+
 
     }
 
@@ -658,7 +845,7 @@ public class Concentryx : MonoBehaviour
                 1, 0, 0, 0, 0,
                 1, 0, 0, 0, 0,
                 1, 0, 0, 0, 0,
-                1, 0, 1, 0, 0,
+                1, 0, 0, 0, 0,
                 1, 1, 1, 1, 1 });
                 break;
             case 'M':
@@ -685,7 +872,7 @@ public class Concentryx : MonoBehaviour
                 1, 0, 0, 0, 1,
                 0, 1, 1, 1, 0 });
                 break;
-            case 'p':
+            case 'P':
                 segments.AddRange(new int[] {
                 1, 1, 1, 1, 0,
                 1, 0, 0, 0, 1,
@@ -892,6 +1079,54 @@ public class Concentryx : MonoBehaviour
                 0, 1, 1, 1, 0,
                 0, 0, 1, 0, 0,
                 1, 1, 1, 1, 1 });
+                break;
+            case '!':
+                segments.AddRange(new int[] {
+                1, 1, 0, 1, 1,
+                1, 1, 0, 1, 1,
+                1, 1, 0, 1, 1,
+                0, 0, 0, 0, 0,
+                1, 1, 0, 1, 1 });
+                break;
+            case '?':
+                segments.AddRange(new int[] {
+                0, 1, 1, 1, 0,
+                1, 0, 0, 0, 1,
+                0, 0, 1, 1, 0,
+                0, 0, 0, 0, 0,
+                0, 0, 1, 0, 0 });
+                break;
+            case '>':
+                segments.AddRange(new int[] {
+                1, 1, 1, 0, 0,
+                0, 0, 1, 1, 0,
+                0, 0, 0, 1, 1,
+                0, 0, 1, 1, 0,
+                1, 1, 1, 0, 0 });
+                break;
+            case '<':
+                segments.AddRange(new int[] {
+                0, 0, 1, 1, 1,
+                0, 1, 1, 0, 0,
+                1, 1, 0, 0, 0,
+                0, 1, 1, 0, 0,
+                0, 0, 1, 1, 1 });
+                break;
+            case '/':
+                segments.AddRange(new int[] {
+                0, 0, 0, 1, 1,
+                0, 0, 1, 1, 0,
+                0, 1, 1, 0, 0,
+                1, 1, 0, 0, 0,
+                1, 0, 0, 0, 0 });
+                break;
+            case '\\':
+                segments.AddRange(new int[] {
+                1, 1, 0, 0, 0,
+                0, 1, 1, 0, 0,
+                0, 0, 1, 1, 0,
+                0, 0, 0, 1, 1,
+                0, 0, 0, 0, 1, });
                 break;
             // Add more cases for other letters as needed
             default:

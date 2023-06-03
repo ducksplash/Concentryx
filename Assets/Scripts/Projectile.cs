@@ -80,6 +80,7 @@ public class Projectile : MonoBehaviour
 
     private void StartFlameThrower()
     {
+        canFire = false;
         isFiring = true;
         flameThrower.GetComponent<ParticleSystem>().Play();
         flameThrower.SetActive(true);
@@ -90,6 +91,7 @@ public class Projectile : MonoBehaviour
     private void StopFlameThrower()
     {
         isFiring = false;
+        canFire = true;
         flameThrower.GetComponent<ParticleSystem>().Stop();
         flameThrower.SetActive(false);
     }

@@ -13,8 +13,16 @@ public class Flamethrower : MonoBehaviour
         collisionEvents = new List<ParticleCollisionEvent>();
     }
 
+
     private void OnParticleCollision(GameObject other)
     {
+
+        Debug.Log(other);
+
+        if (other == null || flameParticleSystem == null)
+            return;
+
+
         int numCollisions = flameParticleSystem.GetCollisionEvents(other, collisionEvents);
 
         for (int i = 0; i < numCollisions; i++)

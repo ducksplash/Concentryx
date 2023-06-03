@@ -11,7 +11,6 @@ public class Segment : MonoBehaviour
 
     public bool isSpecial;
     private SpriteRenderer spriteRenderer;
-    private Material segMaterial;
 
     public GameObject[] pillPrefabs;
 
@@ -21,8 +20,15 @@ public class Segment : MonoBehaviour
     private void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        segMaterial = GetComponent<Renderer>().material;
-        defaultMaterialColor = segMaterial.color;
+
+        if (spriteRenderer == null)
+        {
+            Debug.LogError("SpriteRenderer not found on the Segment game object.");
+        }
+        else
+        {
+            defaultMaterialColor = spriteRenderer.color;
+        }
 
         Rigidbody2D rb = gameObject.AddComponent<Rigidbody2D>();
         rb.bodyType = RigidbodyType2D.Kinematic;
@@ -43,7 +49,7 @@ public class Segment : MonoBehaviour
         {
             health--;
             hits++;
-            StartFlashPill();
+            StartFlashSegment();
         }
         else
         {
@@ -71,13 +77,20 @@ public class Segment : MonoBehaviour
         yield return new WaitForSeconds(0.01f);
     }
 
-    private void StartFlashPill()
+    private void StartFlashSegment()
     {
-        if (!isFlashing)
+        if (spriteRenderer == null)
         {
-            isFlashing = true;
-            flashTimer = 0.01f;
-            segMaterial.color = Color.black;
+            return;
+        }
+        else
+        {
+            if (!isFlashing)
+            {
+                isFlashing = true;
+                flashTimer = 0.01f;
+                spriteRenderer.color = Color.black;
+            }
         }
     }
 
@@ -88,7 +101,7 @@ public class Segment : MonoBehaviour
             flashTimer -= Time.deltaTime;
             if (flashTimer <= 0f)
             {
-                segMaterial.color = defaultMaterialColor;
+                spriteRenderer.color = defaultMaterialColor;
                 isFlashing = false;
             }
         }
