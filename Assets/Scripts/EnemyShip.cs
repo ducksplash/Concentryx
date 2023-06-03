@@ -84,6 +84,8 @@ public class EnemyShip : MonoBehaviour
             GameMaster.instance.IncrementScore(enemyHits);
             isDead = true;
             jet.SetActive(false);
+
+            GameMaster.instance.ActiveEnemies--;
             Destroy(gameObject, animator.GetCurrentAnimatorStateInfo(0).length);
         }
     }

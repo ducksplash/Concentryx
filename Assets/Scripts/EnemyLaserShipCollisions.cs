@@ -51,6 +51,8 @@ public class EnemyLaserShipCollisions : MonoBehaviour
             isDead = true;
             jet.SetActive(false);
             laser.SetActive(false);
+
+            GameMaster.instance.ActiveEnemies--;
             movementScript.enabled = false;
             // this shouldn't even be allowed, but it's happening, live with it.
             Destroy(gameObject.transform.parent.gameObject, animator.GetCurrentAnimatorStateInfo(0).length);

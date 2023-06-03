@@ -131,6 +131,7 @@ public class PlanetHandler : MonoBehaviour
     {
         yield return new WaitForSeconds(0.1f);
         Destroy(PlanetSphere);
+        GameMaster.instance.ActiveEnemies--;
         Destroy(gameObject, animator.GetCurrentAnimatorStateInfo(0).length);
 
     }

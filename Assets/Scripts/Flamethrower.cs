@@ -84,7 +84,6 @@ public class Flamethrower : MonoBehaviour
                         collider.GetComponent<PlanetHandler>().isDead = true;
 
                         collider.GetComponent<PlanetHandler>().StartHeatingUp();
-                        //   Destroy(collider.gameObject);
                     }
                 }
             }

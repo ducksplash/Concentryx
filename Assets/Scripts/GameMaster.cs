@@ -11,7 +11,7 @@ public class GameMaster : MonoBehaviour
 {
     public static GameMaster instance;
 
-
+    public GameObject Concentryx;
 
     [Header("Player Values")]
 
@@ -53,7 +53,9 @@ public class GameMaster : MonoBehaviour
     public TextMeshProUGUI scoreTextRanks;
     public TextMeshProUGUI highScoreText;
 
+    public int CurrentLevel = 0;
 
+    public int LastLevel = 0;
 
     public int countdownTime = 500;
     public TextMeshProUGUI timerText;
@@ -115,7 +117,7 @@ public class GameMaster : MonoBehaviour
 
     int startpilltime = 15;
 
-
+    public int ActiveEnemies = 0;
 
 
     public GameObject shieldParticleSystem;
@@ -145,6 +147,7 @@ public class GameMaster : MonoBehaviour
         playerXP = PlayerPrefs.GetInt("PlayerXP", 0);
         toNextRank = PlayerPrefs.GetInt("ToNextRank", 1000);
 
+        CurrentLevel = PlayerPrefs.GetInt("CurrentLevel", 0);
 
         // Update UI with loaded values
         rankeryText.text = playerRank.ToString();
@@ -231,7 +234,7 @@ public class GameMaster : MonoBehaviour
         //     onMobile = false;
         // }
 
-
+        InstantiateLevel();
     }
 
 
@@ -240,30 +243,13 @@ public class GameMaster : MonoBehaviour
 
     public void InstantiateLevel()
     {
-        // instantiate level parts here
 
-        // rings
-
-        // planets
-
-        // enemies
-
-    }
-
-
-    public void SpawnRings()
-    {
-        // spawn level furniture here
+        Concentryx.GetComponent<Concentryx>().BuildLevel(CurrentLevel);
 
     }
 
 
 
-    public void IncrementLevel()
-    {
-
-
-    }
 
 
 

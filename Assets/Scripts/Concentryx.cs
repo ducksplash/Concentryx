@@ -7,6 +7,9 @@ using TMPro;
 
 public class Concentryx : MonoBehaviour
 {
+
+
+
     public int numSegments = 32; // The number of segments in the ring.
     public int numLayers = 4; // The number of segments in the ring.
     public float innerRadius = 1.0f; // The inner radius of the ring.
@@ -16,9 +19,9 @@ public class Concentryx : MonoBehaviour
     public GameObject Player;
 
     public int dropRandomLower = 0;
-    public int dropRandomUpper = 50;
+    public int dropRandomUpper = 10;
 
-    public int dropRandomCutoff = 45;
+    public int dropRandomCutoff = 90;
 
     public Sprite mysterySprite;
     public Sprite[] spriteSelection;
@@ -33,34 +36,87 @@ public class Concentryx : MonoBehaviour
     public GameObject[] enemyPrefabs;
 
     public GameObject[] planetPrefabs;
+    public GameObject[] nearbyStarPrefabs;
 
     public GameObject defaultParent;
     public GameObject gridParent;
+    public GameObject ringParent;
 
     public TextMeshProUGUI levelText1;
     public TextMeshProUGUI levelText2;
     public TextMeshProUGUI levelText3;
+
+
+
     public string[] WordList = { "mutant", "carrot", " foot " };
 
 
     private void Start()
     {
-
         //ConcentricRings();
-        //LevelPatternPhrase(WordList);
-        //Pot();
+        //ImagePlay(gridLayouts.GetGridPattern("Boxed In"));
+        // LevelBuilder();
+    }
 
 
+    public void BuildLevel(int SelectedLevel)
+    {
 
 
-        ArrangeInstances(gridLayouts.GetGridPattern("Boxed In"));
+        // first 10 levels should be named.
+        // subsequent X levels should be selected randomly from a list of pre defined levels.
+        // all levels beyond shall be randomly generated using the individual parts:
+        // ImagePlay - Creates a grid based image out of segments, and is fed with 'ASCII Art' patterns made of 1s and 0s
+        // LevelPatternPhrase - Creates a word out of segments, and is fed with up to 3 strings
+        // ConcentricRings - Creates concentric rings of segments that rotate around the player, rotating faster the further away from the player.
+        // CreateEnemyShip - Creates specified number of rotating enemies that fire projectiles at the player.
+        // CreateEnemyWaller - Creates enemies that crawl the walls and sweeps the screen with a laser.
+        // CreatePlanet - Creates a planet; these do not attack until their shield is brought down, then fire projectiles at the player.
 
+        if (SelectedLevel < 10)
+        {
+            switch (SelectedLevel)
+            {
+                case 0:
+                    liveLevelType = "Concentryx";
+                    //ImagePlay(gridLayouts.GetGridPattern("Boxed In"));
+                    ConcentricRings();
+                    CreateEnemyShip(1);
+                    break;
+
+                case 1:
+                    liveLevelType = "New Friends";
+                    //ImagePlay(gridLayouts.GetGridPattern("Boxed In"));
+                    ConcentricRings(6);
+                    CreateEnemyWaller(1);
+                    break;
+
+                case 2:
+                    liveLevelType = "Old Enemies";
+                    //ImagePlay(gridLayouts.GetGridPattern("Boxed In"));
+                    //ConcentricRings(6);
+                    LevelPatternPhrase("Ready?");
+                    CreateEnemyWaller(1);
+                    CreateEnemyShip(2);
+                    CreatePlanet(1);
+                    break;
+
+            }
+        }
 
     }
 
 
 
-    public void ArrangeInstances(string[] InstanceParameters)
+    public void EndLevel()
+    {
+
+    }
+
+
+
+
+    public void ImagePlay(string[] InstanceParameters)
     {
 
         int width = 64; // Width of the grid
@@ -319,12 +375,12 @@ public class Concentryx : MonoBehaviour
 
 
 
-    public void LevelPatternPhrase()
+    public void LevelPatternPhrase(string dword1 = "default", string dword2 = "default", string dword3 = "default")
     {
 
-        string word1 = levelText1.text;
-        string word2 = levelText2.text;
-        string word3 = levelText3.text;
+        string word1 = levelText1.text ?? dword1 ?? " ";
+        string word2 = levelText2.text ?? dword2 ?? " ";
+        string word3 = levelText3.text ?? dword3 ?? " ";
 
 
         float yLevel = -1.0f;
@@ -339,7 +395,6 @@ public class Concentryx : MonoBehaviour
 
 
 
-
     public void CreateEnemyWaller(int numships = 1)
     {
 
@@ -350,6 +405,8 @@ public class Concentryx : MonoBehaviour
             //enemyShip.transform.parent = laserEnemyParent.transform;
 
         }
+
+        GameMaster.instance.ActiveEnemies += numships;
 
     }
 
@@ -413,6 +470,8 @@ public class Concentryx : MonoBehaviour
 
         ChainLightning.instance.InitialiseLightning();
         Debug.Log("enemy created");
+
+        GameMaster.instance.ActiveEnemies += numships;
     }
 
 
@@ -491,45 +550,84 @@ public class Concentryx : MonoBehaviour
 
         }
         Debug.Log("planet created");
+        GameMaster.instance.ActiveEnemies += numplanets;
+
+    }
+
+
+
+
+    public void CreateNearbyStar(int numstars = 1)
+    {
+        for (int i = 0; i < numstars; i++)
+        {
+            Vector3 parentPosition = transform.position;
+            Vector3 parentScale = transform.localScale;
+            Vector3 parentSize = new Vector3(parentScale.x * 2, parentScale.y * 2, parentScale.z * 2);
+
+            Vector3 playerPosition = Player.transform.position;
+            Vector3 playerScale = Player.transform.localScale;
+            Vector3 playerSize = new Vector3(playerScale.x * 2, playerScale.y * 2, playerScale.z * 2);
+
+            Camera mainCamera = Camera.main;
+            float cameraSize = mainCamera.orthographicSize;
+            float aspectRatio = mainCamera.aspect;
+
+
+            float maxPositionOffsetX = (cameraSize * aspectRatio) / 2;
+            float maxPositionOffsetY = cameraSize / 2;
+
+            Vector3 starPosition = Vector3.zero;
+            bool isValidPosition = false;
+            int maxAttempts = 100;
+            int attempts = 0;
+
+            while (!isValidPosition && attempts < maxAttempts)
+            {
+                float randomPositionOffsetX = Random.Range(-maxPositionOffsetX, maxPositionOffsetX);
+                float randomPositionOffsetY = Random.Range(-maxPositionOffsetY, maxPositionOffsetY);
+
+                starPosition = parentPosition + new Vector3(randomPositionOffsetX, randomPositionOffsetY, 0f);
+
+                if (!CheckOverlapWithPlayer(starPosition, playerPosition, playerSize))
+                {
+                    isValidPosition = true;
+                }
+
+                attempts++;
+            }
+
+            if (!isValidPosition)
+            {
+                return;
+            }
+
+
+            GameObject nearbyStarPrefab = Instantiate(nearbyStarPrefabs[Random.Range(0, nearbyStarPrefabs.Length)], starPosition, Quaternion.identity);
+
+
+            nearbyStarPrefab.transform.parent = transform;
+
+        }
+        Debug.Log("star created");
     }
 
 
 
 
 
-    public void Fortress()
+
+
+
+
+
+
+    public void ConcentricRings(int numRings = 3)
     {
-        WordPlay("#######", 5, 0.7f, 7f, 3.5f, 0.8f); // word, gridsize, segmentwidth, xstart, ystart, outputscale
-        WordPlay("| |    ", 5, 0.7f, 7f, 2f, 0.8f); // word, gridsize, segmentwidth, xstart, ystart, outputscale
-        WordPlay("| |    ", 5, 0.7f, 7f, 0.1f, 0.8f); // word, gridsize, segmentwidth, xstart, ystart, outputscale
-        WordPlay("| |    ", 5, 0.7f, 7f, -2f, 0.8f); // word, gridsize, segmentwidth, xstart, ystart, outputscale
-        WordPlay("#######", 5, 0.7f, 7f, -3.5f, 0.8f); // word, gridsize, segmentwidth, xstart, ystart, outputscale
-    }
+        float innerRadius = 1.9f; // The inner radius of the ring.
+        float outerRadius = 1.8f; // The outer radius of the ring.
 
-
-
-    public void Pot()
-    {
-        WordPlay("~  ~  ~", 5, 0.7f, 7f, 3.5f, 0.8f); // word, gridsize, segmentwidth, xstart, ystart, outputscale
-        WordPlay(" ~ ~ ~ ", 5, 0.7f, 7f, 1.5f, 0.8f); // word, gridsize, segmentwidth, xstart, ystart, outputscale
-        WordPlay("  ~~~  ", 5, 0.7f, 7f, -0.5f, 0.8f); // word, gridsize, segmentwidth, xstart, ystart, outputscale
-        WordPlay("~~~~~~~", 5, 0.7f, 7f, -2.5f, 0.8f); // word, gridsize, segmentwidth, xstart, ystart, outputscale
-    }
-
-
-
-
-
-
-
-    public void ConcentricRings()
-    {
-        float innerRadius = 1.3f; // The inner radius of the ring.
-        float outerRadius = 1.4f; // The outer radius of the ring.
-
-        int numRings = 6;
-
-        int numSegments = 16; // The number of segments in the ring.
+        int numSegments = 28; // The number of segments in the ring.
         float rotationSpeed = 10f;
 
 
@@ -593,7 +691,10 @@ public class Concentryx : MonoBehaviour
 
                 // Set the rotation of this GameObject to match the angle of this segment.
                 segmentObject.transform.rotation = Quaternion.Euler(new Vector3(0.0f, 0.0f, angle - (angleStep / numSegments)));
+                BoxCollider2D collider = segmentObject.AddComponent<BoxCollider2D>();
 
+                // Set the size of the BoxCollider2D to match the size of the SpriteRenderer.
+                collider.size = spriteRenderer.bounds.size;
 
                 segmentObject.GetComponent<Segment>().pillPrefabs = pillPrefabs;
 
@@ -612,6 +713,9 @@ public class Concentryx : MonoBehaviour
             {
                 ringRB.angularVelocity = -(rotationSpeed + segmentModifier);
             }
+
+            ringObject.transform.parent = ringParent.transform;
+            ringObject.transform.position = ringParent.transform.position;
         }
     }
 
@@ -637,6 +741,9 @@ public class Concentryx : MonoBehaviour
 
         foreach (char letter in reversedWord)
         {
+
+            float gapFacta = 0.8f;
+
             // Convert the letter to uppercase.
             char upperLetter = char.ToUpper(letter);
 
@@ -667,7 +774,8 @@ public class Concentryx : MonoBehaviour
                 if (segmentCode == 1)
                 {
                     // Calculate the position for this segment based on its row and column.
-                    Vector3 position = new Vector3((col - (gridSize - 1) / 2.0f) * (segmentWidth / 2f), -row * (segmentWidth / 1.5f), 0.0f);
+                    // Vector3 position = new Vector3((col - (gridSize - 1) / 2.0f) * (segmentWidth / 2f), -row * (segmentWidth / 1.5f), 0.0f);
+                    Vector3 position = new Vector3((col - (gridSize - 1) / 2.0f) * (segmentWidth / 2f) * gapFacta, -row * (segmentWidth / 1.5f), 0.0f);
 
                     // Create a new GameObject to hold the segment.
                     GameObject segment = new GameObject("Segment " + i);
@@ -726,7 +834,7 @@ public class Concentryx : MonoBehaviour
                     // Create an empty game object for 'off' segments.
                     GameObject emptySegment = new GameObject("Segment " + i);
                     emptySegment.transform.parent = segmentObject.transform;
-                    emptySegment.transform.localPosition = new Vector3((col - (gridSize - 1) / 2.0f) * (segmentWidth / 2f), -row * (segmentWidth / 1.5f), 0.0f);
+                    emptySegment.transform.localPosition = new Vector3((col - (gridSize - 1) / 2.0f) * (segmentWidth / 2f) * gapFacta, -row * (segmentWidth / 1.5f), 0.0f);
                 }
             }
 
