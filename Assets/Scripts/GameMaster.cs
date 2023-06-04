@@ -57,6 +57,10 @@ public class GameMaster : MonoBehaviour
 
     public int LastLevel = 0;
 
+    public bool LevelEngaged = false;
+
+    public CanvasGroup pauseMenuCanvas;
+
     public int countdownTime = 500;
     public TextMeshProUGUI timerText;
 
@@ -147,7 +151,7 @@ public class GameMaster : MonoBehaviour
         playerXP = PlayerPrefs.GetInt("PlayerXP", 0);
         toNextRank = PlayerPrefs.GetInt("ToNextRank", 1000);
 
-        CurrentLevel = PlayerPrefs.GetInt("CurrentLevel", 0);
+        //CurrentLevel = PlayerPrefs.GetInt("CurrentLevel", 0);
 
         // Update UI with loaded values
         rankeryText.text = playerRank.ToString();
@@ -243,13 +247,41 @@ public class GameMaster : MonoBehaviour
 
     public void InstantiateLevel()
     {
-
+        // instantiate the next expected level
+        // 
         Concentryx.GetComponent<Concentryx>().BuildLevel(CurrentLevel);
+
+        // set to 'playing'
+        LevelEngaged = true;
+
+    }
+
+
+    public void Update()
+    {
+
+        if (LevelEngaged)
+        {
+            if (ActiveEnemies == 0)
+            {
+                LevelEngaged = false;
+                EndLevel();
+            }
+        }
 
     }
 
 
 
+    public void EndLevel()
+    {
+        pauseMenuCanvas.alpha = 1f;
+        pauseMenuCanvas.interactable = true;
+        pauseMenuCanvas.blocksRaycasts = true;
+
+        Time.timeScale = 0f;
+
+    }
 
 
 

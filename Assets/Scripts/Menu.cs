@@ -20,6 +20,8 @@ public class Menu : MonoBehaviour
     public CanvasGroup SureMenuCanvas;
     public CanvasGroup XPSureCanvas;
 
+    public CanvasGroup LevelEndCanvas;
+
     public CanvasGroup ThumbStickCanvas;
 
     // sfx

@@ -51,13 +51,6 @@ public class Concentryx : MonoBehaviour
     public string[] WordList = { "mutant", "carrot", " foot " };
 
 
-    private void Start()
-    {
-        //ConcentricRings();
-        //ImagePlay(gridLayouts.GetGridPattern("Boxed In"));
-        // LevelBuilder();
-    }
-
 
     public void BuildLevel(int SelectedLevel)
     {
@@ -73,6 +66,7 @@ public class Concentryx : MonoBehaviour
         // CreateEnemyWaller - Creates enemies that crawl the walls and sweeps the screen with a laser.
         // CreatePlanet - Creates a planet; these do not attack until their shield is brought down, then fire projectiles at the player.
 
+        // do levels under 10
         if (SelectedLevel < 10)
         {
             switch (SelectedLevel)
@@ -95,7 +89,7 @@ public class Concentryx : MonoBehaviour
                     liveLevelType = "Old Enemies";
                     //ImagePlay(gridLayouts.GetGridPattern("Boxed In"));
                     //ConcentricRings(6);
-                    LevelPatternPhrase("Ready?");
+                    LevelPatternPhrase(" ", "Ready?", " ");
                     CreateEnemyWaller(1);
                     CreateEnemyShip(2);
                     CreatePlanet(1);
@@ -103,6 +97,9 @@ public class Concentryx : MonoBehaviour
 
             }
         }
+
+
+        // do levels 10-20
 
     }
 
@@ -375,12 +372,33 @@ public class Concentryx : MonoBehaviour
 
 
 
-    public void LevelPatternPhrase(string dword1 = "default", string dword2 = "default", string dword3 = "default")
+    public void LevelPatternGUI()
     {
 
-        string word1 = levelText1.text ?? dword1 ?? " ";
-        string word2 = levelText2.text ?? dword2 ?? " ";
-        string word3 = levelText3.text ?? dword3 ?? " ";
+        string word1 = levelText1.text ?? " ";
+        string word2 = levelText2.text ?? " ";
+        string word3 = levelText3.text ?? " ";
+
+
+        float yLevel = -1.0f;
+        foreach (string word in new string[] { word3, word2, word1 })
+        {
+            WordPlay(word, 5, 0.7f, 15f, yLevel, 1f); // word, gridsize, segmentwidth, xstart, ystart, outputscale
+            yLevel -= 2.5f;
+        }
+
+
+    }
+
+
+
+
+    public void LevelPatternPhrase(string dword1 = " ", string dword2 = " ", string dword3 = " ")
+    {
+
+        string word1 = dword1 ?? " ";
+        string word2 = dword2 ?? " ";
+        string word3 = dword3 ?? " ";
 
 
         float yLevel = -1.0f;
