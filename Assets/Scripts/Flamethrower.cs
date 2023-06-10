@@ -65,7 +65,7 @@ public class Flamethrower : MonoBehaviour
                         scoreadd = collider.GetComponent<EnemyShip>().enemyHealth = 0;
                         collider.GetComponent<EnemyShip>().isDead = true;
 
-
+                        GameMaster.instance.ActiveEnemies--;
                         Destroy(collider.gameObject);
                     }
                 }

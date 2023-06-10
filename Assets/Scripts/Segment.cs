@@ -135,7 +135,9 @@ public class Segment : MonoBehaviour
 
         if (prefabToInstantiate != null)
         {
-            Instantiate(prefabToInstantiate, transform.position, Quaternion.identity);
+            GameObject pillfab = Instantiate(prefabToInstantiate, transform.position, Quaternion.identity);
+            pillfab.transform.parent = transform.parent.parent;
+
         }
     }
 }

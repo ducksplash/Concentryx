@@ -14,13 +14,17 @@ public class EnemyLaser : MonoBehaviour
     {
         if (collider.gameObject.name == "SpaceShip")
         {
-            if (!playerDamaged)
+            if (!GameMaster.instance.invulnerable)
             {
-                playerDamaged = true;
-                if (gameObject.activeSelf)
+                if (!playerDamaged)
                 {
-                    StartCoroutine(DamagePlayer(collider));
+                    playerDamaged = true;
+                    if (gameObject.activeSelf)
+                    {
+                        StartCoroutine(DamagePlayer(collider));
+                    }
                 }
+
             }
         }
 
@@ -28,6 +32,7 @@ public class EnemyLaser : MonoBehaviour
 
     public IEnumerator DamagePlayer(Collider2D collidee)
     {
+
         GameMaster.instance.DecrementHealth(10);
 
         if (collidee.GetComponent<SpriteRenderer>())
@@ -43,6 +48,13 @@ public class EnemyLaser : MonoBehaviour
 
         yield return new WaitForSeconds(damageDelay);
         playerDamaged = false;
+
+        if (GameMaster.instance.health <= 0)
+        {
+            //Debug.Log("Game Over!");
+            collidee.GetComponent<Ship>().DestroyShip();
+        }
+
     }
 
 

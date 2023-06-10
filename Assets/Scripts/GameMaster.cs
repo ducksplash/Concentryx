@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 using TMPro;
 using System;
@@ -16,6 +18,7 @@ public class GameMaster : MonoBehaviour
     [Header("Player Values")]
 
     public int playerScore = 0;
+    public int playerScoreThisLevel = 0;
     public int playerHighScore = 0;
     public bool invulnerable = false;
     public int scoreModifier = 1;
@@ -53,15 +56,23 @@ public class GameMaster : MonoBehaviour
     public TextMeshProUGUI scoreTextRanks;
     public TextMeshProUGUI highScoreText;
 
-    public int CurrentLevel = 0;
+    public int CurrentLevel = 1;
 
-    public int LastLevel = 0;
 
     public bool LevelEngaged = false;
 
-    public CanvasGroup pauseMenuCanvas;
+    public CanvasGroup levelEndCanvas;
 
-    public int countdownTime = 500;
+    public TextMeshProUGUI levelEndText;
+
+    public TextMeshProUGUI levelEndScoreText;
+    public TextMeshProUGUI levelEndScoreTitleText;
+    public TextMeshProUGUI levelEndScoreThisLevelText;
+    public TextMeshProUGUI levelEndHighScoreText;
+
+    public Button levelEndNextLevelButton;
+    public Button levelEndRetryButton;
+
     public TextMeshProUGUI timerText;
 
     private int currentTime;
@@ -74,7 +85,7 @@ public class GameMaster : MonoBehaviour
 
     public Material textMaterial;
 
-    public GameObject radialControl;
+    public int healthLootValue = 0;
 
     public int pillTime;
 
@@ -126,9 +137,12 @@ public class GameMaster : MonoBehaviour
 
     public GameObject shieldParticleSystem;
 
+    public VolumeProfile PPVolumeProfile;
+    private ColorAdjustments colorAdjustments;
 
+    private bool colorAdjustAvailable = false;
 
-
+    public GameObject phoneControl;
 
     private void Awake()
     {
@@ -144,6 +158,14 @@ public class GameMaster : MonoBehaviour
 
         playerHighScore = PlayerPrefs.GetInt("PlayerHighScore", 0);
 
+        if (PPVolumeProfile.TryGet(out colorAdjustments))
+        {
+            colorAdjustAvailable = true;
+        }
+        else
+        {
+            colorAdjustAvailable = false;
+        }
 
 
         // Load player rank and player XP from PlayerPrefs
@@ -183,8 +205,6 @@ public class GameMaster : MonoBehaviour
 
         timerText.text = currentTime.ToString();
 
-        StartCoroutine(Countdown());
-
         healthbar.value = health;
 
 
@@ -205,39 +225,20 @@ public class GameMaster : MonoBehaviour
         }
 
 
-        // if (PlayerPrefs.HasKey("handed"))
-        // {
-        //     string handedness = PlayerPrefs.GetString("handed");
 
 
-        //     if (handedness == "left")
-        //     {
-        //         radialControl.transform.localPosition = new Vector3(915, -172, 0f);
-        //     }
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            phoneControl.SetActive(true);
+            onMobile = true;
+        }
+        else
+        {
+            phoneControl.SetActive(false);
+            onMobile = false;
+        }
 
-        //     else
-        //     {
-        //         radialControl.transform.localPosition = new Vector3(315, -172, 0f);
-        //     }
-
-        // }
-        // else
-        // {
-        //     radialControl.transform.localPosition = new Vector3(315, -172, 0f);
-        // }
-
-
-        // if (Application.platform == RuntimePlatform.Android)
-        // {
-        //     radialControl.SetActive(true);
-        //     onMobile = true;
-        // }
-        // else
-        // {
-        //     radialControl.SetActive(false);
-        //     onMobile = false;
-        // }
-
+        ResetColourAdjustments();
         InstantiateLevel();
     }
 
@@ -247,6 +248,8 @@ public class GameMaster : MonoBehaviour
 
     public void InstantiateLevel()
     {
+
+        ActiveEnemies = 0;
         // instantiate the next expected level
         // 
         Concentryx.GetComponent<Concentryx>().BuildLevel(CurrentLevel);
@@ -265,23 +268,111 @@ public class GameMaster : MonoBehaviour
             if (ActiveEnemies == 0)
             {
                 LevelEngaged = false;
-                EndLevel();
+                StartCoroutine(EndLevel(0));
             }
         }
 
     }
 
 
-
-    public void EndLevel()
+    public void ResetColourAdjustments()
     {
-        pauseMenuCanvas.alpha = 1f;
-        pauseMenuCanvas.interactable = true;
-        pauseMenuCanvas.blocksRaycasts = true;
+        if (colorAdjustAvailable)
+        {
+            colorAdjustments.saturation.value = 0f;
+            colorAdjustments.postExposure.value = 0f;
 
+        }
+    }
+
+
+    public IEnumerator EndLevel(int reason = 0)
+    {
         Time.timeScale = 0f;
 
+        if (colorAdjustAvailable)
+        {
+            colorAdjustments.saturation.value = -100f;
+            colorAdjustments.postExposure.value = 10f;
+
+
+            while (colorAdjustments.postExposure.value > 0)
+            {
+                colorAdjustments.postExposure.value -= 0.1f;
+                yield return new WaitForSecondsRealtime(0.05f);
+            }
+
+        }
+
+
+        levelEndCanvas.alpha = 1f;
+        levelEndCanvas.interactable = true;
+        levelEndCanvas.blocksRaycasts = true;
+
+        // level complete by destroying all enemies
+        if (reason == 0)
+        {
+            ResetColourAdjustments();
+            levelEndNextLevelButton.interactable = true;
+            levelEndRetryButton.interactable = false;
+            levelEndText.text = "Level " + CurrentLevel.ToString() + " Complete!";
+            levelEndScoreTitleText.text = "Level " + CurrentLevel.ToString() + " Score";
+            levelEndScoreText.text = playerScore.ToString();
+            levelEndScoreThisLevelText.text = playerScoreThisLevel.ToString();
+            levelEndHighScoreText.text = playerHighScore.ToString();
+
+
+            playerScoreThisLevel = 0;
+
+            CurrentLevel++;
+
+        }
+
+
+        // level complete by running out of time
+        if (reason == 1)
+        {
+
+            ResetColourAdjustments();
+            levelEndNextLevelButton.interactable = false;
+            levelEndRetryButton.interactable = true;
+            levelEndText.text = "Out Of Time!";
+            levelEndScoreTitleText.text = "Level " + CurrentLevel.ToString() + " Score";
+            levelEndScoreText.text = playerScore.ToString();
+            levelEndScoreThisLevelText.text = playerScoreThisLevel.ToString();
+            levelEndHighScoreText.text = playerHighScore.ToString();
+
+
+            playerScoreThisLevel = 0;
+
+        }
+        // level complete by death
+        if (reason == 2)
+        {
+
+            Debug.Log("reason 2");
+            ResetColourAdjustments();
+            levelEndNextLevelButton.interactable = false;
+            levelEndRetryButton.interactable = true;
+            levelEndText.text = "You Died!";
+            levelEndScoreTitleText.text = "Level " + CurrentLevel.ToString() + " Score";
+            levelEndScoreText.text = playerScore.ToString();
+            levelEndScoreThisLevelText.text = playerScoreThisLevel.ToString();
+            levelEndHighScoreText.text = playerHighScore.ToString();
+            ResetRank();
+
+            playerScoreThisLevel = 0;
+
+        }
+
+
+
+
+
+
+
     }
+
 
 
 
@@ -289,6 +380,7 @@ public class GameMaster : MonoBehaviour
     {
         // Increment the player score by the specified amount
         playerScore += (amount * scoreModifier);
+        playerScoreThisLevel += (amount * scoreModifier);
 
         // Update the score text to reflect the new player score
         scoreText.text = playerScore.ToString();
@@ -368,6 +460,7 @@ public class GameMaster : MonoBehaviour
         health = defaultMaxHealth;
         playerHighScore = 0;
         playerScore = 0;
+        playerScoreThisLevel = 0;
 
         // Update UI with default values
         rankeryText.text = playerRank.ToString();
@@ -392,6 +485,7 @@ public class GameMaster : MonoBehaviour
         PlayerPrefs.SetInt("PlayerRank", playerRank);
         PlayerPrefs.SetInt("ToNextRank", toNextRank);
         PlayerPrefs.SetInt("PlayerScore", playerScore);
+        PlayerPrefs.SetInt("PlayerScoreThisLevel", playerScoreThisLevel);
         PlayerPrefs.SetInt("PlayerXP", playerXP);
         PlayerPrefs.Save();
     }
@@ -462,24 +556,28 @@ public class GameMaster : MonoBehaviour
 
     public void CollectPill(string pillType)
     {
-        StartCoroutine(DisplayPillText(pillType));
 
         switch (pillType)
         {
             case "X":
                 pillTime = rapidFireTime;
                 projectileDelay = projectileDelayBoosted;
+                StartCoroutine(DisplayPillText(pillType));
                 break;
             case "S":
                 pillTime = scoreMultiplierTimer;
-                scoreModifier = 2;
+                scoreModifier = UnityEngine.Random.Range(2, 5);
+                StartCoroutine(DisplayPillText(pillType));
                 break;
             case "+":
-                IncrementHealth((UnityEngine.Random.Range(10, 50) * playerRank));
+                healthLootValue = (UnityEngine.Random.Range(10, 50));
+                IncrementHealth(healthLootValue);
+                StartCoroutine(DisplayPillText(pillType));
                 return;
             case "F":
                 pillTime = flameThrowerTimer;
                 currentWeapon = "Flamethrower";
+                StartCoroutine(DisplayPillText(pillType));
                 break;
             case "I":
                 pillTime = invulnerabiltyTimer;
@@ -487,10 +585,12 @@ public class GameMaster : MonoBehaviour
                 shieldParticleSystem.SetActive(true);
                 shieldParticleSystem.GetComponent<ParticleSystem>().Play();
                 shipCollider.radius = shieldCollider;
+                StartCoroutine(DisplayPillText(pillType));
                 break;
             case "L":
 
                 StartCoroutine(StrikeLightning());
+                StartCoroutine(DisplayPillText(pillType));
 
                 return;
         }
@@ -504,7 +604,6 @@ public class GameMaster : MonoBehaviour
         ChainLightning.instance.engaged = true;
         yield return new WaitForSeconds(0.5f);
     }
-
 
 
     private void PillAction(string pillType)
@@ -537,8 +636,6 @@ public class GameMaster : MonoBehaviour
     }
 
 
-
-
     private IEnumerator PillCountDown(GameObject pillReadout, string pillType, int superPillTime)
     {
         GameObject childObject = pillReadout.transform.GetChild(0).gameObject;
@@ -557,7 +654,7 @@ public class GameMaster : MonoBehaviour
                     projectileDelay = projectileDelayBoosted;
                     break;
                 case "S":
-                    scoreModifier = 2;
+                    scoreModifier = UnityEngine.Random.Range(2, 5);
                     break;
                 case "F":
                     currentWeapon = "Flamethrower";
@@ -574,6 +671,7 @@ public class GameMaster : MonoBehaviour
             pillTimeReadout.text = pillTime.ToString();
         }
 
+        yield return new WaitForSeconds(1f);
         switch (pillType)
         {
             case "X":
@@ -605,16 +703,20 @@ public class GameMaster : MonoBehaviour
 
 
 
-    private IEnumerator Countdown()
+    public IEnumerator Countdown(int timeleft)
     {
-        while (countdownTime > 0)
+        while (timeleft > 0)
         {
-            countdownTime--;
-            timerText.text = countdownTime.ToString();
+            timeleft--;
+            timerText.text = timeleft.ToString();
             yield return new WaitForSeconds(1f);
         }
-    }
 
+
+        StartCoroutine(EndLevel(1));
+
+
+    }
 
     private IEnumerator FlashScore()
     {
@@ -656,10 +758,6 @@ public class GameMaster : MonoBehaviour
 
 
 
-
-
-
-
     private IEnumerator DisplayFloatingText(int val)
     {
 
@@ -694,9 +792,6 @@ public class GameMaster : MonoBehaviour
 
 
 
-
-
-
     private IEnumerator DisplayPillText(string val)
     {
 
@@ -716,10 +811,10 @@ public class GameMaster : MonoBehaviour
                 pilltext = "Rapid Fire";
                 break;
             case "S":
-                pilltext = "2x Score";
+                pilltext = scoreModifier + "x Score";
                 break;
             case "+":
-                pilltext = "Health";
+                pilltext = "+" + healthLootValue + " Health";
                 break;
             case "F":
                 pilltext = "The Heat Is On";

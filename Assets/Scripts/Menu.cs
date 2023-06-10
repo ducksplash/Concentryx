@@ -5,7 +5,9 @@ using UnityEngine.UI;
 using TMPro;
 using RDG; // vibrate plugin
 using UnityEngine.Audio;
-
+using System.Collections.Generic;
+using System.Collections;
+using System.Linq;
 
 public class Menu : MonoBehaviour
 {
@@ -21,6 +23,11 @@ public class Menu : MonoBehaviour
     public CanvasGroup XPSureCanvas;
 
     public CanvasGroup LevelEndCanvas;
+    public CanvasGroup LevelInterstitialCanvas;
+    public Slider warmUpSlider;
+    public TextMeshProUGUI warmUpTimeText;
+    public TextMeshProUGUI levelNumberText;
+    public TextMeshProUGUI levelNameText;
 
     public CanvasGroup ThumbStickCanvas;
 
@@ -40,9 +47,14 @@ public class Menu : MonoBehaviour
     public AudioClip[] menuNoises;
     public AudioMixer AudioMixer;
 
+
+    public GameObject ConcentryxObject;
+
     public GameObject postProcessingVolume; // Reference to the Volume component
 
     public float minVolume = -80f; // Minimum volume in decibels
+
+    public Coroutine warmupCoroutine;
 
     void Start()
     {
@@ -107,7 +119,8 @@ public class Menu : MonoBehaviour
         BGMSlider.value = normalizedBGMVolume;
         BGMValueText.text = displayedBGMVolume.ToString();
 
-        ChangePage(null, true);
+        ChangePage(MainMenuCanvas, true);
+        Time.timeScale = 0f;
     }
 
     public void TogglePostProcessing()
@@ -180,6 +193,7 @@ public class Menu : MonoBehaviour
         TriggerVibrate();
         ChangePage();
         Time.timeScale = 1f;
+        Debug.Log("resume triggered");
     }
 
     public void RankScreen()
@@ -269,15 +283,69 @@ public class Menu : MonoBehaviour
 
 
 
-
-
-
-
+    public void TryAgain()
+    {
+        TriggerVibrate();
+        ChangePage(null, true);
+        Time.timeScale = 1f;
+        GameMaster.instance.InstantiateLevel();
+        Debug.Log("tryagain triggered");
+    }
 
 
     public void TriggerVibrate()
     {
         Vibration.Vibrate(50, 255);
     }
+
+
+
+    public void WarmUpGame()
+    {
+        warmupCoroutine = StartCoroutine(WarmUp(4));
+    }
+
+
+    public IEnumerator WarmUp(int timeleft)
+    {
+        TriggerVibrate();
+        ChangePage(LevelInterstitialCanvas, true);
+
+        GameMaster.instance.InstantiateLevel();
+
+
+        levelNumberText.text = "Level " + GameMaster.instance.CurrentLevel.ToString();
+
+        levelNameText.text = ConcentryxObject.GetComponent<Concentryx>().currentLevelName;
+
+
+        while (timeleft > 0)
+        {
+            timeleft--;
+
+            warmUpSlider.value = timeleft;
+            warmUpTimeText.text = "Starting in " + timeleft.ToString() + "...";
+
+            yield return new WaitForSecondsRealtime(1f);
+        }
+
+
+        Time.timeScale = 1f;
+        ChangePage(null, true);
+
+        Debug.Log("warmup triggered");
+
+    }
+
+    public void BypassWarmup()
+    {
+        StopCoroutine(warmupCoroutine);
+        warmupCoroutine = null;
+        Time.timeScale = 1f;
+        ChangePage(null, true);
+
+        Debug.Log("bypass warmup triggered");
+    }
+
 
 }

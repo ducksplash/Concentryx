@@ -27,7 +27,7 @@ public class Concentryx : MonoBehaviour
     public Sprite[] spriteSelection;
 
     public float rotationSpeed = 10f;
-    public string liveLevelType = "none";
+    public string currentLevelName = "none";
     public Material segOneMaterial;
 
     public GridLayouts gridLayouts;
@@ -37,6 +37,7 @@ public class Concentryx : MonoBehaviour
 
     public GameObject[] planetPrefabs;
     public GameObject[] nearbyStarPrefabs;
+    public GameObject[] farStarPrefabs;
 
     public GameObject defaultParent;
     public GameObject gridParent;
@@ -45,6 +46,8 @@ public class Concentryx : MonoBehaviour
     public TextMeshProUGUI levelText1;
     public TextMeshProUGUI levelText2;
     public TextMeshProUGUI levelText3;
+
+    private Coroutine GameTimer;
 
 
 
@@ -55,7 +58,7 @@ public class Concentryx : MonoBehaviour
     public void BuildLevel(int SelectedLevel)
     {
 
-
+        CleanLevel();
         // first 10 levels should be named.
         // subsequent X levels should be selected randomly from a list of pre defined levels.
         // all levels beyond shall be randomly generated using the individual parts:
@@ -69,30 +72,94 @@ public class Concentryx : MonoBehaviour
         // do levels under 10
         if (SelectedLevel < 10)
         {
+
+            // decide on stars
+            // nearby
+            int numNearbyStars = UnityEngine.Random.Range(1, 2);
+            // faraway
+            int numFarStars = UnityEngine.Random.Range(3, 8);
+
+
             switch (SelectedLevel)
             {
                 case 0:
-                    liveLevelType = "Concentryx";
-                    //ImagePlay(gridLayouts.GetGridPattern("Boxed In"));
+                    // timer
+                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(330));
+
+                    currentLevelName = "Concentryx";
                     ConcentricRings();
                     CreateEnemyShip(1);
+                    CreateNearbyStar(numNearbyStars);
+                    CreateFarStar(numFarStars);
                     break;
 
                 case 1:
-                    liveLevelType = "New Friends";
-                    //ImagePlay(gridLayouts.GetGridPattern("Boxed In"));
-                    ConcentricRings(6);
-                    CreateEnemyWaller(1);
+                    // timer
+                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(330));
+
+                    currentLevelName = "Concentryx";
+                    ConcentricRings();
+                    CreateEnemyShip(1);
+                    CreateNearbyStar(numNearbyStars);
+                    CreateFarStar(numFarStars);
                     break;
 
                 case 2:
-                    liveLevelType = "Old Enemies";
-                    //ImagePlay(gridLayouts.GetGridPattern("Boxed In"));
-                    //ConcentricRings(6);
+                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(50));
+                    currentLevelName = "New Friends";
+                    ConcentricRings(6);
+                    CreateEnemyWaller(1);
+                    CreateNearbyStar(numNearbyStars);
+                    CreateFarStar(numFarStars);
+                    break;
+
+                case 3:
+                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(60));
+                    currentLevelName = "Old Enemies";
                     LevelPatternPhrase(" ", "Ready?", " ");
                     CreateEnemyWaller(1);
                     CreateEnemyShip(2);
                     CreatePlanet(1);
+                    CreateNearbyStar(numNearbyStars);
+                    CreateFarStar(numFarStars);
+                    break;
+
+
+                case 4:
+                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(120));
+                    currentLevelName = "Inevitable";
+                    ImagePlay(gridLayouts.GetGridPattern("Sunrise"));
+                    //ConcentricRings(6);
+                    CreateEnemyWaller(2);
+                    //CreateEnemyShip(0);
+                    //CreatePlanet(0);
+                    CreateNearbyStar(numNearbyStars);
+                    CreateFarStar(numFarStars);
+                    break;
+
+
+                case 5:
+                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(180));
+                    currentLevelName = "Meow";
+                    ImagePlay(gridLayouts.GetGridPattern("Meow"));
+                    //ConcentricRings(6);
+                    CreateEnemyWaller(0);
+                    //CreateEnemyShip(0);
+                    CreatePlanet(1);
+                    CreateNearbyStar(numNearbyStars);
+                    CreateFarStar(numFarStars);
+                    break;
+
+                case 6:
+                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(240));
+                    currentLevelName = "Concentryx";
+                    ImagePlay(gridLayouts.GetGridPattern("Concentryx"));
+                    //ConcentricRings(6);
+                    CreateEnemyWaller(2);
+                    CreateEnemyShip(2);
+                    CreatePlanet(1);
+                    CreateNearbyStar(numNearbyStars);
+                    CreateFarStar(numFarStars);
                     break;
 
             }
@@ -104,11 +171,6 @@ public class Concentryx : MonoBehaviour
     }
 
 
-
-    public void EndLevel()
-    {
-
-    }
 
 
 
@@ -321,7 +383,7 @@ public class Concentryx : MonoBehaviour
         }
 
 
-
+        // yeoooooo
         if (pattern == 5)
         {
             int totalSections = 3;
@@ -412,6 +474,7 @@ public class Concentryx : MonoBehaviour
     }
 
 
+    // enemy ship type 2 
 
     public void CreateEnemyWaller(int numships = 1)
     {
@@ -420,7 +483,7 @@ public class Concentryx : MonoBehaviour
         {
 
             GameObject enemyShip = Instantiate(enemyPrefabs[1]);
-            //enemyShip.transform.parent = laserEnemyParent.transform;
+            enemyShip.transform.parent = ringParent.transform;
 
         }
 
@@ -430,6 +493,7 @@ public class Concentryx : MonoBehaviour
 
 
 
+    // enemy ship type 1
 
     public void CreateEnemyShip(int numships = 1)
     {
@@ -477,7 +541,7 @@ public class Concentryx : MonoBehaviour
             }
 
             GameObject enemyShip = Instantiate(enemyPrefabs[0], enemyPosition, Quaternion.identity);
-            enemyShip.transform.parent = transform;
+            enemyShip.transform.parent = gridParent.transform;
 
             // Calculate rotation towards the player and flip it
             Vector3 directionToPlayer = playerPosition - enemyPosition;
@@ -513,7 +577,7 @@ public class Concentryx : MonoBehaviour
 
 
 
-
+    // planets
 
     public void CreatePlanet(int numplanets = 1)
     {
@@ -564,7 +628,7 @@ public class Concentryx : MonoBehaviour
             GameObject planetPrefab = Instantiate(planetPrefabs[Random.Range(0, planetPrefabs.Length)], planetPosition, Quaternion.identity);
 
 
-            planetPrefab.transform.parent = transform;
+            planetPrefab.transform.parent = gridParent.transform;
 
         }
         Debug.Log("planet created");
@@ -574,7 +638,7 @@ public class Concentryx : MonoBehaviour
 
 
 
-
+    // nearby star field
     public void CreateNearbyStar(int numstars = 1)
     {
         for (int i = 0; i < numstars; i++)
@@ -624,10 +688,70 @@ public class Concentryx : MonoBehaviour
             GameObject nearbyStarPrefab = Instantiate(nearbyStarPrefabs[Random.Range(0, nearbyStarPrefabs.Length)], starPosition, Quaternion.identity);
 
 
-            nearbyStarPrefab.transform.parent = transform;
+            nearbyStarPrefab.transform.parent = gridParent.transform;
 
         }
-        Debug.Log("star created");
+        Debug.Log("close star created");
+    }
+
+
+
+
+    // far away star field
+
+    public void CreateFarStar(int numstars = 1)
+    {
+        for (int i = 0; i < numstars; i++)
+        {
+            Vector3 parentPosition = transform.position;
+            Vector3 parentScale = transform.localScale;
+            Vector3 parentSize = new Vector3(parentScale.x * 2, parentScale.y * 2, parentScale.z * 2);
+
+            Vector3 playerPosition = Player.transform.position;
+            Vector3 playerScale = Player.transform.localScale;
+            Vector3 playerSize = new Vector3(playerScale.x * 2, playerScale.y * 2, playerScale.z * 2);
+
+            Camera mainCamera = Camera.main;
+            float cameraSize = mainCamera.orthographicSize;
+            float aspectRatio = mainCamera.aspect;
+
+
+            float maxPositionOffsetX = (cameraSize * aspectRatio) / 2;
+            float maxPositionOffsetY = cameraSize / 2;
+
+            Vector3 starPosition = Vector3.zero;
+            bool isValidPosition = false;
+            int maxAttempts = 100;
+            int attempts = 0;
+
+            while (!isValidPosition && attempts < maxAttempts)
+            {
+                float randomPositionOffsetX = Random.Range(-maxPositionOffsetX, maxPositionOffsetX);
+                float randomPositionOffsetY = Random.Range(-maxPositionOffsetY, maxPositionOffsetY);
+
+                starPosition = parentPosition + new Vector3(randomPositionOffsetX, randomPositionOffsetY, 0f);
+
+                if (!CheckOverlapWithPlayer(starPosition, playerPosition, playerSize))
+                {
+                    isValidPosition = true;
+                }
+
+                attempts++;
+            }
+
+            if (!isValidPosition)
+            {
+                return;
+            }
+
+
+            GameObject farStarPrefab = Instantiate(farStarPrefabs[Random.Range(0, farStarPrefabs.Length)], starPosition, Quaternion.identity);
+
+
+            farStarPrefab.transform.parent = gridParent.transform;
+
+        }
+        Debug.Log("close star created");
     }
 
 
@@ -866,6 +990,7 @@ public class Concentryx : MonoBehaviour
 
         wordPosition.y = (ystart);
         wordObject.transform.position = gridParent.transform.position + wordPosition;
+        wordObject.transform.parent = gridParent.transform;
 
 
     }
@@ -1266,6 +1391,38 @@ public class Concentryx : MonoBehaviour
 
 
 
+
+
+
+
+
+    public void CleanLevel()
+    {
+        // Loop through all child objects of the parent
+        for (int i = gridParent.transform.childCount - 1; i >= 0; i--)
+        {
+            GameObject child = gridParent.transform.GetChild(i).gameObject;
+
+            // Destroy the child object
+            Object.Destroy(child);
+        }
+
+
+        // Loop through all child objects of the parent
+        for (int i = ringParent.transform.childCount - 1; i >= 0; i--)
+        {
+            GameObject child = ringParent.transform.GetChild(i).gameObject;
+
+            // Destroy the child object
+            Object.Destroy(child);
+        }
+
+        if (GameTimer != null)
+        {
+            StopCoroutine(GameTimer);
+            GameTimer = null;
+        }
+    }
 
 
 }

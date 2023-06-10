@@ -1,7 +1,9 @@
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
+using System.Collections;
 using RDG; // vibrate plugin
+using UnityEngine.UI;
+using TMPro;
 
 public class Ship : MonoBehaviour
 {
@@ -12,6 +14,11 @@ public class Ship : MonoBehaviour
     private Rigidbody2D rb;
     private AndroidJavaObject vibrator;
 
+    public Animator splodanim;
+
+    public CanvasGroup healthCanvas;
+
+    public Vector3 startPosition;
     private void Awake()
     {
         instance = this;
@@ -23,6 +30,8 @@ public class Ship : MonoBehaviour
         shipSprite = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
 
+        startPosition = transform.position;
+
 
     }
 
@@ -30,25 +39,33 @@ public class Ship : MonoBehaviour
 
     void Update()
     {
-        // if (!GameMaster.instance.onMobile)
-        // {
-        //     Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        //     Vector3 direction = mousePos - transform.position;
-        //     float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        //     transform.rotation = Quaternion.AngleAxis(angle - 90f, Vector3.forward);
-        // }
+        if (Application.platform != RuntimePlatform.Android)
+        {
+            if (!GameMaster.instance.onMobile)
+            {
+                if (Time.timeScale > 0f)
+                {
+                    Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    Vector3 direction = mousePos - transform.position;
+                    float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                    transform.rotation = Quaternion.AngleAxis(angle - 90f, Vector3.forward);
+                }
+            }
+        }
     }
     public void MoveShip(Vector2 direction)
     {
+        if (Time.timeScale > 0f)
+        {
+            // Calculate the angle in degrees based on the direction vector
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
-        // Calculate the angle in degrees based on the direction vector
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            // Add an offset of 90 degrees to adjust for the rotation difference
+            angle -= 90f;
 
-        // Add an offset of 90 degrees to adjust for the rotation difference
-        angle -= 90f;
-
-        // Rotate the game object to the calculated angle
-        transform.rotation = Quaternion.Euler(0f, 0f, angle);
+            // Rotate the game object to the calculated angle
+            transform.rotation = Quaternion.Euler(0f, 0f, angle);
+        }
 
     }
 
@@ -78,7 +95,7 @@ public class Ship : MonoBehaviour
                 }
                 else
                 {
-                    //Debug.Log("Game Over!");
+                    DestroyShip();
                 }
             }
 
@@ -94,6 +111,53 @@ public class Ship : MonoBehaviour
     }
 
 
+    public void DestroyShip()
+    {
+        Debug.Log("destroy ship!");
+
+        Material material = shipSprite.material;
+
+        // Get the current color
+        Color color = material.color;
+
+        // Set the new alpha value
+        color.a = 0f;
+
+        // Assign the modified color back to the material
+        material.color = color;
+
+        healthCanvas.alpha = 0f;
+
+
+        splodanim.SetTrigger("shipsplode");
+        StartCoroutine(GameOver());
+    }
+
+    public IEnumerator GameOver()
+    {
+        Debug.Log("Game Over!");
+        yield return new WaitForSeconds(1f);
+        StartCoroutine(GameMaster.instance.EndLevel(2));
+        StartCoroutine(reposition());
+
+    }
+
+    public IEnumerator reposition()
+    {
+        yield return new WaitForSeconds(0.1f);
+        Material material = shipSprite.material;
+
+        // Get the current color
+        Color color = material.color;
+
+        // Set the new alpha value
+        color.a = 1f;
+
+        // Assign the modified color back to the material
+        material.color = color;
+
+        healthCanvas.alpha = 1f;
+    }
 
     public IEnumerator FlashPlayer()
     {
