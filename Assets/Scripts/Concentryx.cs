@@ -50,9 +50,20 @@ public class Concentryx : MonoBehaviour
     private Coroutine GameTimer;
 
 
+    public AudioSource audioSource;
+
+    public bool AudioPlaying;
 
     public string[] WordList = { "mutant", "carrot", " foot " };
 
+    public AudioClip[] gameMusic;
+
+
+    void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+
+    }
 
 
     public void BuildLevel(int SelectedLevel)
@@ -68,6 +79,8 @@ public class Concentryx : MonoBehaviour
         // CreateEnemyShip - Creates specified number of rotating enemies that fire projectiles at the player.
         // CreateEnemyWaller - Creates enemies that crawl the walls and sweeps the screen with a laser.
         // CreatePlanet - Creates a planet; these do not attack until their shield is brought down, then fire projectiles at the player.
+
+
 
         // do levels under 10
         if (SelectedLevel < 10)
@@ -91,6 +104,7 @@ public class Concentryx : MonoBehaviour
                     CreateEnemyShip(1);
                     CreateNearbyStar(numNearbyStars);
                     CreateFarStar(numFarStars);
+                    audioSource.clip = gameMusic[0];
                     break;
 
                 case 1:
@@ -102,6 +116,7 @@ public class Concentryx : MonoBehaviour
                     CreateEnemyShip(1);
                     CreateNearbyStar(numNearbyStars);
                     CreateFarStar(numFarStars);
+                    audioSource.clip = gameMusic[1];
                     break;
 
                 case 2:
@@ -111,6 +126,7 @@ public class Concentryx : MonoBehaviour
                     CreateEnemyWaller(1);
                     CreateNearbyStar(numNearbyStars);
                     CreateFarStar(numFarStars);
+                    audioSource.clip = gameMusic[2];
                     break;
 
                 case 3:
@@ -122,6 +138,7 @@ public class Concentryx : MonoBehaviour
                     CreatePlanet(1);
                     CreateNearbyStar(numNearbyStars);
                     CreateFarStar(numFarStars);
+                    audioSource.clip = gameMusic[3];
                     break;
 
 
@@ -135,6 +152,7 @@ public class Concentryx : MonoBehaviour
                     //CreatePlanet(0);
                     CreateNearbyStar(numNearbyStars);
                     CreateFarStar(numFarStars);
+                    audioSource.clip = gameMusic[4];
                     break;
 
 
@@ -148,6 +166,7 @@ public class Concentryx : MonoBehaviour
                     CreatePlanet(1);
                     CreateNearbyStar(numNearbyStars);
                     CreateFarStar(numFarStars);
+                    audioSource.clip = gameMusic[5];
                     break;
 
                 case 6:
@@ -160,9 +179,13 @@ public class Concentryx : MonoBehaviour
                     CreatePlanet(1);
                     CreateNearbyStar(numNearbyStars);
                     CreateFarStar(numFarStars);
+                    audioSource.clip = gameMusic[6];
                     break;
 
             }
+
+
+            audioSource.Play();
         }
 
 

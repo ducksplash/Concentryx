@@ -21,6 +21,8 @@ public class Menu : MonoBehaviour
     public CanvasGroup SettingsMenuCanvas;
     public CanvasGroup SureMenuCanvas;
     public CanvasGroup XPSureCanvas;
+    public CanvasGroup XPButtonCanvas;
+    public CanvasGroup PauseButtonCanvas;
 
     public CanvasGroup LevelEndCanvas;
     public CanvasGroup LevelInterstitialCanvas;
@@ -198,8 +200,11 @@ public class Menu : MonoBehaviour
 
     public void RankScreen()
     {
-        ChangePage(RankMenuCanvas);
-        Time.timeScale = 0f;
+        if (Time.timeScale > 0f)
+        {
+            ChangePage(RankMenuCanvas);
+            Time.timeScale = 0f;
+        }
     }
 
 
@@ -212,9 +217,12 @@ public class Menu : MonoBehaviour
 
     public void Pause()
     {
-        ChangePage(PauseMenuCanvas);
+        if (Time.timeScale > 0f)
+        {
+            ChangePage(PauseMenuCanvas);
 
-        Time.timeScale = 0f;
+            Time.timeScale = 0f;
+        }
 
     }
     public void AreYouSure()
@@ -245,6 +253,8 @@ public class Menu : MonoBehaviour
         Application.Quit();
     }
 
+
+    // Change the page of the menu
     public void ChangePage(CanvasGroup ToOpen = null, bool FirstRun = false)
     {
 

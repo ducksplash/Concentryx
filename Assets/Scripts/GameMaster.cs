@@ -239,7 +239,6 @@ public class GameMaster : MonoBehaviour
         }
 
         ResetColourAdjustments();
-        InstantiateLevel();
     }
 
 
