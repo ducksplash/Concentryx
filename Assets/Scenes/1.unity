@@ -723,11 +723,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5116799521037211068, guid: 01df39786e1a3dc4d974a75ac4008838, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 954.5092
+      value: 968.96
       objectReference: {fileID: 0}
     - target: {fileID: 5116799521037211068, guid: 01df39786e1a3dc4d974a75ac4008838, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 539.1516
+      value: 535.67
       objectReference: {fileID: 0}
     - target: {fileID: 5116799521037211068, guid: 01df39786e1a3dc4d974a75ac4008838, type: 3}
       propertyPath: m_LocalPosition.z
@@ -22650,7 +22650,7 @@ MonoBehaviour:
   scoreText: {fileID: 81350817}
   scoreTextRanks: {fileID: 1091227057}
   highScoreText: {fileID: 1961834425}
-  CurrentLevel: 0
+  CurrentLevel: 1
   LevelEngaged: 0
   levelEndCanvas: {fileID: 94250968}
   levelEndText: {fileID: 141782553}

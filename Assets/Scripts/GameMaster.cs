@@ -488,6 +488,7 @@ public class GameMaster : MonoBehaviour
         playerHighScore = 0;
         playerScore = 0;
         playerScoreThisLevel = 0;
+        CurrentLevel = 1;
 
 
         // Update UI with default values
