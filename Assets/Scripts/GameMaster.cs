@@ -3,6 +3,7 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Audio;
 using System;
 using System.Collections.Generic;
 using System.Collections;
@@ -72,6 +73,8 @@ public class GameMaster : MonoBehaviour
 
     public Button levelEndNextLevelButton;
     public Button levelEndRetryButton;
+
+    public CanvasGroup levelEndButtonsParent;
 
     public TextMeshProUGUI timerText;
 
@@ -144,6 +147,13 @@ public class GameMaster : MonoBehaviour
 
     public GameObject phoneControl;
 
+    public AudioMixer AudioMixer;
+
+    public CanvasGroup cheatMenuCanvas;
+
+    public bool playerReady = true;
+
+
     private void Awake()
     {
         instance = this;
@@ -173,7 +183,7 @@ public class GameMaster : MonoBehaviour
         playerXP = PlayerPrefs.GetInt("PlayerXP", 0);
         toNextRank = PlayerPrefs.GetInt("ToNextRank", 1000);
 
-        //CurrentLevel = PlayerPrefs.GetInt("CurrentLevel", 0);
+        CurrentLevel = PlayerPrefs.GetInt("CurrentLevel", 0);
 
         // Update UI with loaded values
         rankeryText.text = playerRank.ToString();
@@ -237,7 +247,11 @@ public class GameMaster : MonoBehaviour
             phoneControl.SetActive(false);
             onMobile = false;
         }
-
+        cheatMenuCanvas.alpha = 0;
+        cheatMenuCanvas.interactable = false;
+        cheatMenuCanvas.blocksRaycasts = false;
+        levelEndNextLevelButton.interactable = false;
+        levelEndRetryButton.interactable = false;
         ResetColourAdjustments();
     }
 
@@ -271,6 +285,21 @@ public class GameMaster : MonoBehaviour
             }
         }
 
+
+        if (playerReady)
+        {
+            levelEndButtonsParent.alpha = 1f;
+            levelEndButtonsParent.interactable = true;
+            levelEndButtonsParent.blocksRaycasts = true;
+        }
+        else
+        {
+            levelEndButtonsParent.alpha = 0f;
+            levelEndButtonsParent.interactable = false;
+            levelEndButtonsParent.blocksRaycasts = false;
+        }
+
+
     }
 
 
@@ -284,10 +313,15 @@ public class GameMaster : MonoBehaviour
         }
     }
 
+    // should spin this off into dedicated level manager
 
     public IEnumerator EndLevel(int reason = 0)
     {
         Time.timeScale = 0f;
+
+
+        AudioMixer.SetFloat("SFX", -40f);
+        AudioMixer.SetFloat("BGM", -40f);
 
         if (colorAdjustAvailable)
         {
@@ -324,11 +358,12 @@ public class GameMaster : MonoBehaviour
             playerScoreThisLevel = 0;
 
             CurrentLevel++;
+            PlayerPrefs.SetInt("CurrentLevel", CurrentLevel);
 
         }
 
 
-        // level complete by running out of time
+        // level ended by running out of time
         if (reason == 1)
         {
 
@@ -340,15 +375,14 @@ public class GameMaster : MonoBehaviour
             levelEndScoreText.text = playerScore.ToString();
             levelEndScoreThisLevelText.text = playerScoreThisLevel.ToString();
             levelEndHighScoreText.text = playerHighScore.ToString();
-
+            ResetRank();
 
             playerScoreThisLevel = 0;
 
         }
-        // level complete by death
+        // level ended by death
         if (reason == 2)
         {
-
             Debug.Log("reason 2");
             ResetColourAdjustments();
             levelEndNextLevelButton.interactable = false;
@@ -363,12 +397,6 @@ public class GameMaster : MonoBehaviour
             playerScoreThisLevel = 0;
 
         }
-
-
-
-
-
-
 
     }
 
@@ -461,6 +489,7 @@ public class GameMaster : MonoBehaviour
         playerScore = 0;
         playerScoreThisLevel = 0;
 
+
         // Update UI with default values
         rankeryText.text = playerRank.ToString();
         rankMenuText.text = playerRank.ToString();
@@ -486,6 +515,7 @@ public class GameMaster : MonoBehaviour
         PlayerPrefs.SetInt("PlayerScore", playerScore);
         PlayerPrefs.SetInt("PlayerScoreThisLevel", playerScoreThisLevel);
         PlayerPrefs.SetInt("PlayerXP", playerXP);
+        PlayerPrefs.SetInt("CurrentLevel", CurrentLevel);
         PlayerPrefs.Save();
     }
 
@@ -847,6 +877,22 @@ public class GameMaster : MonoBehaviour
 
 
 
+
+    public void CheatMenu()
+    {
+        if (cheatMenuCanvas.alpha == 0)
+        {
+            cheatMenuCanvas.alpha = 1;
+            cheatMenuCanvas.interactable = true;
+            cheatMenuCanvas.blocksRaycasts = true;
+        }
+        else
+        {
+            cheatMenuCanvas.alpha = 0;
+            cheatMenuCanvas.interactable = false;
+            cheatMenuCanvas.blocksRaycasts = false;
+        }
+    }
 
 
 

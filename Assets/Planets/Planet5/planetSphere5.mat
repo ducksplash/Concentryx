@@ -12,15 +12,18 @@ Material:
   m_ValidKeywords:
   - _EMISSION
   - _NORMALMAP
+  - _SURFACE_TYPE_TRANSPARENT
   m_InvalidKeywords:
   - _FLIPBOOKBLENDING_OFF
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 1950
+  m_CustomRenderQueue: 2950
   stringTagMap:
-    RenderType: Opaque
-  disabledShaderPasses: []
+    RenderType: Transparent
+  disabledShaderPasses:
+  - DepthOnly
+  - SHADOWCASTER
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -281,7 +284,7 @@ Material:
     - _DistortionSpeed: 1.45
     - _DistortionStrength: 0.341
     - _DistortionStrengthScaled: 0.1
-    - _DstBlend: 0
+    - _DstBlend: 10
     - _EMISSION_WEIGHT: 1
     - _EnableExternalAlpha: 0
     - _EnvironmentReflections: 1
@@ -323,11 +326,11 @@ Material:
     - _SpecularHighlights: 1
     - _SpecularMapIntensity: 0.4
     - _Specularity: 0
-    - _SrcBlend: 1
-    - _Surface: 0
+    - _SrcBlend: 5
+    - _Surface: 1
     - _TRANSPARENCY: 0
     - _WorkflowMode: 1
-    - _ZWrite: 1
+    - _ZWrite: 0
     m_Colors:
     - Color_235DB7F: {r: 0.4528302, g: 0.4528302, b: 0.4528302, a: 1}
     - Color_5B10A26F: {r: 0.5566038, g: 0, b: 0, a: 0.70980394}

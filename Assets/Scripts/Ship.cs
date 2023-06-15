@@ -115,6 +115,8 @@ public class Ship : MonoBehaviour
     {
         Debug.Log("destroy ship!");
 
+        GameMaster.instance.playerReady = false;
+
         Material material = shipSprite.material;
 
         // Get the current color
@@ -136,7 +138,7 @@ public class Ship : MonoBehaviour
     public IEnumerator GameOver()
     {
         Debug.Log("Game Over!");
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSecondsRealtime(1f);
         StartCoroutine(GameMaster.instance.EndLevel(2));
         StartCoroutine(reposition());
 
@@ -144,7 +146,7 @@ public class Ship : MonoBehaviour
 
     public IEnumerator reposition()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSecondsRealtime(0.1f);
         Material material = shipSprite.material;
 
         // Get the current color
@@ -157,13 +159,14 @@ public class Ship : MonoBehaviour
         material.color = color;
 
         healthCanvas.alpha = 1f;
+        GameMaster.instance.playerReady = true;
     }
 
     public IEnumerator FlashPlayer()
     {
         shipSprite.color = Color.red;
 
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSecondsRealtime(0.1f);
         shipSprite.color = Color.white;
     }
 

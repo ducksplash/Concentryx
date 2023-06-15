@@ -238,6 +238,16 @@ public class GridLayouts : MonoBehaviour
         return returnables;
     }
 
+    public string[] GetRandomPattern()
+    {
+
+        int randomIndex = Random.Range(0, GridPatterns.Count);
+        string randomKey = GridPatterns.Keys.ElementAt(randomIndex);
+        string[] returnables = { randomKey, GridPatterns[randomKey] };
+
+        return returnables;
+    }
+
 
 
 }

@@ -49,6 +49,8 @@ public class Concentryx : MonoBehaviour
 
     private Coroutine GameTimer;
 
+    public string[] thoseLevels;
+
 
     public AudioSource audioSource;
 
@@ -81,24 +83,21 @@ public class Concentryx : MonoBehaviour
         // CreatePlanet - Creates a planet; these do not attack until their shield is brought down, then fire projectiles at the player.
 
 
+        // decide on stars outside of other level decisions.
 
-        // do levels under 10
-        if (SelectedLevel < 10)
+        // nearby
+        int numNearbyStars = UnityEngine.Random.Range(1, 2);
+        // faraway
+        int numFarStars = UnityEngine.Random.Range(3, 8);
+
+
+        // do levels under 11
+        if (SelectedLevel < 11)
         {
-
-            // decide on stars
-            // nearby
-            int numNearbyStars = UnityEngine.Random.Range(1, 2);
-            // faraway
-            int numFarStars = UnityEngine.Random.Range(3, 8);
-
-
             switch (SelectedLevel)
             {
                 case 0:
-                    // timer
-                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(330));
-
+                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(30));
                     currentLevelName = "Concentryx";
                     ConcentricRings();
                     CreateEnemyShip(1);
@@ -108,9 +107,7 @@ public class Concentryx : MonoBehaviour
                     break;
 
                 case 1:
-                    // timer
-                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(330));
-
+                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(160));
                     currentLevelName = "Concentryx";
                     ConcentricRings();
                     CreateEnemyShip(1);
@@ -120,7 +117,7 @@ public class Concentryx : MonoBehaviour
                     break;
 
                 case 2:
-                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(50));
+                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(80));
                     currentLevelName = "New Friends";
                     ConcentricRings(6);
                     CreateEnemyWaller(1);
@@ -130,7 +127,7 @@ public class Concentryx : MonoBehaviour
                     break;
 
                 case 3:
-                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(60));
+                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(90));
                     currentLevelName = "Old Enemies";
                     LevelPatternPhrase(" ", "Ready?", " ");
                     CreateEnemyWaller(1);
@@ -146,10 +143,7 @@ public class Concentryx : MonoBehaviour
                     GameTimer = StartCoroutine(GameMaster.instance.Countdown(120));
                     currentLevelName = "Inevitable";
                     ImagePlay(gridLayouts.GetGridPattern("Sunrise"));
-                    //ConcentricRings(6);
                     CreateEnemyWaller(2);
-                    //CreateEnemyShip(0);
-                    //CreatePlanet(0);
                     CreateNearbyStar(numNearbyStars);
                     CreateFarStar(numFarStars);
                     audioSource.clip = gameMusic[4];
@@ -157,12 +151,10 @@ public class Concentryx : MonoBehaviour
 
 
                 case 5:
-                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(180));
+                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(200));
                     currentLevelName = "Meow";
                     ImagePlay(gridLayouts.GetGridPattern("Meow"));
-                    //ConcentricRings(6);
                     CreateEnemyWaller(0);
-                    //CreateEnemyShip(0);
                     CreatePlanet(1);
                     CreateNearbyStar(numNearbyStars);
                     CreateFarStar(numFarStars);
@@ -170,10 +162,9 @@ public class Concentryx : MonoBehaviour
                     break;
 
                 case 6:
-                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(240));
+                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(200));
                     currentLevelName = "Concentryx";
                     ImagePlay(gridLayouts.GetGridPattern("Concentryx"));
-                    //ConcentricRings(6);
                     CreateEnemyWaller(2);
                     CreateEnemyShip(2);
                     CreatePlanet(1);
@@ -182,14 +173,72 @@ public class Concentryx : MonoBehaviour
                     audioSource.clip = gameMusic[6];
                     break;
 
-            }
+                case 7:
+                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(240));
+                    currentLevelName = "Quack";
+                    ImagePlay(gridLayouts.GetGridPattern("Quack"));
+                    CreateEnemyWaller(1);
+                    CreateEnemyShip(4);
+                    CreatePlanet(2);
+                    CreateNearbyStar(numNearbyStars);
+                    CreateFarStar(numFarStars);
+                    audioSource.clip = gameMusic[7];
+                    break;
 
+                case 8:
+                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(300));
+                    currentLevelName = "Arena";
+                    ImagePlay(gridLayouts.GetGridPattern("Arena"));
+                    CreateEnemyWaller(4);
+                    CreateEnemyShip(0);
+                    CreatePlanet(0);
+                    CreateNearbyStar(numNearbyStars);
+                    CreateFarStar(numFarStars);
+                    audioSource.clip = gameMusic[8];
+                    break;
+
+                case 9:
+                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(220));
+                    currentLevelName = "Controversy";
+                    ImagePlay(gridLayouts.GetGridPattern("Fleg"));
+                    CreateEnemyWaller(1);
+                    CreateEnemyShip(4);
+                    CreatePlanet(0);
+                    CreateNearbyStar(numNearbyStars);
+                    CreateFarStar(numFarStars);
+                    audioSource.clip = gameMusic[9];
+                    break;
+
+                case 10:
+                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(220));
+                    currentLevelName = "Vote, Dummy!";
+                    ImagePlay(gridLayouts.GetGridPattern("Vote, Dummy!"));
+                    CreateEnemyWaller(1);
+                    CreateEnemyShip(4);
+                    CreatePlanet(0);
+                    CreateNearbyStar(numNearbyStars);
+                    CreateFarStar(numFarStars);
+                    audioSource.clip = gameMusic[UnityEngine.Random.Range(0, gameMusic.Length - 1)];
+                    break;
+
+            }
 
             audioSource.Play();
         }
+        else
+        {
+            GameTimer = StartCoroutine(GameMaster.instance.Countdown(240));
+            currentLevelName = "Level " + SelectedLevel.ToString();
+            ImagePlay(gridLayouts.GetRandomPattern());
+            CreateEnemyWaller(UnityEngine.Random.Range(0, 4));
+            CreateEnemyShip(UnityEngine.Random.Range(0, 8));
+            CreatePlanet(UnityEngine.Random.Range(0, 3));
+            CreateNearbyStar(numNearbyStars);
+            CreateFarStar(numFarStars);
+            audioSource.clip = gameMusic[UnityEngine.Random.Range(0, gameMusic.Length - 1)];
 
-
-        // do levels 10-20
+            audioSource.Play();
+        }
 
     }
 

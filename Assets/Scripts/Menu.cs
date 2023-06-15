@@ -272,6 +272,8 @@ public class Menu : MonoBehaviour
             ToOpen.blocksRaycasts = true;
             ThumbStickCanvas.alpha = 0f;
             ThumbStickCanvas.blocksRaycasts = false;
+            AudioMixer.SetFloat("SFX", -40f);
+            AudioMixer.SetFloat("BGM", -40f);
             if (!FirstRun)
             {
                 menuNoiseBox.clip = menuNoises[0];
@@ -282,12 +284,18 @@ public class Menu : MonoBehaviour
         {
             ThumbStickCanvas.alpha = 1f;
             ThumbStickCanvas.blocksRaycasts = true;
+            AudioMixer.SetFloat("SFX", PlayerPrefs.GetFloat("SFXVolume", 0f));
+            AudioMixer.SetFloat("BGM", PlayerPrefs.GetFloat("BGMVolume", 0f));
             if (!FirstRun)
             {
                 menuNoiseBox.clip = menuNoises[1];
                 menuNoiseBox.PlayOneShot(menuNoises[1]);
             }
         }
+
+
+
+
         TriggerVibrate();
     }
 
