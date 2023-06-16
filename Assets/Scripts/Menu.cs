@@ -19,8 +19,10 @@ public class Menu : MonoBehaviour
     public CanvasGroup PauseMenuCanvas;
     public CanvasGroup RankMenuCanvas;
     public CanvasGroup SettingsMenuCanvas;
+    public CanvasGroup SettingsExtCanvas;
     public CanvasGroup SureMenuCanvas;
     public CanvasGroup XPSureCanvas;
+    public CanvasGroup CreditsScreenCanvas;
     public CanvasGroup XPButtonCanvas;
     public CanvasGroup PauseButtonCanvas;
 
@@ -198,6 +200,13 @@ public class Menu : MonoBehaviour
         Debug.Log("resume triggered");
     }
 
+
+    public void Return()
+    {
+        TriggerVibrate();
+        ChangePage(MainMenuCanvas);
+    }
+
     public void RankScreen()
     {
         if (Time.timeScale > 0f)
@@ -211,6 +220,13 @@ public class Menu : MonoBehaviour
     public void SettingsScreen()
     {
         ChangePage(SettingsMenuCanvas);
+        Time.timeScale = 0f;
+    }
+
+
+    public void SettingsScreenExt()
+    {
+        ChangePage(SettingsExtCanvas);
         Time.timeScale = 0f;
     }
 
@@ -251,6 +267,13 @@ public class Menu : MonoBehaviour
     {
         // Quit the game
         Application.Quit();
+    }
+
+
+    public void CreditsScreen()
+    {
+        // credits
+        ChangePage(CreditsScreenCanvas);
     }
 
 
