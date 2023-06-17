@@ -106,7 +106,7 @@ public class GameMaster : MonoBehaviour
     public int scoreMultiplierTimer = 20;
     public int invulnerabiltyTimer = 20;
     public int flameThrowerTimer = 4;
-    public int lightningTimer = 5;
+    public int lightningTimer = 2;
 
 
 
@@ -344,6 +344,7 @@ public class GameMaster : MonoBehaviour
 
         }
 
+        ResetAbilities();
 
         levelEndCanvas.alpha = 1f;
         levelEndCanvas.interactable = true;
@@ -627,10 +628,11 @@ public class GameMaster : MonoBehaviour
                 break;
             case "L":
                 pillTime = lightningTimer;
+                sfxAudioSource.clip = weaponNoises[2];
+                sfxAudioSource.Play();
                 StartCoroutine(StrikeLightning());
                 StartCoroutine(DisplayPillText(pillType));
-
-                return;
+                break;
         }
 
         PillAction(pillType);
@@ -677,6 +679,7 @@ public class GameMaster : MonoBehaviour
 
     private IEnumerator PillCountDown(GameObject pillReadout, string pillType, int superPillTime)
     {
+        Debug.Log("called for L?" + pillType);
         GameObject childObject = pillReadout.transform.GetChild(0).gameObject;
         TextMeshProUGUI pillTimeReadout = childObject.GetComponent<TextMeshProUGUI>();
 
@@ -726,6 +729,8 @@ public class GameMaster : MonoBehaviour
             case "L":
                 lightningObject.SetActive(false);
                 ChainLightning.instance.engaged = false;
+                sfxAudioSource.clip = weaponNoises[0];
+                Debug.Log("was lightning stopoped?");
                 break;
             case "I":
                 invulnerable = false;
@@ -744,6 +749,32 @@ public class GameMaster : MonoBehaviour
         return index;
     }
 
+
+
+    public void ResetAbilities()
+    {
+
+        // at the end of a level / on death, remove 'special abilities'
+        projectileDelay = projectileDelayDefault;
+        scoreModifier = 1;
+        currentWeapon = defaultWeapon;
+        sfxAudioSource.clip = weaponNoises[0];
+        lightningObject.SetActive(false);
+        ChainLightning.instance.engaged = false;
+        sfxAudioSource.clip = weaponNoises[0];
+        invulnerable = false;
+        shieldParticleSystem.SetActive(false);
+        shieldParticleSystem.GetComponent<ParticleSystem>().Stop();
+        shipCollider.radius = defaultCollider;
+
+        int childCount = pillContent.transform.childCount;
+        for (int i = childCount - 1; i >= 0; i--)
+        {
+            GameObject child = pillContent.transform.GetChild(i).gameObject;
+            Destroy(child);
+        }
+
+    }
 
 
 
@@ -773,12 +804,9 @@ public class GameMaster : MonoBehaviour
         textMaterial.EnableKeyword("UNDERLAY_ON");
 
 
-        // Wait for the flash duration
         yield return new WaitForSeconds(0.1f);
 
         scoreText.color = originalColor;
-
-        // Check if the material has the "_LocalLighting" property before setting it to 0
 
         textMaterial.DisableKeyword("UNDERLAY_ON");
 

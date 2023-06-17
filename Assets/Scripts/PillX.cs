@@ -73,15 +73,12 @@ public class PillX : MonoBehaviour
                 {
                     StartCoroutine(FlashPill());
                 }
-
             }
             else
             {
 
                 if (!isDead)
                 {
-
-
                     GameMaster.instance.CollectPill(pilltype);
                     StartCoroutine(AddScore(hits * 2));
                     isDead = true;

@@ -21,7 +21,6 @@ public class Menu : MonoBehaviour
     public CanvasGroup SettingsMenuCanvas;
     public CanvasGroup SureMenuCanvas;
     public CanvasGroup XPSureCanvas;
-    public CanvasGroup CreditsScreenCanvas;
     public CanvasGroup XPButtonCanvas;
     public CanvasGroup PauseButtonCanvas;
 
@@ -265,12 +264,6 @@ public class Menu : MonoBehaviour
         Application.Quit();
     }
 
-
-    public void CreditsScreen()
-    {
-        // credits
-        ChangePage(CreditsScreenCanvas);
-    }
 
 
     // Change the page of the menu
