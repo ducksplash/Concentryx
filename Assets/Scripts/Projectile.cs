@@ -10,6 +10,8 @@ public class Projectile : MonoBehaviour
 
     public GameObject flameThrower;
 
+    public Coroutine firingCoroutine = null;
+
     private bool canFire = true;
     private bool isFiring;
 
@@ -40,18 +42,9 @@ public class Projectile : MonoBehaviour
             {
                 StartFlameThrower();
             }
-            if (!AudioPlaying)
-            {
-                StartCoroutine(StartAudio());
-                AudioPlaying = true;
-            }
         }
 
-        if (Input.GetMouseButtonUp(0) && AudioPlaying)
-        {
-            StartCoroutine(StopAudio());
-            AudioPlaying = false;
-        }
+
 
         if ((Input.GetMouseButtonUp(0) || GameMaster.instance.currentWeapon != "Flamethrower") && isFiring)
         {
@@ -63,6 +56,10 @@ public class Projectile : MonoBehaviour
     {
         canFire = false;
 
+        if (firingCoroutine == null)
+        { firingCoroutine = StartCoroutine(StartAudio()); }
+
+
         Vector2 direction = transform.up; // Use the forward direction of the GameObject
         GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
         projectile.transform.rotation = transform.rotation;
@@ -71,15 +68,12 @@ public class Projectile : MonoBehaviour
 
         projectileCounter++;
 
-
-
-
-
         StartCoroutine(ResetFireDelay());
     }
 
     private void StartFlameThrower()
     {
+        audioSource.Play();
         canFire = false;
         isFiring = true;
         flameThrower.GetComponent<ParticleSystem>().Play();
@@ -94,6 +88,7 @@ public class Projectile : MonoBehaviour
         canFire = true;
         flameThrower.GetComponent<ParticleSystem>().Stop();
         flameThrower.SetActive(false);
+        audioSource.Stop();
     }
 
     private IEnumerator ResetFireDelay()
@@ -107,6 +102,7 @@ public class Projectile : MonoBehaviour
     {
         audioSource.Play();
         yield return new WaitForSeconds(0.1f);
+        firingCoroutine = null;
 
     }
     private IEnumerator StopAudio()

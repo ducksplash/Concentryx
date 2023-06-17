@@ -19,7 +19,6 @@ public class Menu : MonoBehaviour
     public CanvasGroup PauseMenuCanvas;
     public CanvasGroup RankMenuCanvas;
     public CanvasGroup SettingsMenuCanvas;
-    public CanvasGroup SettingsExtCanvas;
     public CanvasGroup SureMenuCanvas;
     public CanvasGroup XPSureCanvas;
     public CanvasGroup CreditsScreenCanvas;
@@ -198,6 +197,7 @@ public class Menu : MonoBehaviour
         ChangePage();
         Time.timeScale = 1f;
         Debug.Log("resume triggered");
+        GameMaster.instance.GamePaused = false;
     }
 
 
@@ -209,7 +209,7 @@ public class Menu : MonoBehaviour
 
     public void RankScreen()
     {
-        if (Time.timeScale > 0f)
+        if (GameMaster.instance.LevelEngaged)
         {
             ChangePage(RankMenuCanvas);
             Time.timeScale = 0f;
@@ -224,20 +224,16 @@ public class Menu : MonoBehaviour
     }
 
 
-    public void SettingsScreenExt()
-    {
-        ChangePage(SettingsExtCanvas);
-        Time.timeScale = 0f;
-    }
-
 
     public void Pause()
     {
-        if (Time.timeScale > 0f)
+        if (GameMaster.instance.LevelEngaged)
         {
             ChangePage(PauseMenuCanvas);
 
             Time.timeScale = 0f;
+
+            GameMaster.instance.GamePaused = true;
         }
 
     }
@@ -374,8 +370,7 @@ public class Menu : MonoBehaviour
         Time.timeScale = 1f;
         ChangePage(null, true);
 
-        Debug.Log("warmup triggered");
-
+        GameMaster.instance.LevelEngaged = true;
     }
 
     public void BypassWarmup()
@@ -385,7 +380,7 @@ public class Menu : MonoBehaviour
         Time.timeScale = 1f;
         ChangePage(null, true);
 
-        Debug.Log("bypass warmup triggered");
+        GameMaster.instance.LevelEngaged = true;
     }
 
 

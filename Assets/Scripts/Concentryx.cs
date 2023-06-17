@@ -72,6 +72,13 @@ public class Concentryx : MonoBehaviour
     {
 
         CleanLevel();
+
+        if (SelectedLevel == 999)
+        {
+            GameMaster.instance.ActiveEnemies = 0;
+        }
+
+
         // first 10 levels should be named.
         // subsequent X levels should be selected randomly from a list of pre defined levels.
         // all levels beyond shall be randomly generated using the individual parts:
@@ -91,8 +98,8 @@ public class Concentryx : MonoBehaviour
         int numFarStars = UnityEngine.Random.Range(3, 8);
 
 
-        // do levels under 11
-        if (SelectedLevel < 11)
+        // do levels under 12
+        if (SelectedLevel < 12)
         {
             switch (SelectedLevel)
             {
@@ -221,6 +228,18 @@ public class Concentryx : MonoBehaviour
                     audioSource.clip = gameMusic[UnityEngine.Random.Range(0, gameMusic.Length - 1)];
                     break;
 
+                case 11:
+                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(220));
+                    currentLevelName = "Resonance Cascade";
+                    ImagePlay(gridLayouts.GetGridPattern("Resonance Cascade"));
+                    CreateEnemyWaller(1);
+                    CreateEnemyShip(4);
+                    CreatePlanet(0);
+                    CreateNearbyStar(numNearbyStars);
+                    CreateFarStar(numFarStars);
+                    audioSource.clip = gameMusic[UnityEngine.Random.Range(0, gameMusic.Length - 1)];
+                    break;
+
             }
 
             audioSource.Play();
@@ -297,8 +316,12 @@ public class Concentryx : MonoBehaviour
                             selectedSprite = GetSprite(x, y, 3);
                             break;
 
+                        case "Resonance Cascade":
+                            selectedSprite = GetSprite(x, y, 8);
+                            break;
+
                         default:
-                            selectedSprite = GetSprite(x, y, 0);
+                            selectedSprite = GetSprite(x, y, UnityEngine.Random.Range(0, 8));
                             break;
                     }
 
@@ -490,6 +513,15 @@ public class Concentryx : MonoBehaviour
         {
 
             selectedSprite = spriteSelection[2];
+
+        }
+
+
+        // orange box
+        if (pattern == 8)
+        {
+
+            selectedSprite = spriteSelection[6];
 
         }
 

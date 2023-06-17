@@ -106,6 +106,7 @@ public class GameMaster : MonoBehaviour
     public int scoreMultiplierTimer = 20;
     public int invulnerabiltyTimer = 20;
     public int flameThrowerTimer = 4;
+    public int lightningTimer = 5;
 
 
 
@@ -149,9 +150,15 @@ public class GameMaster : MonoBehaviour
 
     public AudioMixer AudioMixer;
 
+    public AudioSource sfxAudioSource;
+
     public CanvasGroup cheatMenuCanvas;
 
     public bool playerReady = true;
+
+    public bool GamePaused = false;
+
+    public AudioClip[] weaponNoises;
 
 
     private void Awake()
@@ -268,7 +275,7 @@ public class GameMaster : MonoBehaviour
         Concentryx.GetComponent<Concentryx>().BuildLevel(CurrentLevel);
 
         // set to 'playing'
-        LevelEngaged = true;
+        //LevelEngaged = true;
 
     }
 
@@ -607,6 +614,7 @@ public class GameMaster : MonoBehaviour
             case "F":
                 pillTime = flameThrowerTimer;
                 currentWeapon = "Flamethrower";
+                sfxAudioSource.clip = weaponNoises[1];
                 StartCoroutine(DisplayPillText(pillType));
                 break;
             case "I":
@@ -618,7 +626,7 @@ public class GameMaster : MonoBehaviour
                 StartCoroutine(DisplayPillText(pillType));
                 break;
             case "L":
-
+                pillTime = lightningTimer;
                 StartCoroutine(StrikeLightning());
                 StartCoroutine(DisplayPillText(pillType));
 
@@ -633,6 +641,7 @@ public class GameMaster : MonoBehaviour
         lightningObject.SetActive(true);
         ChainLightning.instance.engaged = true;
         yield return new WaitForSeconds(0.5f);
+
     }
 
 
@@ -712,6 +721,11 @@ public class GameMaster : MonoBehaviour
                 break;
             case "F":
                 currentWeapon = defaultWeapon;
+                sfxAudioSource.clip = weaponNoises[0];
+                break;
+            case "L":
+                lightningObject.SetActive(false);
+                ChainLightning.instance.engaged = false;
                 break;
             case "I":
                 invulnerable = false;
