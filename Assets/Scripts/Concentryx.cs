@@ -110,7 +110,8 @@ public class Concentryx : MonoBehaviour
             switch (SelectedLevel)
             {
                 case 0:
-                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(30));
+                    // void level - never gets loaded
+                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(5));
                     currentLevelName = "Concentryx";
                     ConcentricRings();
                     CreateEnemyShip(1);
@@ -126,7 +127,7 @@ public class Concentryx : MonoBehaviour
                     CreateEnemyShip(1);
                     CreateNearbyStar(numNearbyStars);
                     CreateFarStar(numFarStars);
-                    audioSource.clip = gameMusic[1];
+                    audioSource.clip = gameMusic[0];
                     break;
 
                 case 2:
@@ -136,7 +137,7 @@ public class Concentryx : MonoBehaviour
                     CreateEnemyWaller(1);
                     CreateNearbyStar(numNearbyStars);
                     CreateFarStar(numFarStars);
-                    audioSource.clip = gameMusic[2];
+                    audioSource.clip = gameMusic[1];
                     break;
 
                 case 3:
@@ -148,7 +149,7 @@ public class Concentryx : MonoBehaviour
                     CreatePlanet(1);
                     CreateNearbyStar(numNearbyStars);
                     CreateFarStar(numFarStars);
-                    audioSource.clip = gameMusic[3];
+                    audioSource.clip = gameMusic[2];
                     break;
 
 
@@ -159,7 +160,7 @@ public class Concentryx : MonoBehaviour
                     CreateEnemyWaller(2);
                     CreateNearbyStar(numNearbyStars);
                     CreateFarStar(numFarStars);
-                    audioSource.clip = gameMusic[4];
+                    audioSource.clip = gameMusic[3];
                     break;
 
 
@@ -171,10 +172,23 @@ public class Concentryx : MonoBehaviour
                     CreatePlanet(1);
                     CreateNearbyStar(numNearbyStars);
                     CreateFarStar(numFarStars);
+                    audioSource.clip = gameMusic[4];
+                    break;
+
+
+                case 6:
+                    // boss 1
+                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(500));
+                    currentLevelName = "uh oh";
+                    // create enemy boss
+                    CreateBossOne();
+                    //CreatePlanet(1);
+                    CreateNearbyStar(numNearbyStars);
+                    CreateFarStar(numFarStars);
                     audioSource.clip = gameMusic[5];
                     break;
 
-                case 6:
+                case 7:
                     GameTimer = StartCoroutine(GameMaster.instance.Countdown(200));
                     currentLevelName = "Concentryx";
                     ImagePlay(gridLayouts.GetGridPattern("Concentryx"));
@@ -186,7 +200,7 @@ public class Concentryx : MonoBehaviour
                     audioSource.clip = gameMusic[6];
                     break;
 
-                case 7:
+                case 8:
                     GameTimer = StartCoroutine(GameMaster.instance.Countdown(240));
                     currentLevelName = "Quack";
                     ImagePlay(gridLayouts.GetGridPattern("Quack"));
@@ -198,7 +212,7 @@ public class Concentryx : MonoBehaviour
                     audioSource.clip = gameMusic[7];
                     break;
 
-                case 8:
+                case 9:
                     GameTimer = StartCoroutine(GameMaster.instance.Countdown(300));
                     currentLevelName = "Arena";
                     ImagePlay(gridLayouts.GetGridPattern("Arena"));
@@ -210,45 +224,18 @@ public class Concentryx : MonoBehaviour
                     audioSource.clip = gameMusic[8];
                     break;
 
-                case 9:
-                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(220));
-                    currentLevelName = "Controversy";
-                    ImagePlay(gridLayouts.GetGridPattern("Fleg"));
-                    CreateEnemyWaller(1);
-                    CreateEnemyShip(4);
-                    CreatePlanet(0);
-                    CreateNearbyStar(numNearbyStars);
-                    CreateFarStar(numFarStars);
-                    audioSource.clip = gameMusic[9];
-                    break;
-
                 case 10:
-                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(220));
+                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(240));
                     currentLevelName = "Vote, Dummy!";
                     ImagePlay(gridLayouts.GetGridPattern("Vote, Dummy!"));
                     CreateEnemyWaller(1);
                     CreateEnemyShip(4);
                     CreateNearbyStar(numNearbyStars);
                     CreateFarStar(numFarStars);
-                    audioSource.clip = gameMusic[UnityEngine.Random.Range(0, gameMusic.Length - 1)];
+                    audioSource.clip = gameMusic[9];
                     break;
 
                 case 11:
-                    // boss 1
-                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(500));
-                    currentLevelName = "uh oh";
-
-
-                    // create enemy boss
-                    CreateBossOne();
-
-                    //CreatePlanet(1);
-                    CreateNearbyStar(numNearbyStars);
-                    CreateFarStar(numFarStars);
-                    audioSource.clip = gameMusic[UnityEngine.Random.Range(0, gameMusic.Length - 1)];
-                    break;
-                case 12:
-                    // boss 1
                     GameTimer = StartCoroutine(GameMaster.instance.Countdown(220));
                     currentLevelName = "Resonance Cascade";
                     ImagePlay(gridLayouts.GetGridPattern("Resonance Cascade"));
@@ -260,6 +247,16 @@ public class Concentryx : MonoBehaviour
                     audioSource.clip = gameMusic[UnityEngine.Random.Range(0, gameMusic.Length - 1)];
                     break;
 
+                case 12:
+                    // boss 2
+                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(500));
+                    currentLevelName = "Controversy";
+                    ImagePlay(gridLayouts.GetGridPattern("Fleg"));
+                    CreateBossTwo();
+                    CreateNearbyStar(numNearbyStars);
+                    CreateFarStar(numFarStars);
+                    audioSource.clip = gameMusic[UnityEngine.Random.Range(0, gameMusic.Length - 1)];
+                    break;
             }
 
             audioSource.Play();
@@ -568,6 +565,20 @@ public class Concentryx : MonoBehaviour
 
 
         GameObject bossBoat = Instantiate(bossPrefabs[0], bossParent.transform.position, Quaternion.identity);
+        bossBoat.transform.parent = bossParent.transform;
+
+
+        Debug.Log("boss created");
+
+        GameMaster.instance.ActiveEnemies += 1;
+    }
+
+
+    public void CreateBossTwo()
+    {
+
+
+        GameObject bossBoat = Instantiate(bossPrefabs[1], bossParent.transform.position, Quaternion.identity);
         bossBoat.transform.parent = bossParent.transform;
 
 

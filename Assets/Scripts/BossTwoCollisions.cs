@@ -4,14 +4,13 @@ using System.Collections.Generic;
 using System.Collections;
 using System;
 
-public class BossCollisions : MonoBehaviour
+public class BossTwoCollisions : MonoBehaviour
 {
     public int enemyHealth = 100;
     public int enemyHits = 0;
     public bool isDead;
     public Slider enemyHealthbar1;
-    public Slider enemyHealthbar2;
-    public BossOneMovement movementScript;
+    public BossTwoMovement movementScript;
     private Animator animator;
 
     private void Start()
@@ -58,7 +57,6 @@ public class BossCollisions : MonoBehaviour
         if (!isDead)
         {
             enemyHealthbar1.value = 0;
-            enemyHealthbar2.value = 0;
             GameMaster.instance.IncrementScore(enemyHits);
             isDead = true;
 
@@ -75,13 +73,11 @@ public class BossCollisions : MonoBehaviour
         enemyHits += amount;
 
         enemyHealthbar1.value = enemyHealth;
-        enemyHealthbar2.value = enemyHealth;
 
 
         if (enemyHealth < 3)
         {
             enemyHealthbar1.GetComponentInChildren<Image>().color = Color.red;
-            enemyHealthbar2.GetComponentInChildren<Image>().color = Color.red;
         }
     }
 }

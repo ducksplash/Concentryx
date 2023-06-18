@@ -19,6 +19,8 @@ public class Ship : MonoBehaviour
     public CanvasGroup healthCanvas;
 
     public Vector3 startPosition;
+
+    public Coroutine gameOverCoroutine = null;
     private void Awake()
     {
         instance = this;
@@ -80,7 +82,7 @@ public class Ship : MonoBehaviour
         if (!GameMaster.instance.invulnerable)
         {
 
-            if (collision.gameObject.name.Contains("EnemyProjectile"))
+            if (collision.gameObject.name.Contains("EnemyProjectile") || collision.gameObject.name.Contains("BossProjectile"))
             {
                 collision.gameObject.GetComponent<EnemyBulletTime>().DestroyGameObject();
 
@@ -111,6 +113,7 @@ public class Ship : MonoBehaviour
     }
 
 
+
     public void DestroyShip()
     {
         Debug.Log("destroy ship!");
@@ -132,7 +135,14 @@ public class Ship : MonoBehaviour
 
 
         splodanim.SetTrigger("shipsplode");
-        StartCoroutine(GameOver());
+
+        if (gameOverCoroutine == null)
+        {
+            gameOverCoroutine = StartCoroutine(GameOver());
+        }
+
+
+
     }
 
     public IEnumerator GameOver()
@@ -141,6 +151,7 @@ public class Ship : MonoBehaviour
         yield return new WaitForSecondsRealtime(1f);
         StartCoroutine(GameMaster.instance.EndLevel(2));
         StartCoroutine(reposition());
+        gameOverCoroutine = null;
 
     }
 

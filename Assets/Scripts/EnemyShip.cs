@@ -59,7 +59,7 @@ public class EnemyShip : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (!collision.gameObject.name.Contains("EnemyProjectile"))
+        if (!collision.gameObject.name.Contains("Enemy") && !collision.gameObject.name.Contains("Boss"))
         {
             collision.gameObject.GetComponent<BulletTime>().DestroyGameObject();
 
