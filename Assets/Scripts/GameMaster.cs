@@ -743,6 +743,8 @@ public class GameMaster : MonoBehaviour
         Destroy(pillReadout);
     }
 
+
+
     public int FindGameObjectIndex(string name)
     {
         int index = Array.FindIndex(pillReadoutPrefabs, obj => obj.name == name);

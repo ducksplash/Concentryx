@@ -98,8 +98,9 @@ public class Concentryx : MonoBehaviour
         int numFarStars = UnityEngine.Random.Range(3, 8);
 
 
+
         // do levels under 12
-        if (SelectedLevel < 12)
+        if (SelectedLevel < 13)
         {
             switch (SelectedLevel)
             {
@@ -222,13 +223,27 @@ public class Concentryx : MonoBehaviour
                     ImagePlay(gridLayouts.GetGridPattern("Vote, Dummy!"));
                     CreateEnemyWaller(1);
                     CreateEnemyShip(4);
-                    CreatePlanet(0);
                     CreateNearbyStar(numNearbyStars);
                     CreateFarStar(numFarStars);
                     audioSource.clip = gameMusic[UnityEngine.Random.Range(0, gameMusic.Length - 1)];
                     break;
 
                 case 11:
+                    // boss 1
+                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(500));
+                    currentLevelName = "uh oh";
+
+
+                    // create enemy boss
+                    // CreateFirstBoss();
+
+                    CreatePlanet(1);
+                    CreateNearbyStar(numNearbyStars);
+                    CreateFarStar(numFarStars);
+                    audioSource.clip = gameMusic[UnityEngine.Random.Range(0, gameMusic.Length - 1)];
+                    break;
+                case 12:
+                    // boss 1
                     GameTimer = StartCoroutine(GameMaster.instance.Countdown(220));
                     currentLevelName = "Resonance Cascade";
                     ImagePlay(gridLayouts.GetGridPattern("Resonance Cascade"));
@@ -258,6 +273,7 @@ public class Concentryx : MonoBehaviour
 
             audioSource.Play();
         }
+
 
     }
 

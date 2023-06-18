@@ -8,6 +8,7 @@ public class LightningBolt
     public float SegmentLength { get; set; }
     public int Index { get; private set; }
     public bool IsActive { get; private set; }
+    public GameObject gridParent { get; set; }
 
     public LightningBolt(float segmentLength, int index)
     {
@@ -24,9 +25,12 @@ public class LightningBolt
             lineRenderer[i] = GameObject.Instantiate(lineRendererPrefab, Vector3.zero, Quaternion.identity).GetComponent<LineRenderer>();
             lineRenderer[i].gameObject.tag = "LightningBolt";
             lineRenderer[i].enabled = false;
+            lineRenderer[i].transform.SetParent(gridParent.transform);
+
         }
         lightRenderer = GameObject.Instantiate(lightRendererPrefab, Vector3.zero, Quaternion.identity).GetComponent<LineRenderer>();
         lightRenderer.gameObject.tag = "LightningBolt";
+        lightRenderer.gameObject.transform.SetParent(gridParent.transform);
         IsActive = false;
     }
 

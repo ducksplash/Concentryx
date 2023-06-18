@@ -25,6 +25,7 @@ public class ChainLightning : MonoBehaviour
 
     public bool engaged;
     private bool isKilling;
+    public GameObject gridParent;
 
     private void Awake()
     {
@@ -74,6 +75,7 @@ public class ChainLightning : MonoBehaviour
             for (int i = 0; i < chainLength; i++)
             {
                 LightningBolt tmpLightningBolt = new LightningBolt(segmentLength, i);
+                tmpLightningBolt.gridParent = gridParent;
                 tmpLightningBolt.Init(lightnings, lineRendererPrefab, lightRendererPrefab);
                 lightningBolts.Add(tmpLightningBolt);
             }

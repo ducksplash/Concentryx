@@ -38,7 +38,7 @@ public class PlanetHandler : MonoBehaviour
     private bool isHeatingUp = false;
 
 
-    private const float healthFillAmount = 0.001f; // Pre-calculated fill amount based on 1000 health
+    private const float healthFillAmount = 0.001f;
 
     private void Start()
     {
@@ -186,6 +186,7 @@ public class PlanetHandler : MonoBehaviour
             }
         }
     }
+
 
 
     public void StartHeatingUp()
