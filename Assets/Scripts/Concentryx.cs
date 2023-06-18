@@ -35,13 +35,18 @@ public class Concentryx : MonoBehaviour
 
     public GameObject[] enemyPrefabs;
 
+    public GameObject[] bossPrefabs;
+
     public GameObject[] planetPrefabs;
     public GameObject[] nearbyStarPrefabs;
     public GameObject[] farStarPrefabs;
 
+
+
     public GameObject defaultParent;
     public GameObject gridParent;
     public GameObject ringParent;
+    public GameObject bossParent;
 
     public TextMeshProUGUI levelText1;
     public TextMeshProUGUI levelText2;
@@ -235,9 +240,9 @@ public class Concentryx : MonoBehaviour
 
 
                     // create enemy boss
-                    // CreateFirstBoss();
+                    CreateBossOne();
 
-                    CreatePlanet(1);
+                    //CreatePlanet(1);
                     CreateNearbyStar(numNearbyStars);
                     CreateFarStar(numFarStars);
                     audioSource.clip = gameMusic[UnityEngine.Random.Range(0, gameMusic.Length - 1)];
@@ -383,171 +388,53 @@ public class Concentryx : MonoBehaviour
     }
 
 
-
     public Sprite GetSprite(int x, int y, int pattern = 0)
     {
-
         Sprite selectedSprite = spriteSelection[0];
 
-        // random
-        if (pattern == 0)
+        switch (pattern)
         {
-            selectedSprite = spriteSelection[Random.Range(0, spriteSelection.Length)];
-        }
+            case 0:
+                selectedSprite = spriteSelection[Random.Range(0, spriteSelection.Length)];
+                break;
 
+            case 1:
+                selectedSprite = y % 2 == 0 ? spriteSelection[3] : (x % 2 == 0 ? spriteSelection[0] : spriteSelection[1]);
+                break;
 
-        // old TV close up
-        if (pattern == 1)
-        {
+            case 2:
+                selectedSprite = y % 2 == 0 ? spriteSelection[3] : (x % 2 == 0 ? spriteSelection[1] : spriteSelection[1]);
+                break;
 
+            case 3:
+                selectedSprite = x % 2 == 0 ? spriteSelection[3] : (y % 2 == 0 ? spriteSelection[1] : spriteSelection[1]);
+                break;
 
-            if (y % 2 == 0)
-            {
+            case 4:
+                selectedSprite = (x < 20 || x > 40) ? spriteSelection[5] : (x < 20 || x > 40) ? spriteSelection[2] : spriteSelection[1];
+                break;
+
+            case 5:
+                int totalSections = 3;
+                int sectionWidth = 64 / totalSections;
+                selectedSprite = x >= sectionWidth && x < sectionWidth * 2 ? spriteSelection[5] : (x >= sectionWidth * 2 ? spriteSelection[6] : spriteSelection[4]);
+                break;
+
+            case 6:
                 selectedSprite = spriteSelection[3];
-            }
-            else
-            {
+                break;
 
-                if (x % 2 == 0)
-                {
-                    selectedSprite = spriteSelection[0];
-                }
-                else
-                {
-                    selectedSprite = spriteSelection[1];
-                }
-            }
+            case 7:
+                selectedSprite = spriteSelection[2];
+                break;
 
-        }
-
-        // blue, black, horizontal
-        if (pattern == 2)
-        {
-
-            if (y % 2 == 0)
-            {
-                selectedSprite = spriteSelection[3];
-            }
-            else
-            {
-
-                if (x % 2 == 0)
-                {
-                    selectedSprite = spriteSelection[1];
-                }
-                else
-                {
-                    selectedSprite = spriteSelection[1];
-                }
-            }
-
-        }
-
-
-        // blue, black, vertical
-        if (pattern == 3)
-        {
-
-            if (x % 2 == 0)
-            {
-                selectedSprite = spriteSelection[3];
-            }
-            else
-            {
-
-                if (y % 2 == 0)
-                {
-                    selectedSprite = spriteSelection[1];
-                }
-                else
-                {
-                    selectedSprite = spriteSelection[1];
-                }
-            }
-
-        }
-
-
-
-
-        // blue stripe on white vertical
-        if (pattern == 4)
-        {
-
-            if (x < 20 || x > 40)
-            {
-                selectedSprite = spriteSelection[5];
-            }
-            else
-            {
-
-                if (x < 20 || x > 40)
-                {
-                    selectedSprite = spriteSelection[2];
-                }
-                else
-                {
-                    selectedSprite = spriteSelection[1];
-                }
-            }
-
-        }
-
-
-        // yeoooooo
-        if (pattern == 5)
-        {
-            int totalSections = 3;
-            int sectionWidth = 64 / totalSections;
-
-            if (x >= sectionWidth && x < sectionWidth * 2)
-            {
-                selectedSprite = spriteSelection[5];
-            }
-            else if (x >= sectionWidth * 2)
-            {
+            case 8:
                 selectedSprite = spriteSelection[6];
-            }
-            else
-            {
-                selectedSprite = spriteSelection[4];
-            }
+                break;
         }
-
-
-        // black
-        if (pattern == 6)
-        {
-
-            selectedSprite = spriteSelection[3];
-
-        }
-
-
-        // yellow
-        if (pattern == 7)
-        {
-
-            selectedSprite = spriteSelection[2];
-
-        }
-
-
-        // orange box
-        if (pattern == 8)
-        {
-
-            selectedSprite = spriteSelection[6];
-
-        }
-
 
         return selectedSprite;
-
-
     }
-
-
 
 
 
@@ -674,6 +561,19 @@ public class Concentryx : MonoBehaviour
         Debug.Log("enemy created");
 
         GameMaster.instance.ActiveEnemies += numships;
+    }
+
+    public void CreateBossOne()
+    {
+
+
+        GameObject bossBoat = Instantiate(bossPrefabs[0], bossParent.transform.position, Quaternion.identity);
+        bossBoat.transform.parent = bossParent.transform;
+
+
+        Debug.Log("boss created");
+
+        GameMaster.instance.ActiveEnemies += 1;
     }
 
 
@@ -1518,6 +1418,8 @@ public class Concentryx : MonoBehaviour
 
     public void CleanLevel()
     {
+        GameMaster.instance.ChangeBG();
+
         // Loop through all child objects of the parent
         for (int i = gridParent.transform.childCount - 1; i >= 0; i--)
         {
@@ -1532,6 +1434,15 @@ public class Concentryx : MonoBehaviour
         for (int i = ringParent.transform.childCount - 1; i >= 0; i--)
         {
             GameObject child = ringParent.transform.GetChild(i).gameObject;
+
+            // Destroy the child object
+            Object.Destroy(child);
+        }
+
+        // Loop through all child objects of the parent
+        for (int i = bossParent.transform.childCount - 1; i >= 0; i--)
+        {
+            GameObject child = bossParent.transform.GetChild(i).gameObject;
 
             // Destroy the child object
             Object.Destroy(child);

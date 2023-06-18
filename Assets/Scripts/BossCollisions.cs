@@ -8,37 +8,35 @@ public class BossCollisions : MonoBehaviour
 {
     public int enemyHealth = 100;
     public int enemyHits = 0;
-    public GameObject jet;
-    public GameObject laser;
     public bool isDead;
-    public Slider enemyHealthbar;
-    public EnemyLaserShipMovement movementScript;
+    public Slider enemyHealthbar1;
+    public Slider enemyHealthbar2;
+    public BossOneMovement movementScript;
     private Animator animator;
 
     private void Start()
     {
 
         animator = GetComponent<Animator>();
-        jet.SetActive(true);
-        laser.SetActive(true);
+
     }
 
-    // private void OnCollisionEnter2D(Collision2D collision)
-    // {
-    //     if (!collision.gameObject.name.Contains("EnemyProjectile"))
-    //     {
-    //         collision.gameObject.GetComponent<BulletTime>().DestroyGameObject();
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (!collision.gameObject.name.Contains("EnemyProjectile"))
+        {
+            collision.gameObject.GetComponent<BulletTime>().DestroyGameObject();
 
-    //         if (enemyHealth > 0)
-    //         {
-    //             DecrementEnemyHealth(1);
-    //         }
-    //         else
-    //         {
-    //             DestroyEnemyShip();
-    //         }
-    //     }
-    // }
+            if (enemyHealth > 0)
+            {
+                DecrementEnemyHealth(1);
+            }
+            else
+            {
+                DestroyEnemyShip();
+            }
+        }
+    }
 
     public void DestroyEnemyShip()
     {
@@ -46,11 +44,10 @@ public class BossCollisions : MonoBehaviour
 
         if (!isDead)
         {
-            enemyHealthbar.value = 0;
+            enemyHealthbar1.value = 0;
+            enemyHealthbar2.value = 0;
             GameMaster.instance.IncrementScore(enemyHits);
             isDead = true;
-            jet.SetActive(false);
-            laser.SetActive(false);
 
             GameMaster.instance.ActiveEnemies--;
             movementScript.enabled = false;
@@ -64,21 +61,14 @@ public class BossCollisions : MonoBehaviour
         enemyHealth -= amount;
         enemyHits += amount;
 
-        enemyHealthbar.value = enemyHealth;
+        enemyHealthbar1.value = enemyHealth;
+        enemyHealthbar2.value = enemyHealth;
 
-        if (enemyHealth < 8)
-        {
-            enemyHealthbar.GetComponentInChildren<Image>().color = Color.yellow;
-        }
-
-        if (enemyHealth < 6)
-        {
-            enemyHealthbar.GetComponentInChildren<Image>().color = new Color(1f, 0.65f, 0f);
-        }
 
         if (enemyHealth < 3)
         {
-            enemyHealthbar.GetComponentInChildren<Image>().color = Color.red;
+            enemyHealthbar1.GetComponentInChildren<Image>().color = Color.red;
+            enemyHealthbar2.GetComponentInChildren<Image>().color = Color.red;
         }
     }
 }

@@ -17,16 +17,33 @@ public class BossOneMovement : MonoBehaviour
     private Orientation shipOrientation;
     public float durationInSeconds = 10f;
 
+    public float timeToWait = 2f;
+
     public Color[] travelColors;
     public Color[] idleColors;
+
+
     public GameObject bossShip;
+
+    public SpriteRenderer shipSpriteRenderer;
+
     public GameObject[] targetPositions;
     Vector3 startPosition;
     Vector3 targetPosition;
     private bool isRunning = false;
 
+    public bool inMotion = false;
+    public CanvasGroup enemyHealthbarcanvas1;
+    public CanvasGroup enemyHealthbarcanvas2;
+
     public GameObject Player;
     Quaternion initialRotation;
+
+    private float colourTime = 0f;
+    private float colourDuration = 0.2f;
+    private bool isLerpingForward = true;
+
+    private EnemyProjectile enemyProjectileScript;
 
     private void Start()
     {
@@ -42,6 +59,10 @@ public class BossOneMovement : MonoBehaviour
             targetPositions[i].GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 0);
         }
 
+        shipSpriteRenderer = bossShip.GetComponent<SpriteRenderer>();
+
+        enemyProjectileScript = GetComponentInChildren<EnemyProjectile>();
+
     }
 
 
@@ -50,10 +71,50 @@ public class BossOneMovement : MonoBehaviour
     {
         if (Player != null)
         {
+            // make the ship face the player
             Vector3 directionToPlayer = Player.transform.position - bossShip.transform.position;
             float angle = Mathf.Atan2(directionToPlayer.y, directionToPlayer.x) * Mathf.Rad2Deg;
             bossShip.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         }
+
+
+        if (isLerpingForward)
+        {
+            colourTime += Time.deltaTime / colourDuration;
+            if (colourTime >= 1f)
+            {
+                colourTime = 1f;
+                isLerpingForward = false;
+            }
+        }
+        else
+        {
+            colourTime -= Time.deltaTime / colourDuration;
+            if (colourTime <= 0f)
+            {
+                colourTime = 0f;
+                isLerpingForward = true;
+            }
+        }
+
+        if (inMotion)
+        {
+            Color targetColor = isLerpingForward ? travelColors[1] : travelColors[0];
+            shipSpriteRenderer.color = Color.Lerp(travelColors[0], targetColor, colourTime);
+            enemyHealthbarcanvas1.alpha = 0;
+            enemyHealthbarcanvas2.alpha = 0;
+            enemyProjectileScript.enabled = false;
+        }
+        else
+        {
+            Color targetColor = isLerpingForward ? idleColors[1] : idleColors[0];
+            shipSpriteRenderer.color = Color.Lerp(idleColors[0], targetColor, colourTime);
+            enemyHealthbarcanvas1.alpha = 1;
+            enemyHealthbarcanvas2.alpha = 1;
+            enemyProjectileScript.enabled = true;
+        }
+
+
     }
 
 
@@ -61,20 +122,14 @@ public class BossOneMovement : MonoBehaviour
     {
         while (true)
         {
-            // Check if the coroutine is already running
             if (!isRunning)
             {
-                // Set the flag to indicate that the coroutine is running
                 isRunning = true;
-
-                // Start the sub-coroutine
                 yield return StartCoroutine(ShipFloatAway());
 
-                // Reset the flag to indicate that the coroutine has finished
                 isRunning = false;
             }
 
-            // Wait for a short period before starting again
             yield return new WaitForSeconds(1f);
         }
     }
@@ -84,10 +139,7 @@ public class BossOneMovement : MonoBehaviour
     {
 
 
-        // go to a target from the list
-        // wait at target for a second
-        // move to next target
-        // and on.
+        // visit targets 
 
         for (int i = 0; i < targetPositions.Length; i++)
         {
@@ -98,10 +150,11 @@ public class BossOneMovement : MonoBehaviour
             bossShip.transform.position = startPosition;
 
             // Start the coroutine to move the object to the target position
+            inMotion = true;
             yield return StartCoroutine(MoveObject(bossShip, startPosition, targetPosition, durationInSeconds));
-
+            inMotion = false;
             // Wait for a short period before starting again
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(timeToWait);
         }
 
     }

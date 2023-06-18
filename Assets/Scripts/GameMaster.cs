@@ -232,15 +232,6 @@ public class GameMaster : MonoBehaviour
         shieldParticleSystem.GetComponent<ParticleSystem>().Stop();
         shieldParticleSystem.SetActive(false);
 
-        if (BGSpriteList.Length > 0)
-        {
-            // Select a random index from the BGSpriteList
-            int randomIndex = UnityEngine.Random.Range(0, BGSpriteList.Length);
-
-            // Assign the randomly selected sprite to the BGSprite renderer
-            BGSprite.sprite = BGSpriteList[randomIndex];
-        }
-
 
 
 
@@ -260,6 +251,7 @@ public class GameMaster : MonoBehaviour
         levelEndNextLevelButton.interactable = false;
         levelEndRetryButton.interactable = false;
         ResetColourAdjustments();
+        ChangeBG();
     }
 
 
@@ -268,7 +260,6 @@ public class GameMaster : MonoBehaviour
 
     public void InstantiateLevel()
     {
-
         ActiveEnemies = 0;
         // instantiate the next expected level
         // 
@@ -278,6 +269,21 @@ public class GameMaster : MonoBehaviour
         //LevelEngaged = true;
 
     }
+
+
+    public void ChangeBG()
+    {
+        if (BGSpriteList.Length > 0)
+        {
+            // Select a random index from the BGSpriteList
+            int randomIndex = UnityEngine.Random.Range(0, BGSpriteList.Length);
+
+            // Assign the randomly selected sprite to the BGSprite renderer
+            BGSprite.sprite = BGSpriteList[randomIndex];
+        }
+
+    }
+
 
 
     public void Update()
