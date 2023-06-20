@@ -263,6 +263,14 @@ public class Concentryx : MonoBehaviour
         }
         else
         {
+
+            // create a boss every 10th SelectedLevel
+            if (SelectedLevel % 5 == 0)
+            {
+                BossPotLuck();
+            }
+
+
             GameTimer = StartCoroutine(GameMaster.instance.Countdown(240));
             currentLevelName = "Level " + SelectedLevel.ToString();
             ImagePlay(gridLayouts.GetRandomPattern());
@@ -274,6 +282,8 @@ public class Concentryx : MonoBehaviour
             audioSource.clip = gameMusic[UnityEngine.Random.Range(0, gameMusic.Length - 1)];
 
             audioSource.Play();
+
+
         }
 
 
@@ -585,6 +595,42 @@ public class Concentryx : MonoBehaviour
         Debug.Log("boss created");
 
         GameMaster.instance.ActiveEnemies += 1;
+    }
+
+
+    public void CreateBossThree()
+    {
+
+
+        GameObject bossBoat = Instantiate(bossPrefabs[2], bossParent.transform.position, Quaternion.identity);
+        bossBoat.transform.parent = bossParent.transform;
+
+
+        Debug.Log("boss created");
+
+        GameMaster.instance.ActiveEnemies += 1;
+    }
+
+
+    public void BossPotLuck()
+    {
+
+        int bossType = Random.Range(0, 3);
+
+        switch (bossType)
+        {
+            case 0:
+                CreateBossOne();
+                break;
+
+            case 1:
+                CreateBossTwo();
+                break;
+
+            case 2:
+                CreateBossThree();
+                break;
+        }
     }
 
 

@@ -35,6 +35,12 @@ public class BossThreeMovement : MonoBehaviour
     private bool isRunning = false;
 
     public bool inMotion = false;
+    public GameObject laserLeft;
+    public GameObject laserRight;
+
+    private ParticleSystem laserLeftParticleSystem;
+    private ParticleSystem laserRightParticleSystem;
+
 
     public GameObject Player;
     Quaternion initialRotation;
@@ -42,8 +48,6 @@ public class BossThreeMovement : MonoBehaviour
     private float colourTime = 0f;
     private float colourDuration = 0.2f;
     private bool isLerpingForward = true;
-
-    public EnemyProjectile enemyProjectileScript;
 
     private void Start()
     {
@@ -61,6 +65,14 @@ public class BossThreeMovement : MonoBehaviour
 
         shipSpriteRenderer = bossShip.GetComponent<SpriteRenderer>();
 
+        laserLeftParticleSystem = laserLeft.GetComponent<ParticleSystem>();
+        laserRightParticleSystem = laserRight.GetComponent<ParticleSystem>();
+
+        laserLeftParticleSystem.Stop();
+        laserLeftParticleSystem.Clear();
+        laserRightParticleSystem.Stop();
+        laserRightParticleSystem.Clear();
+
 
     }
 
@@ -68,15 +80,6 @@ public class BossThreeMovement : MonoBehaviour
 
     private void Update()
     {
-
-        if (Player != null)
-        {
-            // make the ship face the player
-            Vector3 directionToPlayer = Player.transform.position - bossShip.transform.position;
-            float angle = Mathf.Atan2(directionToPlayer.y, directionToPlayer.x) * Mathf.Rad2Deg;
-            bossShip.transform.rotation = Quaternion.AngleAxis(angle, Vector3.back);
-
-        }
 
 
         if (isLerpingForward)
@@ -102,13 +105,11 @@ public class BossThreeMovement : MonoBehaviour
         {
             Color targetColor = isLerpingForward ? travelColors[1] : travelColors[0];
             shipSpriteRenderer.color = Color.Lerp(travelColors[0], targetColor, colourTime);
-            enemyProjectileScript.enabled = false;
         }
         else
         {
             Color targetColor = isLerpingForward ? idleColors[1] : idleColors[0];
             shipSpriteRenderer.color = Color.Lerp(idleColors[0], targetColor, colourTime);
-            enemyProjectileScript.enabled = true;
         }
 
 
@@ -151,6 +152,7 @@ public class BossThreeMovement : MonoBehaviour
             inMotion = true;
             yield return StartCoroutine(MoveObject(bossShip, startPosition, targetPosition, durationInSeconds));
             inMotion = false;
+
             // Wait for a short period before starting again
             yield return new WaitForSeconds(timeToWait);
         }
@@ -163,6 +165,13 @@ public class BossThreeMovement : MonoBehaviour
     {
         // Calculate the elapsed time
         float elapsedTime = 0;
+
+
+        if (laserLeftParticleSystem != null && laserRightParticleSystem != null)
+        {
+            laserLeftParticleSystem.Play();
+            laserRightParticleSystem.Play();
+        }
 
         // Loop until the timer exceeds the duration
         while (elapsedTime < duration)
@@ -177,6 +186,14 @@ public class BossThreeMovement : MonoBehaviour
 
         // Set the object's position to the end position
         objectToMove.transform.position = endPosition;
+
+        if (laserLeftParticleSystem != null && laserRightParticleSystem != null)
+        {
+            laserLeftParticleSystem.Stop();
+            laserLeftParticleSystem.Clear();
+            laserRightParticleSystem.Stop();
+            laserRightParticleSystem.Clear();
+        }
     }
 
 

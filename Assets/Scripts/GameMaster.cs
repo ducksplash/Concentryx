@@ -368,10 +368,7 @@ public class GameMaster : MonoBehaviour
             levelEndScoreTitleText.text = "Level " + CurrentLevel.ToString() + " Score";
             levelEndScoreText.text = (playerScore - playerScoreThisLevel).ToString();
             levelEndScoreThisLevelText.text = playerScoreThisLevel.ToString();
-            levelEndHighScoreText.text = playerHighScore.ToString();
-
-
-            //playerScoreThisLevel = 0;
+            levelEndHighScoreText.text = (playerHighScore - playerScoreThisLevel).ToString();
 
             CurrentLevel++;
             PlayerPrefs.SetInt("CurrentLevel", CurrentLevel);
@@ -538,8 +535,8 @@ public class GameMaster : MonoBehaviour
 
             // Update health values
             int originalHealth = maxHealth;
-            healthbar.maxValue = Mathf.CeilToInt(healthbar.maxValue * 1.2f);
             maxHealth = Mathf.CeilToInt(maxHealth * 1.1f);
+            healthbar.maxValue = maxHealth;
             IncrementHealth(maxHealth - originalHealth);
         }
 
