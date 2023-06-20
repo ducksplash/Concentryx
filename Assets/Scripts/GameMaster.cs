@@ -70,6 +70,9 @@ public class GameMaster : MonoBehaviour
     public TextMeshProUGUI levelEndScoreTitleText;
     public TextMeshProUGUI levelEndScoreThisLevelText;
     public TextMeshProUGUI levelEndHighScoreText;
+    public TextMeshProUGUI levelEndTimeText;
+
+    public int timeLeft = 0;
 
     public Button levelEndNextLevelButton;
     public Button levelEndRetryButton;
@@ -78,7 +81,7 @@ public class GameMaster : MonoBehaviour
 
     public TextMeshProUGUI timerText;
 
-    private int currentTime;
+    public int currentTime;
     public Color flashColor = Color.red; // The color to flash the brick
     private bool isFlashing;
 
@@ -164,7 +167,6 @@ public class GameMaster : MonoBehaviour
     private void Awake()
     {
         instance = this;
-
     }
 
 
@@ -266,7 +268,7 @@ public class GameMaster : MonoBehaviour
         Concentryx.GetComponent<Concentryx>().BuildLevel(CurrentLevel);
 
         // set to 'playing'
-        //LevelEngaged = true;
+        LevelEngaged = true;
 
     }
 
@@ -360,19 +362,20 @@ public class GameMaster : MonoBehaviour
         if (reason == 0)
         {
             ResetColourAdjustments();
-            levelEndNextLevelButton.interactable = true;
+            levelEndNextLevelButton.interactable = false;
             levelEndRetryButton.interactable = false;
             levelEndText.text = "Level " + CurrentLevel.ToString() + " Complete!";
             levelEndScoreTitleText.text = "Level " + CurrentLevel.ToString() + " Score";
-            levelEndScoreText.text = playerScore.ToString();
+            levelEndScoreText.text = (playerScore - playerScoreThisLevel).ToString();
             levelEndScoreThisLevelText.text = playerScoreThisLevel.ToString();
             levelEndHighScoreText.text = playerHighScore.ToString();
 
 
-            playerScoreThisLevel = 0;
+            //playerScoreThisLevel = 0;
 
             CurrentLevel++;
             PlayerPrefs.SetInt("CurrentLevel", CurrentLevel);
+            StartCoroutine(TallyTotals());
 
         }
 
@@ -389,9 +392,9 @@ public class GameMaster : MonoBehaviour
             levelEndScoreText.text = playerScore.ToString();
             levelEndScoreThisLevelText.text = playerScoreThisLevel.ToString();
             levelEndHighScoreText.text = playerHighScore.ToString();
+            levelEndTimeText.text = "0";
             ResetRank();
 
-            playerScoreThisLevel = 0;
 
         }
         // level ended by death
@@ -406,14 +409,82 @@ public class GameMaster : MonoBehaviour
             levelEndScoreText.text = playerScore.ToString();
             levelEndScoreThisLevelText.text = playerScoreThisLevel.ToString();
             levelEndHighScoreText.text = playerHighScore.ToString();
+            levelEndTimeText.text = "0";
             ResetRank();
 
-            playerScoreThisLevel = 0;
 
         }
 
     }
 
+
+
+    public IEnumerator TallyTotals()
+    {
+        int lvlScore = playerScoreThisLevel;
+        int totalScoreDisplay = (playerScore - playerScoreThisLevel);
+        int timeBonus = timeLeft;
+        levelEndTimeText.text = timeBonus.ToString();
+
+        yield return new WaitForSecondsRealtime(0.5f);
+        while (lvlScore > 10000)
+        {
+            lvlScore -= 1000;
+            totalScoreDisplay += 1000;
+            levelEndScoreThisLevelText.text = lvlScore.ToString();
+            levelEndScoreText.text = totalScoreDisplay.ToString();
+            yield return new WaitForSecondsRealtime(0.01f);
+        }
+
+        while (lvlScore > 1000)
+        {
+            lvlScore -= 100;
+            totalScoreDisplay += 100;
+            levelEndScoreThisLevelText.text = lvlScore.ToString();
+            levelEndScoreText.text = totalScoreDisplay.ToString();
+            yield return new WaitForSecondsRealtime(0.01f);
+        }
+
+        while (lvlScore > 100)
+        {
+            lvlScore -= 10;
+            totalScoreDisplay += 10;
+            levelEndScoreThisLevelText.text = lvlScore.ToString();
+            levelEndScoreText.text = totalScoreDisplay.ToString();
+            yield return new WaitForSecondsRealtime(0.01f);
+        }
+
+
+        while (lvlScore > 0)
+        {
+            lvlScore -= 1;
+            totalScoreDisplay += 1;
+            levelEndScoreThisLevelText.text = lvlScore.ToString();
+            levelEndScoreText.text = totalScoreDisplay.ToString();
+            yield return new WaitForSecondsRealtime(0.01f);
+        }
+
+
+
+        while (timeBonus > 0)
+        {
+            timeBonus -= 1;
+            playerScore += 10;
+            levelEndTimeText.text = timeBonus.ToString();
+            levelEndScoreText.text = playerScore.ToString();
+            yield return new WaitForSecondsRealtime(0.006f);
+        }
+        scoreText.text = playerScore.ToString();
+        if (playerScore > playerHighScore)
+        {
+            levelEndHighScoreText.text = playerScore.ToString();
+        }
+
+
+        yield return new WaitForSecondsRealtime(0.5f);
+        levelEndNextLevelButton.interactable = true;
+        playerScoreThisLevel = 0;
+    }
 
 
 
@@ -786,12 +857,13 @@ public class GameMaster : MonoBehaviour
 
 
 
-    public IEnumerator Countdown(int timeleft)
+    public IEnumerator Countdown(int clocktime)
     {
-        while (timeleft > 0)
+        while (clocktime > 0)
         {
-            timeleft--;
-            timerText.text = timeleft.ToString();
+            clocktime--;
+            timeLeft = clocktime;
+            timerText.text = clocktime.ToString();
             yield return new WaitForSeconds(1f);
         }
 

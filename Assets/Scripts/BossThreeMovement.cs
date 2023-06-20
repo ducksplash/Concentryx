@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Collections;
 
-public class BossTwoMovement : MonoBehaviour
+public class BossThreeMovement : MonoBehaviour
 {
 
     public enum Orientation
@@ -24,22 +24,17 @@ public class BossTwoMovement : MonoBehaviour
 
 
     public GameObject bossShip;
-    public GameObject leftWing;
-    public GameObject rightWing;
+
 
     public SpriteRenderer shipSpriteRenderer;
-    public SpriteRenderer leftWingSpriteRenderer;
-    public SpriteRenderer rightWingSpriteRenderer;
+
 
     public GameObject[] targetPositions;
-    Vector3 leftStartPosition;
-    Vector3 rightStartPosition;
-    Vector3 leftTargetPosition;
-    Vector3 rightTargetPosition;
+    Vector3 startPosition;
+    Vector3 targetPosition;
     private bool isRunning = false;
 
-    public bool leftInMotion = false;
-    public bool rightInMotion = false;
+    public bool inMotion = false;
 
     public GameObject Player;
     Quaternion initialRotation;
@@ -48,8 +43,7 @@ public class BossTwoMovement : MonoBehaviour
     private float colourDuration = 0.2f;
     private bool isLerpingForward = true;
 
-    public EnemyProjectile enemyProjectileScriptLeft;
-    public EnemyProjectile enemyProjectileScriptRight;
+    public EnemyProjectile enemyProjectileScript;
 
     private void Start()
     {
@@ -78,15 +72,9 @@ public class BossTwoMovement : MonoBehaviour
         if (Player != null)
         {
             // make the ship face the player
-            Vector3 directionToPlayerLW = Player.transform.position - leftWing.transform.position;
-            float angleLW = Mathf.Atan2(directionToPlayerLW.y, directionToPlayerLW.x) * Mathf.Rad2Deg;
-            leftWing.transform.rotation = Quaternion.AngleAxis(angleLW, Vector3.back);
-
-
-            Vector3 directionToPlayerRW = Player.transform.position - rightWing.transform.position;
-            float angleRW = Mathf.Atan2(directionToPlayerRW.y, directionToPlayerRW.x) * Mathf.Rad2Deg;
-            rightWing.transform.rotation = Quaternion.AngleAxis(angleRW, Vector3.back);
-
+            Vector3 directionToPlayer = Player.transform.position - bossShip.transform.position;
+            float angle = Mathf.Atan2(directionToPlayer.y, directionToPlayer.x) * Mathf.Rad2Deg;
+            bossShip.transform.rotation = Quaternion.AngleAxis(angle, Vector3.back);
 
         }
 
@@ -110,34 +98,17 @@ public class BossTwoMovement : MonoBehaviour
             }
         }
 
-        if (leftInMotion)
+        if (inMotion)
         {
             Color targetColor = isLerpingForward ? travelColors[1] : travelColors[0];
             shipSpriteRenderer.color = Color.Lerp(travelColors[0], targetColor, colourTime);
-            leftWingSpriteRenderer.color = Color.Lerp(travelColors[0], targetColor, colourTime);
-            enemyProjectileScriptLeft.enabled = false;
+            enemyProjectileScript.enabled = false;
         }
         else
         {
             Color targetColor = isLerpingForward ? idleColors[1] : idleColors[0];
             shipSpriteRenderer.color = Color.Lerp(idleColors[0], targetColor, colourTime);
-            leftWingSpriteRenderer.color = Color.Lerp(idleColors[0], targetColor, colourTime);
-            enemyProjectileScriptLeft.enabled = true;
-        }
-
-        if (rightInMotion)
-        {
-            Color targetColor = isLerpingForward ? travelColors[1] : travelColors[0];
-            shipSpriteRenderer.color = Color.Lerp(travelColors[0], targetColor, colourTime);
-            rightWingSpriteRenderer.color = Color.Lerp(travelColors[0], targetColor, colourTime);
-            enemyProjectileScriptRight.enabled = false;
-        }
-        else
-        {
-            Color targetColor = isLerpingForward ? idleColors[1] : idleColors[0];
-            shipSpriteRenderer.color = Color.Lerp(idleColors[0], targetColor, colourTime);
-            rightWingSpriteRenderer.color = Color.Lerp(idleColors[0], targetColor, colourTime);
-            enemyProjectileScriptRight.enabled = true;
+            enemyProjectileScript.enabled = true;
         }
 
 
@@ -169,23 +140,17 @@ public class BossTwoMovement : MonoBehaviour
 
         while (true)
         {
-            leftStartPosition = leftWing.transform.position;
-            rightStartPosition = rightWing.transform.position;
+            startPosition = bossShip.transform.position;
 
-            leftTargetPosition = targetPositions[UnityEngine.Random.Range(0, targetPositions.Length)].transform.position;
-            rightTargetPosition = targetPositions[UnityEngine.Random.Range(0, targetPositions.Length)].transform.position;
+            targetPosition = targetPositions[UnityEngine.Random.Range(0, targetPositions.Length)].transform.position;
 
             // Set the object's position to the start position
-            leftWing.transform.position = leftStartPosition;
-            rightWing.transform.position = rightStartPosition;
+            bossShip.transform.position = startPosition;
 
             // Start the coroutine to move the object to the target position
-            leftInMotion = true;
-            yield return StartCoroutine(MoveObject(leftWing, leftStartPosition, leftTargetPosition, durationInSeconds));
-            leftInMotion = false;
-            rightInMotion = true;
-            yield return StartCoroutine(MoveObject(rightWing, rightStartPosition, rightTargetPosition, durationInSeconds));
-            rightInMotion = false;
+            inMotion = true;
+            yield return StartCoroutine(MoveObject(bossShip, startPosition, targetPosition, durationInSeconds));
+            inMotion = false;
             // Wait for a short period before starting again
             yield return new WaitForSeconds(timeToWait);
         }
@@ -218,4 +183,3 @@ public class BossTwoMovement : MonoBehaviour
 
 
 }
-
