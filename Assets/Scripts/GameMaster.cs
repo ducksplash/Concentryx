@@ -332,6 +332,7 @@ public class GameMaster : MonoBehaviour
 
     public IEnumerator EndLevel(int reason = 0)
     {
+        yield return new WaitForSecondsRealtime(1f);
         Time.timeScale = 0f;
 
 

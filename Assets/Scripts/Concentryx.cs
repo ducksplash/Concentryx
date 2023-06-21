@@ -275,6 +275,7 @@ public class Concentryx : MonoBehaviour
             currentLevelName = "Level " + SelectedLevel.ToString();
             ImagePlay(gridLayouts.GetRandomPattern());
             CreateEnemyWaller(UnityEngine.Random.Range(0, 4));
+            CreateEnemyCaterpillar(UnityEngine.Random.Range(0, 3));
             CreateEnemyShip(UnityEngine.Random.Range(0, 8));
             CreatePlanet(UnityEngine.Random.Range(0, 3));
             CreateNearbyStar(numNearbyStars);
@@ -488,6 +489,24 @@ public class Concentryx : MonoBehaviour
     }
 
 
+    // enemy ship type 3
+
+    public void CreateEnemyCaterpillar(int numships = 1)
+    {
+
+        for (int i = 0; i < numships; i++)
+        {
+
+            GameObject enemyShip = Instantiate(enemyPrefabs[2]);
+            enemyShip.transform.parent = ringParent.transform;
+
+        }
+        // we will NOT increment AE here because the caterpillar is made up of multiple segments
+        // so AE is incremented in the Start() method of CaterpillarMovement.cs on a per-segment basis.
+        // GameMaster.instance.ActiveEnemies += numships;
+
+    }
+
     // enemy ship type 2 
 
     public void CreateEnemyWaller(int numships = 1)
@@ -569,6 +588,9 @@ public class Concentryx : MonoBehaviour
 
         GameMaster.instance.ActiveEnemies += numships;
     }
+
+
+
 
     public void CreateBossOne()
     {
