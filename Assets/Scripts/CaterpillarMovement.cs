@@ -19,7 +19,6 @@ public class CaterpillarMovement : MonoBehaviour
         for (int i = 0; i < segments.Length; i++)
         {
             GameMaster.instance.ActiveEnemies++;
-            Debug.Log("Active Enemies: " + GameMaster.instance.ActiveEnemies);
         }
     }
 
