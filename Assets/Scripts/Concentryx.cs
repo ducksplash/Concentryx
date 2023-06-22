@@ -178,7 +178,7 @@ public class Concentryx : MonoBehaviour
 
                 case 6:
                     // boss 1
-                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(500));
+                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(300));
                     currentLevelName = "uh oh";
                     // create enemy boss
                     CreateBossOne();
@@ -204,7 +204,7 @@ public class Concentryx : MonoBehaviour
                     GameTimer = StartCoroutine(GameMaster.instance.Countdown(240));
                     currentLevelName = "Quack";
                     ImagePlay(gridLayouts.GetGridPattern("Quack"));
-                    CreateEnemyWaller(1);
+                    CreateEnemyCaterpillar(1);
                     CreateEnemyShip(4);
                     CreatePlanet(2);
                     CreateNearbyStar(numNearbyStars);
@@ -249,10 +249,11 @@ public class Concentryx : MonoBehaviour
 
                 case 12:
                     // boss 2
-                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(500));
+                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(300));
                     currentLevelName = "Controversy";
                     ImagePlay(gridLayouts.GetGridPattern("Fleg"));
                     CreateBossTwo();
+                    CreateEnemyCaterpillar(1);
                     CreateNearbyStar(numNearbyStars);
                     CreateFarStar(numFarStars);
                     audioSource.clip = gameMusic[UnityEngine.Random.Range(0, gameMusic.Length - 1)];
@@ -263,35 +264,36 @@ public class Concentryx : MonoBehaviour
         }
         else
         {
+            // set up the level, randomly generate some baddies and screen furniture.
+            GameTimer = StartCoroutine(GameMaster.instance.Countdown(UnityEngine.Random.Range(140, 300)));
+            currentLevelName = " ";
+            audioSource.clip = gameMusic[UnityEngine.Random.Range(0, gameMusic.Length - 1)];
+            audioSource.Play();
+            CreateNearbyStar(numNearbyStars);
+            CreateFarStar(numFarStars);
+            ImagePlay(gridLayouts.GetRandomPattern());
+
 
             // create a boss every 10th SelectedLevel
             if (SelectedLevel % 5 == 0)
             {
+                // random boss man
                 BossPotLuck();
+
+                // a reduced number of additional beasties, we're not hercules.
+                CreateEnemyWaller(UnityEngine.Random.Range(0, 1));
+                CreateEnemyCaterpillar(UnityEngine.Random.Range(0, 1));
+                CreateEnemyShip(UnityEngine.Random.Range(0, 2));
             }
-
-
-            GameTimer = StartCoroutine(GameMaster.instance.Countdown(240));
-            currentLevelName = "Level " + SelectedLevel.ToString();
-            ImagePlay(gridLayouts.GetRandomPattern());
-            CreateEnemyWaller(UnityEngine.Random.Range(0, 4));
-            CreateEnemyCaterpillar(UnityEngine.Random.Range(0, 3));
-            CreateEnemyShip(UnityEngine.Random.Range(0, 8));
-            CreatePlanet(UnityEngine.Random.Range(0, 3));
-            CreateNearbyStar(numNearbyStars);
-            CreateFarStar(numFarStars);
-            audioSource.clip = gameMusic[UnityEngine.Random.Range(0, gameMusic.Length - 1)];
-
-            audioSource.Play();
-
-
+            else
+            {
+                CreateEnemyWaller(UnityEngine.Random.Range(0, 4));
+                CreateEnemyCaterpillar(UnityEngine.Random.Range(0, 3));
+                CreateEnemyShip(UnityEngine.Random.Range(0, 8));
+                CreatePlanet(UnityEngine.Random.Range(0, 3));
+            }
         }
-
-
     }
-
-
-
 
 
 
