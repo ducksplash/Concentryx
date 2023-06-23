@@ -167,7 +167,9 @@ public class GameMaster : MonoBehaviour
 
     public GameObject gridParent;
 
-
+    public bool unhealthyToasting = false;
+    public bool scoreToasting = false;
+    public bool pillToasting = false;
 
     private void Awake()
     {
@@ -257,6 +259,9 @@ public class GameMaster : MonoBehaviour
         cheatMenuCanvas.blocksRaycasts = false;
         levelEndNextLevelButton.interactable = false;
         levelEndRetryButton.interactable = false;
+
+
+
         ResetColourAdjustments();
         ChangeBG();
     }
@@ -403,7 +408,6 @@ public class GameMaster : MonoBehaviour
         // level ended by death
         if (reason == 2)
         {
-            Debug.Log("reason 2");
             ResetColourAdjustments();
             levelEndNextLevelButton.interactable = false;
             levelEndRetryButton.interactable = true;
@@ -518,7 +522,11 @@ public class GameMaster : MonoBehaviour
         if (!isFlashing) // only start the flash effect if not already flashing
         {
             StartCoroutine(FlashScore());
-            StartCoroutine(DisplayFloatingText(amount * scoreModifier));
+            if (!scoreToasting)
+            {
+                StartCoroutine(DisplayFloatingText(amount * scoreModifier));
+                scoreToasting = true;
+            }
         }
 
     }
@@ -637,7 +645,10 @@ public class GameMaster : MonoBehaviour
 
         healthbar.GetComponentInChildren<Image>().color = healthColor;
 
-        StartCoroutine(UnhealthyText(amount.ToString()));
+        if (!unhealthyToasting)
+        {
+            StartCoroutine(UnhealthyText(amount.ToString()));
+        }
 
         if (!isFlashing)
         {
@@ -682,23 +693,21 @@ public class GameMaster : MonoBehaviour
             case "X":
                 pillTime = rapidFireTime;
                 projectileDelay = projectileDelayBoosted;
-                StartCoroutine(DisplayPillText(pillType));
+
                 break;
             case "S":
                 pillTime = scoreMultiplierTimer;
                 scoreModifier = UnityEngine.Random.Range(2, 5);
-                StartCoroutine(DisplayPillText(pillType));
+
                 break;
             case "+":
                 healthLootValue = (UnityEngine.Random.Range(10, 50));
                 IncrementHealth(healthLootValue);
-                StartCoroutine(DisplayPillText(pillType));
                 return;
             case "F":
                 pillTime = flameThrowerTimer;
                 currentWeapon = "Flamethrower";
                 sfxAudioSource.clip = weaponNoises[1];
-                StartCoroutine(DisplayPillText(pillType));
                 break;
             case "I":
                 pillTime = invulnerabiltyTimer;
@@ -706,17 +715,18 @@ public class GameMaster : MonoBehaviour
                 shieldParticleSystem.SetActive(true);
                 shieldParticleSystem.GetComponent<ParticleSystem>().Play();
                 shipCollider.radius = shieldCollider;
-                StartCoroutine(DisplayPillText(pillType));
                 break;
             case "L":
                 pillTime = lightningTimer;
                 sfxAudioSource.clip = weaponNoises[2];
                 sfxAudioSource.Play();
                 StartCoroutine(StrikeLightning());
-                StartCoroutine(DisplayPillText(pillType));
                 break;
         }
-
+        if (!pillToasting)
+        {
+            StartCoroutine(DisplayPillText(pillType));
+        }
         PillAction(pillType);
     }
 
@@ -761,7 +771,6 @@ public class GameMaster : MonoBehaviour
 
     private IEnumerator PillCountDown(GameObject pillReadout, string pillType, int superPillTime)
     {
-        Debug.Log("called for L?" + pillType);
         GameObject childObject = pillReadout.transform.GetChild(0).gameObject;
         TextMeshProUGUI pillTimeReadout = childObject.GetComponent<TextMeshProUGUI>();
 
@@ -812,7 +821,6 @@ public class GameMaster : MonoBehaviour
                 lightningObject.SetActive(false);
                 ChainLightning.instance.engaged = false;
                 sfxAudioSource.clip = weaponNoises[0];
-                Debug.Log("was lightning stopoped?");
                 break;
             case "I":
                 invulnerable = false;
@@ -851,6 +859,7 @@ public class GameMaster : MonoBehaviour
         shieldParticleSystem.GetComponent<ParticleSystem>().Stop();
         shipCollider.radius = defaultCollider;
 
+        // scrub the yoke on the bottom left where the timers for buffs appear.
         int childCount = pillContent.transform.childCount;
         for (int i = childCount - 1; i >= 0; i--)
         {
@@ -917,7 +926,8 @@ public class GameMaster : MonoBehaviour
 
     private IEnumerator DisplayFloatingText(int val)
     {
-
+        yield return new WaitForSeconds(0.1f);
+        scoreToasting = false;
         if (val > 0)
         {
 
@@ -931,6 +941,7 @@ public class GameMaster : MonoBehaviour
 
             textMesh.color = Color.white;
             textMesh.text = val.ToString();
+
 
             // Rise above the origin object
             while (floatingTextObj != null && floatingTextObj.transform.position.y < targetPosition.y)
@@ -953,8 +964,9 @@ public class GameMaster : MonoBehaviour
 
     private IEnumerator UnhealthyText(string val)
     {
-
-        Vector3 offset = Vector3.up * -1.5f; // Change the Y value as needed
+        yield return new WaitForSeconds(0.1f);
+        unhealthyToasting = false;
+        Vector3 offset = Vector3.up * -3.5f; // Change the Y value as needed
         GameObject floatingTextObj = Instantiate(textPrefab, transform.position + offset, Quaternion.identity);
 
         floatingTextObj.transform.SetParent(gridParent.transform);
@@ -987,6 +999,8 @@ public class GameMaster : MonoBehaviour
 
     private IEnumerator DisplayPillText(string val)
     {
+        yield return new WaitForSeconds(0.1f);
+        pillToasting = false;
 
         Vector3 offset = Vector3.up * -1.5f; // Change the Y value as needed
         GameObject floatingTextObj = Instantiate(textPrefab, transform.position + offset, Quaternion.identity);
@@ -1008,7 +1022,7 @@ public class GameMaster : MonoBehaviour
                 pilltext = scoreModifier + "x Score";
                 break;
             case "+":
-                pilltext = "+" + healthLootValue + " Health";
+                pilltext = "+" + healthLootValue + " HP";
                 break;
             case "F":
                 pilltext = "The Heat Is On";
@@ -1042,7 +1056,7 @@ public class GameMaster : MonoBehaviour
 
 
 
-
+    // this is referenced in a button in GUI element called 'sidemenu'
     public void CheatMenu()
     {
         if (cheatMenuCanvas.alpha == 0)

@@ -51,7 +51,6 @@ public class EnemyLaser : MonoBehaviour
 
         if (GameMaster.instance.health <= 0)
         {
-            //Debug.Log("Game Over!");
             collidee.GetComponent<Ship>().DestroyShip();
         }
 

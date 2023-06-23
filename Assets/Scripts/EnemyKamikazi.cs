@@ -14,7 +14,7 @@ public class EnemyKamikazi : MonoBehaviour
 
     public Coroutine moveCrouton;
 
-    private Collider2D collider;
+    private Collider2D shipCollider;
 
     public bool playerDeservesPoints = true;
 
@@ -27,7 +27,7 @@ public class EnemyKamikazi : MonoBehaviour
         rotateClockwise = true;
         animator = GetComponent<Animator>();
         Player = GameObject.FindGameObjectWithTag("Player");
-        collider = GetComponent<Collider2D>();
+        shipCollider = GetComponent<Collider2D>();
     }
 
     private void Update()
@@ -98,7 +98,7 @@ public class EnemyKamikazi : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
 
-        collider.enabled = false;
+        shipCollider.enabled = false;
         if (moveCrouton != null)
         {
             StopCoroutine(moveCrouton);

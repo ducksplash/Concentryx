@@ -18,6 +18,9 @@ public class Ship : MonoBehaviour
 
     public CanvasGroup healthCanvas;
 
+    public Sprite[] shipSpriteList;
+
+
     public Vector3 startPosition;
 
     public Coroutine gameOverCoroutine = null;
@@ -34,6 +37,7 @@ public class Ship : MonoBehaviour
 
         startPosition = transform.position;
 
+        SetSprite(PlayerPrefs.GetInt("ShipSprite", 0));
 
     }
 
@@ -72,7 +76,12 @@ public class Ship : MonoBehaviour
     }
 
 
-
+    public void SetSprite(int selectedShipSprite = 0)
+    {
+        shipSprite.sprite = shipSpriteList[selectedShipSprite];
+        PlayerPrefs.SetInt("ShipSprite", selectedShipSprite);
+        PlayerPrefs.Save();
+    }
 
 
 
@@ -138,7 +147,6 @@ public class Ship : MonoBehaviour
 
     public void DestroyShip()
     {
-        Debug.Log("destroy ship!");
 
         GameMaster.instance.playerReady = false;
 
@@ -169,7 +177,6 @@ public class Ship : MonoBehaviour
 
     public IEnumerator GameOver()
     {
-        Debug.Log("Game Over!");
         yield return new WaitForSecondsRealtime(1f);
         StartCoroutine(GameMaster.instance.EndLevel(2));
         StartCoroutine(reposition());

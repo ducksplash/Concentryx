@@ -23,6 +23,11 @@ public class Menu : MonoBehaviour
     public CanvasGroup XPSureCanvas;
     public CanvasGroup XPButtonCanvas;
     public CanvasGroup PauseButtonCanvas;
+    public CanvasGroup CustomMenuCanvas;
+
+    public Button shipSelectButton1;
+    public Button shipSelectButton2;
+    public Button shipSelectButton3;
 
     public CanvasGroup LevelEndCanvas;
     public CanvasGroup LevelInterstitialCanvas;
@@ -57,6 +62,7 @@ public class Menu : MonoBehaviour
     public float minVolume = -80f; // Minimum volume in decibels
 
     public Coroutine warmupCoroutine;
+
 
     void Start()
     {
@@ -223,6 +229,13 @@ public class Menu : MonoBehaviour
     }
 
 
+    public void CustomisationScreen()
+    {
+        ChangePage(CustomMenuCanvas);
+        Time.timeScale = 0f;
+    }
+
+
 
     public void Pause()
     {
@@ -341,6 +354,7 @@ public class Menu : MonoBehaviour
     {
         warmupCoroutine = StartCoroutine(WarmUp(4));
     }
+
 
 
     public IEnumerator WarmUp(int timeleft)

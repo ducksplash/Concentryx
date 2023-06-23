@@ -21,11 +21,7 @@ public class Segment : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
 
-        if (spriteRenderer == null)
-        {
-            Debug.LogError("SpriteRenderer not found on the Segment game object.");
-        }
-        else
+        if (spriteRenderer != null)
         {
             defaultMaterialColor = spriteRenderer.color;
         }

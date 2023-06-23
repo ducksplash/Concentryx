@@ -95,7 +95,6 @@ public class EnemyKamikaziMothership : MonoBehaviour
 
     public IEnumerator DeployDrones()
     {
-        Debug.Log("Deploying drones");
         while (gameObject != null)
         {
 

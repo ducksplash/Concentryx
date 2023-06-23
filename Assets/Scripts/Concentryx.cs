@@ -547,7 +547,6 @@ public class Concentryx : MonoBehaviour
         }
 
         ChainLightning.instance.InitialiseLightning();
-        Debug.Log("enemy buzzbug");
 
         GameMaster.instance.ActiveEnemies += numships;
     }
@@ -610,7 +609,6 @@ public class Concentryx : MonoBehaviour
         }
 
         ChainLightning.instance.InitialiseLightning();
-        Debug.Log("enemy buzzbug");
 
         GameMaster.instance.ActiveEnemies += numships;
     }
@@ -621,7 +619,6 @@ public class Concentryx : MonoBehaviour
 
     public void CreateEnemyCaterpillar(int numships = 1)
     {
-        Debug.Log("CreateEnemyCaterpillar() called");
         for (int i = 0; i < numships; i++)
         {
             GameObject enemyShip = Instantiate(enemyPrefabs[2]);
@@ -710,7 +707,6 @@ public class Concentryx : MonoBehaviour
         }
 
         ChainLightning.instance.InitialiseLightning();
-        Debug.Log("enemy created");
 
         GameMaster.instance.ActiveEnemies += numships;
     }
@@ -814,7 +810,6 @@ public class Concentryx : MonoBehaviour
             planetPrefab.transform.parent = gridParent.transform;
 
         }
-        Debug.Log("planet created");
         GameMaster.instance.ActiveEnemies += numplanets;
 
     }
@@ -874,7 +869,6 @@ public class Concentryx : MonoBehaviour
             nearbyStarPrefab.transform.parent = gridParent.transform;
 
         }
-        Debug.Log("close star created");
     }
 
 
@@ -934,7 +928,6 @@ public class Concentryx : MonoBehaviour
             farStarPrefab.transform.parent = gridParent.transform;
 
         }
-        Debug.Log("close star created");
     }
 
 

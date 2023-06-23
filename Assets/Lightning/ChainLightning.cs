@@ -70,8 +70,6 @@ public class ChainLightning : MonoBehaviour
             // Ensure chainLength matches targets count
             chainLength = targets.Count;
 
-            Debug.Log("Chain Length: " + chainLength);
-
             for (int i = 0; i < chainLength; i++)
             {
                 LightningBolt tmpLightningBolt = new LightningBolt(segmentLength, i);

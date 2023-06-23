@@ -96,7 +96,6 @@ public class EnemyLaserShipMovement : MonoBehaviour
                 emenyLaserShip.transform.localPosition = targetPositions[0].transform.localPosition;
                 startPosition = emenyLaserShip.transform.localPosition;
                 targetPosition = targetPositions[1].transform.localPosition;
-                Debug.Log("Top");
                 break;
 
             case Orientation.Bottom:
@@ -104,7 +103,6 @@ public class EnemyLaserShipMovement : MonoBehaviour
                 emenyLaserShip.transform.localPosition = targetPositions[2].transform.localPosition;
                 startPosition = emenyLaserShip.transform.localPosition;
                 targetPosition = targetPositions[3].transform.localPosition;
-                Debug.Log("Bottom");
                 break;
 
             case Orientation.Left:
@@ -112,7 +110,6 @@ public class EnemyLaserShipMovement : MonoBehaviour
                 emenyLaserShip.transform.localPosition = targetPositions[4].transform.localPosition;
                 startPosition = emenyLaserShip.transform.localPosition;
                 targetPosition = targetPositions[5].transform.localPosition;
-                Debug.Log("Left");
                 break;
 
             case Orientation.Right:
@@ -120,7 +117,6 @@ public class EnemyLaserShipMovement : MonoBehaviour
                 emenyLaserShip.transform.localPosition = targetPositions[6].transform.localPosition;
                 startPosition = emenyLaserShip.transform.localPosition;
                 targetPosition = targetPositions[7].transform.localPosition;
-                Debug.Log("Right");
                 break;
         }
 

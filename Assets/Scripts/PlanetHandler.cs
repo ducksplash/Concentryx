@@ -199,7 +199,6 @@ public class PlanetHandler : MonoBehaviour
     }
     public IEnumerator HeatUp()
     {
-        Debug.Log("HeatUp() called");
 
         Color startColor = planetMaterial.color;
         Color targetColor = Color.yellow;
