@@ -43,6 +43,7 @@ public class Concentryx : MonoBehaviour
 
 
 
+
     public GameObject defaultParent;
     public GameObject gridParent;
     public GameObject ringParent;
@@ -91,8 +92,13 @@ public class Concentryx : MonoBehaviour
         // LevelPatternPhrase - Creates a word out of segments, and is fed with up to 3 strings
         // ConcentricRings - Creates concentric rings of segments that rotate around the player, rotating faster the further away from the player.
         // CreateEnemyShip - Creates specified number of rotating enemies that fire projectiles at the player.
-        // CreateEnemyWaller - Creates enemies that crawl the walls and sweeps the screen with a laser.
+        // CreateEnemyLaserShip - Creates enemies that crawl the walls and sweeps the screen with a laser.
         // CreatePlanet - Creates a planet; these do not attack until their shield is brought down, then fire projectiles at the player.
+        // createNearbyStar - Creates a star that is close to the player.
+        // createFarStar - Creates a star that is far from the player.
+        // CreateBoss - creates one of a number of bosses from a prefabs list called bossPrefabs.
+
+
 
 
         // decide on stars outside of other level decisions.
@@ -101,7 +107,6 @@ public class Concentryx : MonoBehaviour
         int numNearbyStars = UnityEngine.Random.Range(1, 2);
         // faraway
         int numFarStars = UnityEngine.Random.Range(3, 8);
-
 
 
         // do levels under 12
@@ -134,7 +139,7 @@ public class Concentryx : MonoBehaviour
                     GameTimer = StartCoroutine(GameMaster.instance.Countdown(80));
                     currentLevelName = "New Friends";
                     ConcentricRings(6);
-                    CreateEnemyWaller(1);
+                    CreateEnemyLaserShip(1);
                     CreateNearbyStar(numNearbyStars);
                     CreateFarStar(numFarStars);
                     audioSource.clip = gameMusic[1];
@@ -144,7 +149,7 @@ public class Concentryx : MonoBehaviour
                     GameTimer = StartCoroutine(GameMaster.instance.Countdown(90));
                     currentLevelName = "Old Enemies";
                     LevelPatternPhrase(" ", "Ready?", " ");
-                    CreateEnemyWaller(1);
+                    CreateEnemyLaserShip(1);
                     CreateEnemyShip(2);
                     CreatePlanet(1);
                     CreateNearbyStar(numNearbyStars);
@@ -157,7 +162,7 @@ public class Concentryx : MonoBehaviour
                     GameTimer = StartCoroutine(GameMaster.instance.Countdown(120));
                     currentLevelName = "Inevitable";
                     ImagePlay(gridLayouts.GetGridPattern("Sunrise"));
-                    CreateEnemyWaller(2);
+                    CreateEnemyLaserShip(2);
                     CreateNearbyStar(numNearbyStars);
                     CreateFarStar(numFarStars);
                     audioSource.clip = gameMusic[3];
@@ -168,7 +173,7 @@ public class Concentryx : MonoBehaviour
                     GameTimer = StartCoroutine(GameMaster.instance.Countdown(200));
                     currentLevelName = "Meow";
                     ImagePlay(gridLayouts.GetGridPattern("Meow"));
-                    //CreateEnemyWaller(0);
+                    //CreateEnemyLaserShip(0);
                     CreatePlanet(1);
                     CreateNearbyStar(numNearbyStars);
                     CreateFarStar(numFarStars);
@@ -181,7 +186,7 @@ public class Concentryx : MonoBehaviour
                     GameTimer = StartCoroutine(GameMaster.instance.Countdown(300));
                     currentLevelName = "uh oh";
                     // create enemy boss
-                    CreateBossOne();
+                    CreateBoss(0);
                     //CreatePlanet(1);
                     CreateNearbyStar(numNearbyStars);
                     CreateFarStar(numFarStars);
@@ -192,7 +197,7 @@ public class Concentryx : MonoBehaviour
                     GameTimer = StartCoroutine(GameMaster.instance.Countdown(200));
                     currentLevelName = "Concentryx";
                     ImagePlay(gridLayouts.GetGridPattern("Concentryx"));
-                    CreateEnemyWaller(1);
+                    CreateEnemyLaserShip(1);
                     CreateEnemyBuzzbug(1);
                     CreateEnemyShip(2);
                     CreatePlanet(1);
@@ -217,7 +222,7 @@ public class Concentryx : MonoBehaviour
                     GameTimer = StartCoroutine(GameMaster.instance.Countdown(300));
                     currentLevelName = "Arena";
                     ImagePlay(gridLayouts.GetGridPattern("Arena"));
-                    CreateEnemyWaller(4);
+                    CreateEnemyLaserShip(4);
                     CreateEnemyBuzzbug(1);
                     //CreatePlanet(0);
                     CreateNearbyStar(numNearbyStars);
@@ -229,7 +234,7 @@ public class Concentryx : MonoBehaviour
                     GameTimer = StartCoroutine(GameMaster.instance.Countdown(240));
                     currentLevelName = "Vote, Dummy!";
                     ImagePlay(gridLayouts.GetGridPattern("Vote, Dummy!"));
-                    CreateEnemyWaller(1);
+                    CreateEnemyLaserShip(1);
                     CreateEnemyShip(4);
                     CreateNearbyStar(numNearbyStars);
                     CreateFarStar(numFarStars);
@@ -240,7 +245,7 @@ public class Concentryx : MonoBehaviour
                     GameTimer = StartCoroutine(GameMaster.instance.Countdown(220));
                     currentLevelName = "Resonance Cascade";
                     ImagePlay(gridLayouts.GetGridPattern("Resonance Cascade"));
-                    CreateEnemyWaller(1);
+                    CreateEnemyLaserShip(1);
                     CreateEnemyShip(4);
                     //CreatePlanet(0);
                     CreateNearbyStar(numNearbyStars);
@@ -253,7 +258,7 @@ public class Concentryx : MonoBehaviour
                     GameTimer = StartCoroutine(GameMaster.instance.Countdown(300));
                     currentLevelName = "Controversy";
                     ImagePlay(gridLayouts.GetGridPattern("Fleg"));
-                    CreateBossTwo();
+                    CreateBoss(1);
                     CreateEnemyCaterpillar(1);
                     CreateNearbyStar(numNearbyStars);
                     CreateFarStar(numFarStars);
@@ -283,13 +288,13 @@ public class Concentryx : MonoBehaviour
 
                 // a reduced number of additional beasties, we're not hercules.
                 CreateEnemyBuzzbug(UnityEngine.Random.Range(0, 1));
-                CreateEnemyWaller(UnityEngine.Random.Range(0, 1));
+                CreateEnemyLaserShip(UnityEngine.Random.Range(0, 1));
                 CreateEnemyCaterpillar(UnityEngine.Random.Range(0, 1));
                 CreateEnemyShip(UnityEngine.Random.Range(0, 2));
             }
             else
             {
-                CreateEnemyWaller(UnityEngine.Random.Range(0, 4));
+                CreateEnemyLaserShip(UnityEngine.Random.Range(0, 4));
                 CreateEnemyBuzzbug(UnityEngine.Random.Range(0, 2));
                 CreateEnemyCaterpillar(UnityEngine.Random.Range(0, 3));
                 CreateEnemyShip(UnityEngine.Random.Range(0, 8));
@@ -297,7 +302,6 @@ public class Concentryx : MonoBehaviour
             }
         }
     }
-
 
 
     public void ImagePlay(string[] InstanceParameters)
@@ -396,8 +400,6 @@ public class Concentryx : MonoBehaviour
             }
         }
         gridObject.transform.parent = gridParent.transform;
-
-
     }
 
 
@@ -451,16 +453,11 @@ public class Concentryx : MonoBehaviour
 
 
 
-
-
-
     public void LevelPatternGUI()
     {
-
         string word1 = levelText1.text ?? " ";
         string word2 = levelText2.text ?? " ";
         string word3 = levelText3.text ?? " ";
-
 
         float yLevel = -1.0f;
         foreach (string word in new string[] { word3, word2, word1 })
@@ -468,11 +465,7 @@ public class Concentryx : MonoBehaviour
             WordPlay(word, 5, 0.7f, 15f, yLevel, 1f); // word, gridsize, segmentwidth, xstart, ystart, outputscale
             yLevel -= 2.5f;
         }
-
-
     }
-
-
 
 
     public void LevelPatternPhrase(string dword1 = " ", string dword2 = " ", string dword3 = " ")
@@ -489,9 +482,10 @@ public class Concentryx : MonoBehaviour
             WordPlay(word, 5, 0.7f, 15f, yLevel, 1f); // word, gridsize, segmentwidth, xstart, ystart, outputscale
             yLevel -= 2.5f;
         }
-
-
     }
+
+
+
 
     // enemy ship 5
     public void CreateEnemyMothership(int numships = 1)
@@ -623,9 +617,6 @@ public class Concentryx : MonoBehaviour
 
 
 
-
-
-
     // enemy ship type 3
 
     public void CreateEnemyCaterpillar(int numships = 1)
@@ -633,33 +624,31 @@ public class Concentryx : MonoBehaviour
         Debug.Log("CreateEnemyCaterpillar() called");
         for (int i = 0; i < numships; i++)
         {
-
             GameObject enemyShip = Instantiate(enemyPrefabs[2]);
             enemyShip.transform.parent = ringParent.transform;
-
         }
         // we will NOT increment AE here because the caterpillar is made up of multiple segments
         // so AE is incremented in the Start() method of CaterpillarMovement.cs on a per-segment basis.
         // GameMaster.instance.ActiveEnemies += numships;
-
     }
+
+
+
 
     // enemy ship type 2 
 
-    public void CreateEnemyWaller(int numships = 1)
+    public void CreateEnemyLaserShip(int numships = 1)
     {
 
         for (int i = 0; i < numships; i++)
         {
-
             GameObject enemyShip = Instantiate(enemyPrefabs[1]);
             enemyShip.transform.parent = ringParent.transform;
-
         }
-
         GameMaster.instance.ActiveEnemies += numships;
-
     }
+
+
 
 
 
@@ -729,46 +718,16 @@ public class Concentryx : MonoBehaviour
 
 
 
-    public void CreateBossOne()
+
+
+    public void CreateBoss(int bossnumber = 0)
     {
-
-
-        GameObject bossBoat = Instantiate(bossPrefabs[0], bossParent.transform.position, Quaternion.identity);
+        GameObject bossBoat = Instantiate(bossPrefabs[bossnumber], bossParent.transform.position, Quaternion.identity);
         bossBoat.transform.parent = bossParent.transform;
-
-
-        Debug.Log("boss created");
-
         GameMaster.instance.ActiveEnemies += 1;
     }
 
 
-    public void CreateBossTwo()
-    {
-
-
-        GameObject bossBoat = Instantiate(bossPrefabs[1], bossParent.transform.position, Quaternion.identity);
-        bossBoat.transform.parent = bossParent.transform;
-
-
-        Debug.Log("boss created");
-
-        GameMaster.instance.ActiveEnemies += 1;
-    }
-
-
-    public void CreateBossThree()
-    {
-
-
-        GameObject bossBoat = Instantiate(bossPrefabs[2], bossParent.transform.position, Quaternion.identity);
-        bossBoat.transform.parent = bossParent.transform;
-
-
-        Debug.Log("boss created");
-
-        GameMaster.instance.ActiveEnemies += 1;
-    }
 
 
     public void BossPotLuck()
@@ -776,20 +735,8 @@ public class Concentryx : MonoBehaviour
 
         int bossType = Random.Range(0, 3);
 
-        switch (bossType)
-        {
-            case 0:
-                CreateBossOne();
-                break;
+        CreateBoss(bossType);
 
-            case 1:
-                CreateBossTwo();
-                break;
-
-            case 2:
-                CreateBossThree();
-                break;
-        }
     }
 
 

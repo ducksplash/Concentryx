@@ -16,6 +16,8 @@ public class EnemyKamikazi : MonoBehaviour
 
     private Collider2D collider;
 
+    public bool playerDeservesPoints = true;
+
     public bool isDead;
 
     private Animator animator;
@@ -31,16 +33,19 @@ public class EnemyKamikazi : MonoBehaviour
     private void Update()
     {
         // Rotate the sprite around the specified object
-        transform.RotateAround(transform.position, Vector3.forward, rotationSpeed * Time.smoothDeltaTime);
-
-        // Set the rotation direction based on the current setting
-        rotationSpeed = rotateClockwise ? Mathf.Abs(rotationSpeed) : -Mathf.Abs(rotationSpeed);
-
-        // Move towards the player in an arched trajectory
-
-        if (moveCrouton == null)
+        if (!isDead)
         {
-            moveCrouton = StartCoroutine(MoveTowardsPlayer());
+            transform.RotateAround(transform.position, Vector3.forward, rotationSpeed * Time.smoothDeltaTime);
+
+            // Set the rotation direction based on the current setting
+            rotationSpeed = rotateClockwise ? Mathf.Abs(rotationSpeed) : -Mathf.Abs(rotationSpeed);
+
+            // Move towards the player in an arched trajectory
+
+            if (moveCrouton == null)
+            {
+                moveCrouton = StartCoroutine(MoveTowardsPlayer());
+            }
         }
 
     }
@@ -94,12 +99,19 @@ public class EnemyKamikazi : MonoBehaviour
     {
 
         collider.enabled = false;
-        DestroyEnemyShip();
         if (moveCrouton != null)
         {
             StopCoroutine(moveCrouton);
             moveCrouton = null;
         }
+
+        if (collision.gameObject.tag == "Player")
+        {
+            playerDeservesPoints = false;
+        }
+
+
+        DestroyEnemyShip();
 
     }
 
@@ -110,7 +122,10 @@ public class EnemyKamikazi : MonoBehaviour
 
         if (!isDead)
         {
-            GameMaster.instance.IncrementScore(20);
+            if (playerDeservesPoints)
+            {
+                GameMaster.instance.IncrementScore(20);
+            }
             isDead = true;
 
             // this shouldn't even be allowed, but it's happening, live with it.

@@ -251,14 +251,14 @@ public class Menu : MonoBehaviour
 
     public void ResetXP()
     {
-        GameMaster.instance.ResetRank();
+        GameMaster.instance.ResetAll();
         ChangePage(RankMenuCanvas);
 
     }
 
     public void HardReset()
     {
-        GameMaster.instance.ResetRank();
+        GameMaster.instance.ResetAll();
         ChangePage();
         GameMaster.instance.InstantiateLevel();
 

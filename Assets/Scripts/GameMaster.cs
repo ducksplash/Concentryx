@@ -396,7 +396,7 @@ public class GameMaster : MonoBehaviour
             levelEndScoreThisLevelText.text = playerScoreThisLevel.ToString();
             levelEndHighScoreText.text = playerHighScore.ToString();
             levelEndTimeText.text = "0";
-            ResetRank();
+            ResetAll();
 
 
         }
@@ -413,7 +413,7 @@ public class GameMaster : MonoBehaviour
             levelEndScoreThisLevelText.text = playerScoreThisLevel.ToString();
             levelEndHighScoreText.text = playerHighScore.ToString();
             levelEndTimeText.text = "0";
-            ResetRank();
+            ResetAll();
 
 
         }
@@ -563,7 +563,7 @@ public class GameMaster : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    public void ResetRank()
+    public void ResetAll()
     {
         // Reset player rank and XP to defaults
         playerRank = 0;
@@ -587,7 +587,7 @@ public class GameMaster : MonoBehaviour
         scoreTextRanks.text = playerScore.ToString();
         scoreText.text = playerScore.ToString();
         highScoreText.text = playerHighScore.ToString();
-
+        GUIForegroundSprite.sprite = GUIDamageSprite0;
 
         if (toNextRank == 0)
         {
