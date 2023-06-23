@@ -101,6 +101,28 @@ public class Ship : MonoBehaviour
                 }
             }
 
+
+
+            if (collision.gameObject.name.Contains("EnemyKamikaziDrone"))
+            {
+
+                if (GameMaster.instance.health > 0)
+                {
+
+                    //
+                    Vibration.Vibrate(50, 255);
+
+                    StartCoroutine(FlashPlayer());
+                    GameMaster.instance.DecrementHealth(10);
+                }
+                else
+                {
+                    DestroyShip();
+                }
+            }
+
+
+
         }
 
 

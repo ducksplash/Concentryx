@@ -168,7 +168,7 @@ public class Concentryx : MonoBehaviour
                     GameTimer = StartCoroutine(GameMaster.instance.Countdown(200));
                     currentLevelName = "Meow";
                     ImagePlay(gridLayouts.GetGridPattern("Meow"));
-                    CreateEnemyWaller(0);
+                    //CreateEnemyWaller(0);
                     CreatePlanet(1);
                     CreateNearbyStar(numNearbyStars);
                     CreateFarStar(numFarStars);
@@ -192,7 +192,8 @@ public class Concentryx : MonoBehaviour
                     GameTimer = StartCoroutine(GameMaster.instance.Countdown(200));
                     currentLevelName = "Concentryx";
                     ImagePlay(gridLayouts.GetGridPattern("Concentryx"));
-                    CreateEnemyWaller(2);
+                    CreateEnemyWaller(1);
+                    CreateEnemyBuzzbug(1);
                     CreateEnemyShip(2);
                     CreatePlanet(1);
                     CreateNearbyStar(numNearbyStars);
@@ -217,8 +218,8 @@ public class Concentryx : MonoBehaviour
                     currentLevelName = "Arena";
                     ImagePlay(gridLayouts.GetGridPattern("Arena"));
                     CreateEnemyWaller(4);
-                    CreateEnemyShip(0);
-                    CreatePlanet(0);
+                    CreateEnemyBuzzbug(1);
+                    //CreatePlanet(0);
                     CreateNearbyStar(numNearbyStars);
                     CreateFarStar(numFarStars);
                     audioSource.clip = gameMusic[8];
@@ -241,7 +242,7 @@ public class Concentryx : MonoBehaviour
                     ImagePlay(gridLayouts.GetGridPattern("Resonance Cascade"));
                     CreateEnemyWaller(1);
                     CreateEnemyShip(4);
-                    CreatePlanet(0);
+                    //CreatePlanet(0);
                     CreateNearbyStar(numNearbyStars);
                     CreateFarStar(numFarStars);
                     audioSource.clip = gameMusic[UnityEngine.Random.Range(0, gameMusic.Length - 1)];
@@ -281,6 +282,7 @@ public class Concentryx : MonoBehaviour
                 BossPotLuck();
 
                 // a reduced number of additional beasties, we're not hercules.
+                CreateEnemyBuzzbug(UnityEngine.Random.Range(0, 1));
                 CreateEnemyWaller(UnityEngine.Random.Range(0, 1));
                 CreateEnemyCaterpillar(UnityEngine.Random.Range(0, 1));
                 CreateEnemyShip(UnityEngine.Random.Range(0, 2));
@@ -288,6 +290,7 @@ public class Concentryx : MonoBehaviour
             else
             {
                 CreateEnemyWaller(UnityEngine.Random.Range(0, 4));
+                CreateEnemyBuzzbug(UnityEngine.Random.Range(0, 2));
                 CreateEnemyCaterpillar(UnityEngine.Random.Range(0, 3));
                 CreateEnemyShip(UnityEngine.Random.Range(0, 8));
                 CreatePlanet(UnityEngine.Random.Range(0, 3));
@@ -490,6 +493,70 @@ public class Concentryx : MonoBehaviour
 
     }
 
+    // enemy ship 5
+    public void CreateEnemyMothership(int numships = 1)
+    {
+        for (int i = 0; i < numships; i++)
+        {
+            Vector3 parentPosition = transform.position;
+            Vector3 parentScale = transform.localScale;
+            Vector3 parentSize = new Vector3(parentScale.x * 2, parentScale.y * 2, parentScale.z * 2);
+
+            Vector3 playerPosition = Player.transform.position;
+            Vector3 playerScale = Player.transform.localScale;
+            Vector3 playerSize = new Vector3(playerScale.x * 2, playerScale.y * 2, playerScale.z * 2);
+
+            Camera mainCamera = Camera.main;
+            float cameraSize = mainCamera.orthographicSize;
+            float aspectRatio = mainCamera.aspect;
+
+            float maxPositionOffsetX = (cameraSize * aspectRatio) / 2;
+            float maxPositionOffsetY = cameraSize / 2;
+            float minDistanceToPlayer = 5f; // Minimum distance between enemy and player
+
+            Vector3 enemyPosition = Vector3.zero;
+            bool isValidPosition = false;
+            int maxAttempts = 100;
+            int attempts = 0;
+
+            while (!isValidPosition && attempts < maxAttempts)
+            {
+                float randomPositionOffsetX = Random.Range(-maxPositionOffsetX, maxPositionOffsetX);
+                float randomPositionOffsetY = Random.Range(-maxPositionOffsetY, maxPositionOffsetY);
+
+                enemyPosition = parentPosition + new Vector3(randomPositionOffsetX, randomPositionOffsetY, 0f);
+
+                // Calculate the distance between enemy and player
+                float distanceToPlayer = Vector3.Distance(enemyPosition, playerPosition);
+
+                if (distanceToPlayer >= minDistanceToPlayer && !CheckOverlapWithPlayer(enemyPosition, playerPosition, playerSize))
+                {
+                    isValidPosition = true;
+                }
+
+                attempts++;
+            }
+
+            if (!isValidPosition)
+            {
+                return;
+            }
+
+            GameObject enemyShip = Instantiate(enemyPrefabs[4], enemyPosition, Quaternion.identity);
+            enemyShip.transform.parent = gridParent.transform;
+
+            // Calculate rotation towards the player and flip it
+            Vector3 directionToPlayer = playerPosition - enemyPosition;
+            float angle = Mathf.Atan2(directionToPlayer.y, directionToPlayer.x) * Mathf.Rad2Deg;
+            angle += 180f; // Add 180 degrees to flip the direction
+            enemyShip.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        }
+
+        ChainLightning.instance.InitialiseLightning();
+        Debug.Log("enemy buzzbug");
+
+        GameMaster.instance.ActiveEnemies += numships;
+    }
 
 
     // enemy ship 4

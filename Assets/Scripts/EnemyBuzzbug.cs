@@ -8,12 +8,11 @@ public class EnemyBuzzbug : MonoBehaviour
     public GameObject Player;
     public float rotationSpeed = 100f;
     public float minChangeDirectionInterval = 1f;
-    public float maxChangeDirectionInterval = 2.5f;
+    public float maxChangeDirectionInterval = 5.5f;
 
     public int enemyHealth = 20;
     public int enemyHits = 0;
     private float directionTimer;
-    private bool rotateClockwise;
 
 
     public Vector3 attackOriginPosition;
@@ -27,6 +26,7 @@ public class EnemyBuzzbug : MonoBehaviour
 
     public Slider enemyHealthbar;
     private Animator animator;
+    private bool rotateClockwise = true; // Initial rotation direction
 
     private void Start()
     {
@@ -37,13 +37,12 @@ public class EnemyBuzzbug : MonoBehaviour
         jet.SetActive(true);
 
     }
-
     private void Update()
     {
         // Rotate the sprite around the specified object only when not attacking
         if (!isAttacking)
         {
-            transform.RotateAround(Player.transform.position, Vector3.back, rotationSpeed * Time.smoothDeltaTime);
+            transform.RotateAround(Player.transform.position, GetRotationAxis(), rotationSpeed * Time.smoothDeltaTime);
         }
 
         // Update the direction timer
@@ -54,8 +53,8 @@ public class EnemyBuzzbug : MonoBehaviour
             // Check if it's time to change rotation direction
             if (directionTimer <= 0f)
             {
-                // Randomly determine the new rotation direction
-                rotateClockwise = Random.value < 0.7f;
+                // Toggle the rotation direction
+                rotateClockwise = !rotateClockwise;
 
                 // Reset the timer with a random interval between minChangeDirectionInterval and maxChangeDirectionInterval
                 ResetDirectionTimer();
@@ -66,10 +65,21 @@ public class EnemyBuzzbug : MonoBehaviour
         }
     }
 
+    // Get the rotation axis based on the current rotation direction
+    private Vector3 GetRotationAxis()
+    {
+        return rotateClockwise ? Vector3.back : Vector3.forward;
+    }
+
+
+
     // attack function
     // lerp transform towards player and then lerp back to origin
     public IEnumerator AttackPlayer()
     {
+        float distanceThreshold = 0.1f; // Adjust this value as desired
+
+        yield return new WaitForSeconds(0.5f);
         isAttacking = true;
 
         float attackTime = 0.5f;
@@ -84,6 +94,13 @@ public class EnemyBuzzbug : MonoBehaviour
             elapsedTime += Time.deltaTime;
             float t = elapsedTime / attackTime;
             transform.position = Vector3.Lerp(attackStartPosition, playerPosition, t * attackSpeed);
+
+            // Check if the object is close enough to the target
+            if (Vector3.Distance(transform.position, playerPosition) <= distanceThreshold)
+            {
+                break; // Exit the loop prematurely
+            }
+
             yield return null;
         }
 
@@ -94,33 +111,42 @@ public class EnemyBuzzbug : MonoBehaviour
             elapsedTime += Time.deltaTime;
             float t = elapsedTime / attackTime;
             transform.position = Vector3.Lerp(playerPosition, attackStartPosition, t * attackSpeed);
+
+            // Check if the object is close enough to the starting position
+            if (Vector3.Distance(transform.position, attackStartPosition) <= distanceThreshold)
+            {
+                break; // Exit the loop prematurely
+            }
+
             yield return null;
         }
+
         isAttacking = false;
     }
-
 
     private void ResetDirectionTimer()
     {
         directionTimer = Random.Range(minChangeDirectionInterval, maxChangeDirectionInterval);
     }
 
-    // private void OnCollisionEnter2D(Collision2D collision)
-    // {
-    //     if (!collision.gameObject.name.Contains("Enemy") && !collision.gameObject.name.Contains("Boss"))
-    //     {
-    //         collision.gameObject.GetComponent<BulletTime>().DestroyGameObject();
-
-    //         if (enemyHealth > 0)
-    //         {
-    //             DecrementEnemyHealth(1);
-    //         }
-    //         else
-    //         {
-    //             DestroyEnemyShip();
-    //         }
-    //     }
-    // }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (!collision.gameObject.name.Contains("Enemy") && !collision.gameObject.name.Contains("Boss"))
+        {
+            if (collision.gameObject.GetComponent<BulletTime>())
+            {
+                collision.gameObject.GetComponent<BulletTime>().DestroyGameObject();
+            }
+            if (enemyHealth > 0)
+            {
+                DecrementEnemyHealth(1);
+            }
+            else
+            {
+                DestroyEnemyShip();
+            }
+        }
+    }
 
     public void DestroyEnemyShip()
     {

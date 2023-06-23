@@ -95,6 +95,8 @@ public class GameMaster : MonoBehaviour
 
     public int pillTime;
 
+
+
     public float projectileDelay = 0.1f;
     public float projectileDelayDefault = 0.1f;
     public float projectileDelayBoosted = 0.05f;
@@ -162,6 +164,9 @@ public class GameMaster : MonoBehaviour
     public bool GamePaused = false;
 
     public AudioClip[] weaponNoises;
+
+    public GameObject gridParent;
+
 
 
     private void Awake()
@@ -632,6 +637,8 @@ public class GameMaster : MonoBehaviour
 
         healthbar.GetComponentInChildren<Image>().color = healthColor;
 
+        StartCoroutine(UnhealthyText(amount.ToString()));
+
         if (!isFlashing)
         {
             StartCoroutine(FlashScore());
@@ -916,6 +923,7 @@ public class GameMaster : MonoBehaviour
 
             Vector3 offset = Vector3.up * -1.5f; // Change the Y value as needed
             GameObject floatingTextObj = Instantiate(textPrefab, transform.position + offset, Quaternion.identity);
+            floatingTextObj.transform.SetParent(gridParent.transform);
 
             TextMeshProUGUI textMesh = floatingTextObj.GetComponentInChildren<TextMeshProUGUI>();
 
@@ -925,7 +933,7 @@ public class GameMaster : MonoBehaviour
             textMesh.text = val.ToString();
 
             // Rise above the origin object
-            while (floatingTextObj.transform.position.y < targetPosition.y)
+            while (floatingTextObj != null && floatingTextObj.transform.position.y < targetPosition.y)
             {
                 floatingTextObj.transform.position += Vector3.up * riseSpeed * Time.smoothDeltaTime;
                 yield return null;
@@ -942,11 +950,47 @@ public class GameMaster : MonoBehaviour
 
 
 
+
+    private IEnumerator UnhealthyText(string val)
+    {
+
+        Vector3 offset = Vector3.up * -1.5f; // Change the Y value as needed
+        GameObject floatingTextObj = Instantiate(textPrefab, transform.position + offset, Quaternion.identity);
+
+        floatingTextObj.transform.SetParent(gridParent.transform);
+        TextMeshProUGUI textMesh = floatingTextObj.GetComponentInChildren<TextMeshProUGUI>();
+
+        Vector3 targetPosition = transform.position - Vector3.up * 15.0f;
+
+
+        string pilltext = "-" + val + " HP";
+
+        textMesh.color = Color.red;
+        textMesh.text = pilltext;
+
+        // Rise above the origin object
+        while (floatingTextObj != null && floatingTextObj.transform.position.y > targetPosition.y)
+        {
+            floatingTextObj.transform.position -= Vector3.up * riseSpeed * Time.smoothDeltaTime;
+            yield return null;
+        }
+
+        // Wait for the duration of the text
+        yield return new WaitForSeconds(lifeDuration);
+
+        // Destroy the floating text
+        Destroy(floatingTextObj);
+    }
+
+
+
+
     private IEnumerator DisplayPillText(string val)
     {
 
         Vector3 offset = Vector3.up * -1.5f; // Change the Y value as needed
         GameObject floatingTextObj = Instantiate(textPrefab, transform.position + offset, Quaternion.identity);
+        floatingTextObj.transform.SetParent(gridParent.transform);
 
         TextMeshProUGUI textMesh = floatingTextObj.GetComponentInChildren<TextMeshProUGUI>();
 
@@ -982,7 +1026,7 @@ public class GameMaster : MonoBehaviour
         textMesh.text = pilltext;
 
         // Rise above the origin object
-        while (floatingTextObj.transform.position.y > targetPosition.y)
+        while (floatingTextObj != null && floatingTextObj.transform.position.y > targetPosition.y)
         {
             floatingTextObj.transform.position -= Vector3.up * riseSpeed * Time.smoothDeltaTime;
             yield return null;
