@@ -23397,7 +23397,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 0, b: 0, a: 0.42745098}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -45205,9 +45205,6 @@ MonoBehaviour:
   XPButtonCanvas: {fileID: 1937829923}
   PauseButtonCanvas: {fileID: 704797752}
   CustomMenuCanvas: {fileID: 1517419885}
-  shipSelectButton1: {fileID: 881709540}
-  shipSelectButton2: {fileID: 1356927632}
-  shipSelectButton3: {fileID: 2056808166}
   LevelEndCanvas: {fileID: 94250968}
   LevelInterstitialCanvas: {fileID: 1185478274}
   warmUpSlider: {fileID: 1701108199}
@@ -54925,6 +54922,9 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 7ac147e8de22b714396ba8dbd27bcf4e, type: 3}
   - {fileID: 21300000, guid: fa55ef1db4f176642b80dd0a4b335f78, type: 3}
   startPosition: {x: 0, y: 0, z: 0}
+  shipSelectButton1: {fileID: 881709540}
+  shipSelectButton2: {fileID: 1356927632}
+  shipSelectButton3: {fileID: 2056808166}
 --- !u!4 &4956001991301095820
 Transform:
   m_ObjectHideFlags: 0

@@ -24,6 +24,11 @@ public class Ship : MonoBehaviour
     public Vector3 startPosition;
 
     public Coroutine gameOverCoroutine = null;
+
+    public Button shipSelectButton1;
+    public Button shipSelectButton2;
+    public Button shipSelectButton3;
+
     private void Awake()
     {
         instance = this;
@@ -81,6 +86,13 @@ public class Ship : MonoBehaviour
         shipSprite.sprite = shipSpriteList[selectedShipSprite];
         PlayerPrefs.SetInt("ShipSprite", selectedShipSprite);
         PlayerPrefs.Save();
+
+        int shipSpriteCode = PlayerPrefs.GetInt("ShipSprite", 0);
+        shipSelectButton1.interactable = (shipSpriteCode == 0) ? false : true;
+        shipSelectButton2.interactable = (shipSpriteCode == 1) ? false : true;
+        shipSelectButton3.interactable = (shipSpriteCode == 2) ? false : true;
+
+
     }
 
 

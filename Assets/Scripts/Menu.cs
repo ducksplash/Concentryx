@@ -25,9 +25,6 @@ public class Menu : MonoBehaviour
     public CanvasGroup PauseButtonCanvas;
     public CanvasGroup CustomMenuCanvas;
 
-    public Button shipSelectButton1;
-    public Button shipSelectButton2;
-    public Button shipSelectButton3;
 
     public CanvasGroup LevelEndCanvas;
     public CanvasGroup LevelInterstitialCanvas;
@@ -231,6 +228,12 @@ public class Menu : MonoBehaviour
 
     public void CustomisationScreen()
     {
+
+        int shipSpriteCode = PlayerPrefs.GetInt("ShipSprite", 0);
+        Ship.instance.shipSelectButton1.interactable = (shipSpriteCode == 0) ? false : true;
+        Ship.instance.shipSelectButton2.interactable = (shipSpriteCode == 1) ? false : true;
+        Ship.instance.shipSelectButton3.interactable = (shipSpriteCode == 2) ? false : true;
+
         ChangePage(CustomMenuCanvas);
         Time.timeScale = 0f;
     }
