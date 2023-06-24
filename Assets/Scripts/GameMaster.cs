@@ -597,6 +597,9 @@ public class GameMaster : MonoBehaviour
         highScoreText.text = playerHighScore.ToString();
         GUIForegroundSprite.sprite = GUIDamageSprite0;
 
+        // reset player sprite
+        Ship.instance.SetSprite(0);
+
         if (toNextRank == 0)
         {
             XPimg.fillAmount = 1f; // Completely filled when playerXP is equal to toNextRank

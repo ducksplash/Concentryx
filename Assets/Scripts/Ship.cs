@@ -28,6 +28,8 @@ public class Ship : MonoBehaviour
     public Button shipSelectButton1;
     public Button shipSelectButton2;
     public Button shipSelectButton3;
+    public Button shipSelectButton4;
+    public Button shipSelectButton5;
 
     private void Awake()
     {
@@ -91,6 +93,8 @@ public class Ship : MonoBehaviour
         shipSelectButton1.interactable = (shipSpriteCode == 0) ? false : true;
         shipSelectButton2.interactable = (shipSpriteCode == 1) ? false : true;
         shipSelectButton3.interactable = (shipSpriteCode == 2) ? false : true;
+        shipSelectButton4.interactable = (shipSpriteCode == 3) ? false : true;
+        shipSelectButton5.interactable = (shipSpriteCode == 4) ? false : true;
 
 
     }

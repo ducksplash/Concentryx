@@ -25,6 +25,10 @@ public class Menu : MonoBehaviour
     public CanvasGroup PauseButtonCanvas;
     public CanvasGroup CustomMenuCanvas;
 
+    public ParticleSystem previewJet;
+
+    public Image previewShip;
+
 
     public CanvasGroup LevelEndCanvas;
     public CanvasGroup LevelInterstitialCanvas;
@@ -64,7 +68,7 @@ public class Menu : MonoBehaviour
     void Start()
     {
 
-
+        previewJet.Stop();
 
         // Set initial toggle value based on the device vibration setting
         if (!PlayerPrefs.HasKey("PlayerVibration"))
@@ -229,12 +233,18 @@ public class Menu : MonoBehaviour
     public void CustomisationScreen()
     {
 
+        ChangePage(CustomMenuCanvas);
         int shipSpriteCode = PlayerPrefs.GetInt("ShipSprite", 0);
         Ship.instance.shipSelectButton1.interactable = (shipSpriteCode == 0) ? false : true;
         Ship.instance.shipSelectButton2.interactable = (shipSpriteCode == 1) ? false : true;
         Ship.instance.shipSelectButton3.interactable = (shipSpriteCode == 2) ? false : true;
+        Ship.instance.shipSelectButton4.interactable = (shipSpriteCode == 3) ? false : true;
+        Ship.instance.shipSelectButton5.interactable = (shipSpriteCode == 4) ? false : true;
 
-        ChangePage(CustomMenuCanvas);
+        previewShip.sprite = Ship.instance.shipSpriteList[shipSpriteCode];
+        previewJet.Play();
+
+
         Time.timeScale = 0f;
     }
 
@@ -292,6 +302,7 @@ public class Menu : MonoBehaviour
     // Change the page of the menu
     public void ChangePage(CanvasGroup ToOpen = null, bool FirstRun = false)
     {
+        previewJet.Stop();
 
         CanvasGroup[] canvasGroups = GameMenu.GetComponentsInChildren<CanvasGroup>();
 
