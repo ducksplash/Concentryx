@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: CoreColorPickerMaterial
-  m_Shader: {fileID: 4800000, guid: 2472ab989f313d546a84b277cd85a6cb, type: 3}
+  m_Name: EndColorPickerMaterial
+  m_Shader: {fileID: 4800000, guid: f7701db5a1366ff409844c55e48708c2, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4

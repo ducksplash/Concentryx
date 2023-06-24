@@ -31,6 +31,11 @@ public class Ship : MonoBehaviour
     public Button shipSelectButton4;
     public Button shipSelectButton5;
 
+    public ParticleSystem shipJetParticles;
+    public ParticleSystem demoJetPart;
+
+    public Image previewShipSprite;
+
     private void Awake()
     {
         instance = this;
@@ -46,6 +51,62 @@ public class Ship : MonoBehaviour
 
         SetSprite(PlayerPrefs.GetInt("ShipSprite", 0));
 
+
+
+    }
+
+
+    public void SetJetColors()
+    {
+
+        // Convert the color strings to Color objects
+        Color startColor;
+        string startColorString = PlayerPrefs.GetString("StartColor", "0000FF");
+        if (!startColorString.StartsWith("#"))
+        {
+            startColorString = "#" + startColorString; // Prepend "#" symbol if missing
+        }
+
+        if (!ColorUtility.TryParseHtmlString(startColorString, out startColor))
+        {
+            // Error handling if the conversion fails
+            Debug.LogError("Failed to parse start color from PlayerPrefs. Color string: " + startColorString);
+            startColor = Color.blue; // Default color value
+        }
+
+        Color endColor;
+        string endColorString = PlayerPrefs.GetString("EndColor", "FF0000");
+        if (!endColorString.StartsWith("#"))
+        {
+            endColorString = "#" + endColorString; // Prepend "#" symbol if missing
+        }
+
+        if (!ColorUtility.TryParseHtmlString(endColorString, out endColor))
+        {
+            // Error handling if the conversion fails
+            Debug.LogError("Failed to parse end color from PlayerPrefs. Color string: " + endColorString);
+            endColor = Color.red; // Default color value
+        }
+
+        // Assign the gradient to the particle system
+        var col = shipJetParticles.colorOverLifetime;
+        var demoCol = demoJetPart.colorOverLifetime;
+
+        Gradient grad = new Gradient();
+        grad.SetKeys(
+            new GradientColorKey[]
+            {
+            new GradientColorKey(startColor, 0.0f),
+            new GradientColorKey(endColor, 1.0f)
+            },
+            new GradientAlphaKey[]
+            {
+            new GradientAlphaKey(1.0f, 0.0f),
+            new GradientAlphaKey(1.0f, 1.0f)
+            });
+
+        col.color = new ParticleSystem.MinMaxGradient(grad);
+        demoCol.color = new ParticleSystem.MinMaxGradient(grad);
     }
 
 
@@ -96,9 +157,9 @@ public class Ship : MonoBehaviour
         shipSelectButton4.interactable = (shipSpriteCode == 3) ? false : true;
         shipSelectButton5.interactable = (shipSpriteCode == 4) ? false : true;
 
+        previewShipSprite.sprite = Ship.instance.shipSpriteList[shipSpriteCode];
 
     }
-
 
 
     private void OnCollisionEnter2D(Collision2D collision)

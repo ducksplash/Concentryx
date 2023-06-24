@@ -261,6 +261,7 @@ public class GameMaster : MonoBehaviour
         levelEndRetryButton.interactable = false;
 
 
+        Ship.instance.SetJetColors();
 
         ResetColourAdjustments();
         ChangeBG();
@@ -599,6 +600,10 @@ public class GameMaster : MonoBehaviour
 
         // reset player sprite
         Ship.instance.SetSprite(0);
+        // reset player particles
+        PlayerPrefs.SetString("StartColor", "0000FF");
+        PlayerPrefs.SetString("EndColor", "FF0000");
+        Ship.instance.SetJetColors();
 
         if (toNextRank == 0)
         {

@@ -1,5 +1,5 @@
 
-Shader "UI/LightColorPicker"
+Shader "UI/StartColorPicker"
 {
     Properties
     {

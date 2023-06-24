@@ -7,15 +7,15 @@ using UnityEngine.UI;
 using static UnityEngine.Mathf;
 
 [ExecuteInEditMode, RequireComponent(typeof(Image))]
-public class LightColorPicker : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
+public class StartColorPicker : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
     private const float recip2Pi = 0.159154943f;
-    private const string colorPickerShaderName = "UI/LightColorPicker";
+    private const string colorPickerShaderName = "UI/StartColorPicker";
 
-    private static readonly int _HSV             = Shader.PropertyToID(nameof(_HSV));
-    private static readonly int _AspectRatio     = Shader.PropertyToID(nameof(_AspectRatio));
-    private static readonly int _HueCircleInner  = Shader.PropertyToID(nameof(_HueCircleInner));
-    private static readonly int _SVSquareSize    = Shader.PropertyToID(nameof(_SVSquareSize));
+    private static readonly int _HSV = Shader.PropertyToID(nameof(_HSV));
+    private static readonly int _AspectRatio = Shader.PropertyToID(nameof(_AspectRatio));
+    private static readonly int _HueCircleInner = Shader.PropertyToID(nameof(_HueCircleInner));
+    private static readonly int _SVSquareSize = Shader.PropertyToID(nameof(_SVSquareSize));
 
     [SerializeField, HideInInspector] private Shader colorPickerShader;
     private Material generatedMaterial;
@@ -31,7 +31,8 @@ public class LightColorPicker : MonoBehaviour, IPointerDownHandler, IDragHandler
     public Color color
     {
         get { return Color.HSVToRGB(h, s, v); }
-        set {
+        set
+        {
             Color.RGBToHSV(value, out h, out s, out v);
             ApplyColor();
         }
@@ -180,12 +181,12 @@ public class LightColorPicker : MonoBehaviour, IPointerDownHandler, IDragHandler
 
 #if UNITY_EDITOR
 
-    [UnityEditor.MenuItem("GameObject/UI/LightColorPicker", false, 10)]
-    private static void CreateLightColorPicker(UnityEditor.MenuCommand menuCommand)
+    [UnityEditor.MenuItem("GameObject/UI/StartColorPicker", false, 10)]
+    private static void CreateStartColorPicker(UnityEditor.MenuCommand menuCommand)
     {
-        GameObject go = new GameObject("LightColorPicker");
+        GameObject go = new GameObject("StartColorPicker");
 
-        go.AddComponent<CoreColorPicker>();
+        go.AddComponent<StartColorPicker>();
 
         UnityEditor.GameObjectUtility.SetParentAndAlign(go, menuCommand.context as GameObject);
 

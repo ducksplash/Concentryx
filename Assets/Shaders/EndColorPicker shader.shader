@@ -1,5 +1,5 @@
 
-Shader "UI/CoreColorPicker"
+Shader "UI/EndColorPicker"
 {
     Properties
     {

@@ -7,15 +7,15 @@ using UnityEngine.UI;
 using static UnityEngine.Mathf;
 
 [ExecuteInEditMode, RequireComponent(typeof(Image))]
-public class CoreColorPicker : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
+public class EndColorPicker : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
     private const float recip2Pi = 0.159154943f;
-    private const string colorPickerShaderName = "UI/CoreColorPicker";
+    private const string colorPickerShaderName = "UI/EndColorPicker";
 
-    private static readonly int _HSV             = Shader.PropertyToID(nameof(_HSV));
-    private static readonly int _AspectRatio     = Shader.PropertyToID(nameof(_AspectRatio));
-    private static readonly int _HueCircleInner  = Shader.PropertyToID(nameof(_HueCircleInner));
-    private static readonly int _SVSquareSize    = Shader.PropertyToID(nameof(_SVSquareSize));
+    private static readonly int _HSV = Shader.PropertyToID(nameof(_HSV));
+    private static readonly int _AspectRatio = Shader.PropertyToID(nameof(_AspectRatio));
+    private static readonly int _HueCircleInner = Shader.PropertyToID(nameof(_HueCircleInner));
+    private static readonly int _SVSquareSize = Shader.PropertyToID(nameof(_SVSquareSize));
 
     [SerializeField, HideInInspector] private Shader colorPickerShader;
     private Material generatedMaterial;
@@ -31,7 +31,8 @@ public class CoreColorPicker : MonoBehaviour, IPointerDownHandler, IDragHandler,
     public Color color
     {
         get { return Color.HSVToRGB(h, s, v); }
-        set {
+        set
+        {
             Color.RGBToHSV(value, out h, out s, out v);
             ApplyColor();
         }
@@ -142,8 +143,10 @@ public class CoreColorPicker : MonoBehaviour, IPointerDownHandler, IDragHandler,
     private void ApplyColor()
     {
         image.material.SetVector(_HSV, new Vector3(h, s, v));
-
         onColorChanged?.Invoke(color);
+
+
+
     }
 
     private void OnDestroy()
@@ -180,12 +183,12 @@ public class CoreColorPicker : MonoBehaviour, IPointerDownHandler, IDragHandler,
 
 #if UNITY_EDITOR
 
-    [UnityEditor.MenuItem("GameObject/UI/CoreColorPicker", false, 10)]
-    private static void CreateCoreColorPicker(UnityEditor.MenuCommand menuCommand)
+    [UnityEditor.MenuItem("GameObject/UI/EndColorPicker", false, 10)]
+    private static void CreateEndColorPicker(UnityEditor.MenuCommand menuCommand)
     {
-        GameObject go = new GameObject("CoreColorPicker");
+        GameObject go = new GameObject("EndColorPicker");
 
-        go.AddComponent<CoreColorPicker>();
+        go.AddComponent<EndColorPicker>();
 
         UnityEditor.GameObjectUtility.SetParentAndAlign(go, menuCommand.context as GameObject);
 
