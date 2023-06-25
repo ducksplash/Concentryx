@@ -171,6 +171,9 @@ public class GameMaster : MonoBehaviour
     public bool scoreToasting = false;
     public bool pillToasting = false;
 
+    public GameObject theHaze;
+    public GameObject theRoids;
+
     private void Awake()
     {
         instance = this;
@@ -241,7 +244,8 @@ public class GameMaster : MonoBehaviour
         shieldParticleSystem.GetComponent<ParticleSystem>().Stop();
         shieldParticleSystem.SetActive(false);
 
-
+        theHaze.GetComponent<Haze>().MakeHazed();
+        theRoids.GetComponent<Asteroids>().MakeRoids();
 
 
         if (Application.platform == RuntimePlatform.Android)
@@ -277,6 +281,9 @@ public class GameMaster : MonoBehaviour
         // instantiate the next expected level
         // 
         Concentryx.GetComponent<Concentryx>().BuildLevel(CurrentLevel);
+
+        theHaze.GetComponent<Haze>().MakeHazed();
+        theRoids.GetComponent<Asteroids>().MakeRoids();
 
         // set to 'playing'
         LevelEngaged = true;
@@ -604,6 +611,11 @@ public class GameMaster : MonoBehaviour
         PlayerPrefs.SetString("StartColor", "0000FF");
         PlayerPrefs.SetString("EndColor", "FF0000");
         Ship.instance.SetJetColors();
+
+        // reset env
+        theHaze.GetComponent<Haze>().MakeHazed();
+        theRoids.GetComponent<Asteroids>().MakeRoids();
+
 
         if (toNextRank == 0)
         {

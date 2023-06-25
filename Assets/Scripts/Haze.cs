@@ -6,15 +6,70 @@ public class Haze : MonoBehaviour
     public Transform hazeTransform;
     public Material hazeMaterial;
 
+    public Vector3 startingPosition;
+
+    public Coroutine hazeScaleCoroutine = null;
+    public Coroutine hazeRotationCoroutine = null;
+    public Coroutine hazeEmissionCoroutine = null;
+    public Coroutine hazeMovementCoroutine = null;
+
+    public float radius = 2f;
+
     private void Start()
     {
-        hazeTransform = transform;
-        hazeMaterial = GetComponent<Renderer>().material;
+        MakeHazed();
+    }
 
-        StartCoroutine(HazeScale());
-        StartCoroutine(RotateHaze());
-        StartCoroutine(HazeEmission());
-        StartCoroutine(MoveHaze(100f));
+    public void MakeHazed()
+    {
+        // Get the starting position
+
+        // Generate a random direction and distance within the specified radius
+        Vector3 randomDirection = Random.insideUnitSphere.normalized;
+        float randomDistance = Random.Range(4f, radius);
+
+        // Calculate the new position based on the starting position, random direction, and random distance
+        Vector3 newPosition = startingPosition + randomDirection * randomDistance;
+
+        // Set the new position for the object
+        hazeTransform.localPosition = newPosition;
+
+        MakeHazeWaste();
+
+        hazeScaleCoroutine = StartCoroutine(HazeScale());
+        hazeRotationCoroutine = StartCoroutine(RotateHaze());
+        hazeEmissionCoroutine = StartCoroutine(HazeEmission());
+        hazeMovementCoroutine = StartCoroutine(MoveHaze(100f));
+    }
+
+
+    public void MakeHazeWaste()
+    {
+        // stop them if they're started
+
+        if (hazeScaleCoroutine != null)
+        {
+            StopCoroutine(hazeScaleCoroutine);
+            hazeScaleCoroutine = null;
+        }
+
+        if (hazeRotationCoroutine != null)
+        {
+            StopCoroutine(hazeRotationCoroutine);
+            hazeRotationCoroutine = null;
+        }
+
+        if (hazeEmissionCoroutine != null)
+        {
+            StopCoroutine(hazeEmissionCoroutine);
+            hazeEmissionCoroutine = null;
+        }
+
+        if (hazeMovementCoroutine != null)
+        {
+            StopCoroutine(hazeMovementCoroutine);
+            hazeMovementCoroutine = null;
+        }
     }
 
     private IEnumerator HazeScale()
@@ -24,31 +79,32 @@ public class Haze : MonoBehaviour
         const float maxScale = 0.9f;
         const float delay = 0.1f;
 
+        Vector3 scaleIncrementVector = new Vector3(scaleIncrement, scaleIncrement, scaleIncrement);
+        WaitForSeconds delayWait = new WaitForSeconds(delay);
+
         while (true)
         {
             while (hazeTransform.localScale.x < maxScale)
             {
-                yield return new WaitForSeconds(delay);
-                hazeTransform.localScale += new Vector3(scaleIncrement, scaleIncrement, scaleIncrement);
-                yield return null;
+                hazeTransform.localScale += scaleIncrementVector * Time.deltaTime;
+                yield return delayWait;
             }
 
-            yield return new WaitForSeconds(delay); // Delay at max scale
+            yield return delayWait; // Delay at max scale
 
             while (hazeTransform.localScale.x > minScale)
             {
-                yield return new WaitForSeconds(delay);
-                hazeTransform.localScale -= new Vector3(scaleIncrement, scaleIncrement, scaleIncrement);
-                yield return null;
+                hazeTransform.localScale -= scaleIncrementVector * Time.deltaTime;
+                yield return delayWait;
             }
 
-            yield return new WaitForSeconds(delay); // Delay at min scale
+            yield return delayWait; // Delay at min scale
         }
     }
 
     private IEnumerator RotateHaze()
     {
-        const float rotationSpeed = 0.1f;
+        float rotationSpeed = UnityEngine.Random.Range(-0.1f, 0.3f);
 
         while (true)
         {
@@ -59,8 +115,8 @@ public class Haze : MonoBehaviour
 
     private IEnumerator MoveHaze(float duration)
     {
-        const float moveSpeedDown = 0.06f;
-        const float moveSpeedRight = 0.02f;
+        float moveSpeedDown = UnityEngine.Random.Range(-0.06f, 0.06f);
+        float moveSpeedRight = UnityEngine.Random.Range(-0.02f, 0.02f);
 
         float elapsedTime = 0f;
 
@@ -78,22 +134,21 @@ public class Haze : MonoBehaviour
 
     private IEnumerator HazeEmission()
     {
-        const float intensityIncrement = 0.001f;
-        const float maxIntensity = 1.8f;
-        const float minIntensity = 0.2f;
-        Color pinkColor = Color.red;
-        Color blueColor = Color.blue;
+        float intensityIncrement = UnityEngine.Random.Range(-0.02f, 0.02f);
+        float maxIntensity = UnityEngine.Random.Range(1.6f, 1.9f);
+        float minIntensity = UnityEngine.Random.Range(0.15f, 0.25f);
+        Color pinkColor = GetRandomColor();
+        Color blueColor = GetRandomColor();
 
-        Color startColor = pinkColor;
-        Color endColor = blueColor;
+        Color startColor = GetRandomColor();
+        Color endColor = GetRandomColor();
+        float t = 0f;
 
         while (true)
         {
             while (hazeMaterial.GetColor("_EmissionColor").maxColorComponent < maxIntensity)
             {
-                Color currentColor = hazeMaterial.GetColor("_EmissionColor");
-                float newIntensity = currentColor.maxColorComponent + intensityIncrement;
-                float t = (newIntensity - minIntensity) / (maxIntensity - minIntensity);
+                t += intensityIncrement / (maxIntensity - minIntensity);
                 Color newColor = Color.Lerp(startColor, endColor, t);
 
                 hazeMaterial.SetColor("_EmissionColor", newColor);
@@ -104,12 +159,11 @@ public class Haze : MonoBehaviour
 
             startColor = blueColor;
             endColor = pinkColor;
+            t = 0f;
 
             while (hazeMaterial.GetColor("_EmissionColor").maxColorComponent > minIntensity)
             {
-                Color currentColor = hazeMaterial.GetColor("_EmissionColor");
-                float newIntensity = currentColor.maxColorComponent - intensityIncrement;
-                float t = (newIntensity - minIntensity) / (maxIntensity - minIntensity);
+                t += intensityIncrement / (maxIntensity - minIntensity);
                 Color newColor = Color.Lerp(startColor, endColor, t);
 
                 hazeMaterial.SetColor("_EmissionColor", newColor);
@@ -119,4 +173,15 @@ public class Haze : MonoBehaviour
             yield return new WaitForSeconds(0.5f); // Delay at min intensity
         }
     }
+
+
+
+    public Color GetRandomColor()
+    {
+        float r = Random.value;
+        float g = Random.value;
+        float b = Random.value;
+        return new Color(r, g, b);
+    }
+
 }
