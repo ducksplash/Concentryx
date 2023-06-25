@@ -22,12 +22,15 @@ public class EnemyKamikazi : MonoBehaviour
 
     private Animator animator;
 
+    private AudioSource explosionSound;
+
     private void Start()
     {
         rotateClockwise = true;
         animator = GetComponent<Animator>();
         Player = GameObject.FindGameObjectWithTag("Player");
         shipCollider = GetComponent<Collider2D>();
+        explosionSound = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -127,7 +130,7 @@ public class EnemyKamikazi : MonoBehaviour
                 GameMaster.instance.IncrementScore(20);
             }
             isDead = true;
-
+            explosionSound.Play();
             // this shouldn't even be allowed, but it's happening, live with it.
             Destroy(gameObject.transform.gameObject, animator.GetCurrentAnimatorStateInfo(0).length);
         }

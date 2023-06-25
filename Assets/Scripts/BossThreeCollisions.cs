@@ -13,6 +13,9 @@ public class BossThreeCollisions : MonoBehaviour
     public bool isDead;
     public Image enemyHealthbar;
 
+    private AudioSource explosionSound;
+
+
     private const float healthFillAmount = 0.1f;
 
     public BossThreeMovement movementScript;
@@ -22,6 +25,8 @@ public class BossThreeCollisions : MonoBehaviour
     {
 
         animator = GetComponent<Animator>();
+
+        explosionSound = GetComponent<AudioSource>();
 
     }
 
@@ -67,6 +72,7 @@ public class BossThreeCollisions : MonoBehaviour
 
             GameMaster.instance.ActiveEnemies--;
             movementScript.enabled = false;
+            explosionSound.Play();
             // this shouldn't even be allowed, but it's happening, live with it.
             Destroy(gameObject.transform.parent.gameObject, animator.GetCurrentAnimatorStateInfo(0).length);
         }

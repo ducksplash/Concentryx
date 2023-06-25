@@ -26,6 +26,8 @@ public class EnemyBuzzbug : MonoBehaviour
 
     public Slider enemyHealthbar;
     private Animator animator;
+
+    private AudioSource explosionSound;
     private bool rotateClockwise = true; // Initial rotation direction
 
     private void Start()
@@ -35,6 +37,7 @@ public class EnemyBuzzbug : MonoBehaviour
         animator = GetComponent<Animator>();
         Player = GameObject.FindGameObjectWithTag("Player");
         jet.SetActive(true);
+        explosionSound = GetComponent<AudioSource>();
 
     }
     private void Update()
@@ -160,6 +163,7 @@ public class EnemyBuzzbug : MonoBehaviour
             jet.SetActive(false);
 
             GameMaster.instance.ActiveEnemies--;
+            explosionSound.Play();
             Destroy(gameObject, animator.GetCurrentAnimatorStateInfo(0).length);
         }
     }

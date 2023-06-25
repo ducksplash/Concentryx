@@ -34,11 +34,10 @@ public class PlanetHandler : MonoBehaviour
 
     private Color defaultColor;
     private Color defaultEmissionColor;
-
     private bool isHeatingUp = false;
-
-
     private const float healthFillAmount = 0.001f;
+
+    private AudioSource explosionSound;
 
     private void Start()
     {
@@ -56,6 +55,7 @@ public class PlanetHandler : MonoBehaviour
         defaultColor = planetMaterial.color;
         defaultEmissionColor = planetMaterial.GetColor("_EmissionColor");
 
+        explosionSound = GetComponent<AudioSource>();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -132,6 +132,7 @@ public class PlanetHandler : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         Destroy(PlanetSphere);
         GameMaster.instance.ActiveEnemies--;
+        explosionSound.Play();
         Destroy(gameObject, animator.GetCurrentAnimatorStateInfo(0).length);
 
     }

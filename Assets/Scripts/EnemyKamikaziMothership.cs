@@ -24,6 +24,9 @@ public class EnemyKamikaziMothership : MonoBehaviour
     public bool isDead;
 
     private Animator animator;
+
+    private AudioSource explosionSound;
+
     public Slider enemyHealthbar;
 
     private void Start()
@@ -41,6 +44,7 @@ public class EnemyKamikaziMothership : MonoBehaviour
         // Rotate the object to face the player
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
+        explosionSound = GetComponent<AudioSource>();
     }
 
 
@@ -87,6 +91,7 @@ public class EnemyKamikaziMothership : MonoBehaviour
             isDead = true;
 
             GameMaster.instance.ActiveEnemies--;
+            explosionSound.Play();
             // this shouldn't even be allowed, but it's happening, live with it.
             Destroy(gameObject.transform.gameObject, animator.GetCurrentAnimatorStateInfo(0).length);
         }

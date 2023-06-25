@@ -30,6 +30,7 @@ public class Ship : MonoBehaviour
     public Button shipSelectButton3;
     public Button shipSelectButton4;
     public Button shipSelectButton5;
+    public Button shipSelectButton6;
 
     public ParticleSystem shipJetParticles;
     public ParticleSystem demoJetPart;
@@ -156,6 +157,7 @@ public class Ship : MonoBehaviour
         shipSelectButton3.interactable = (shipSpriteCode == 2) ? false : true;
         shipSelectButton4.interactable = (shipSpriteCode == 3) ? false : true;
         shipSelectButton5.interactable = (shipSpriteCode == 4) ? false : true;
+        shipSelectButton6.interactable = (shipSpriteCode == 5) ? false : true;
 
         previewShipSprite.sprite = Ship.instance.shipSpriteList[shipSpriteCode];
 

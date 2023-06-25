@@ -15,12 +15,16 @@ public class EnemyLaserShipCollisions : MonoBehaviour
     public EnemyLaserShipMovement movementScript;
     private Animator animator;
 
+    private AudioSource explosionSound;
+
+
     private void Start()
     {
 
         animator = GetComponent<Animator>();
         jet.SetActive(true);
         laser.SetActive(true);
+        explosionSound = GetComponent<AudioSource>();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -54,6 +58,7 @@ public class EnemyLaserShipCollisions : MonoBehaviour
 
             GameMaster.instance.ActiveEnemies--;
             movementScript.enabled = false;
+            explosionSound.Play();
             // this shouldn't even be allowed, but it's happening, live with it.
             Destroy(gameObject.transform.parent.gameObject, animator.GetCurrentAnimatorStateInfo(0).length);
         }

@@ -13,10 +13,15 @@ public class BossTwoCollisions : MonoBehaviour
     public BossTwoMovement movementScript;
     private Animator animator;
 
+    private AudioSource explosionSound;
+
+
     private void Start()
     {
 
         animator = GetComponent<Animator>();
+
+        explosionSound = GetComponent<AudioSource>();
 
     }
 
@@ -62,6 +67,7 @@ public class BossTwoCollisions : MonoBehaviour
 
             GameMaster.instance.ActiveEnemies--;
             movementScript.enabled = false;
+            explosionSound.Play();
             // this shouldn't even be allowed, but it's happening, live with it.
             Destroy(gameObject.transform.parent.gameObject, animator.GetCurrentAnimatorStateInfo(0).length);
         }

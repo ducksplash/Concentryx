@@ -240,6 +240,7 @@ public class Menu : MonoBehaviour
         Ship.instance.shipSelectButton3.interactable = (shipSpriteCode == 2) ? false : true;
         Ship.instance.shipSelectButton4.interactable = (shipSpriteCode == 3) ? false : true;
         Ship.instance.shipSelectButton5.interactable = (shipSpriteCode == 4) ? false : true;
+        Ship.instance.shipSelectButton6.interactable = (shipSpriteCode == 5) ? false : true;
 
         previewShip.sprite = Ship.instance.shipSpriteList[shipSpriteCode];
         previewJet.Play();

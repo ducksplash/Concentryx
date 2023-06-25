@@ -16,11 +16,14 @@ public class CaterpillarCollisions : MonoBehaviour
     public bool isDead;
     public Image enemyHealthbar;
     private Animator animator;
+    private AudioSource explosionSound;
+
 
     private void Start()
     {
 
         animator = GetComponent<Animator>();
+        explosionSound = GetComponent<AudioSource>();
 
     }
 
@@ -64,6 +67,9 @@ public class CaterpillarCollisions : MonoBehaviour
             isDead = true;
 
             GameMaster.instance.ActiveEnemies--;
+
+            // play explosion sound
+            explosionSound.Play();
             // this shouldn't even be allowed, but it's happening, live with it.
             Destroy(gameObject.transform.gameObject, animator.GetCurrentAnimatorStateInfo(0).length);
         }

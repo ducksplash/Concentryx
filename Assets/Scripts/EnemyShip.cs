@@ -19,6 +19,7 @@ public class EnemyShip : MonoBehaviour
 
     public Slider enemyHealthbar;
     private Animator animator;
+    private AudioSource explosionSound;
 
     private void Start()
     {
@@ -27,6 +28,7 @@ public class EnemyShip : MonoBehaviour
         animator = GetComponent<Animator>();
         Player = GameObject.FindGameObjectWithTag("Player");
         jet.SetActive(true);
+        explosionSound = GetComponent<AudioSource>();
 
     }
 
@@ -86,6 +88,7 @@ public class EnemyShip : MonoBehaviour
             jet.SetActive(false);
 
             GameMaster.instance.ActiveEnemies--;
+            explosionSound.Play();
             Destroy(gameObject, animator.GetCurrentAnimatorStateInfo(0).length);
         }
     }
