@@ -37,6 +37,7 @@ public class Ship : MonoBehaviour
 
     public Image previewShipSprite;
 
+
     private void Awake()
     {
         instance = this;

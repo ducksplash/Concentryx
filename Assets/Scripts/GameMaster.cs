@@ -173,18 +173,18 @@ public class GameMaster : MonoBehaviour
 
     public GameObject theHaze;
     public GameObject theRoids;
+    public int targetFrameRate = 60; // The desired frame rate
 
     private void Awake()
     {
         instance = this;
+        Application.targetFrameRate = targetFrameRate;
+
     }
-
-
 
 
     void Start()
     {
-
         playerHighScore = PlayerPrefs.GetInt("PlayerHighScore", 0);
 
         if (PPVolumeProfile.TryGet(out colorAdjustments))
@@ -196,84 +196,49 @@ public class GameMaster : MonoBehaviour
             colorAdjustAvailable = false;
         }
 
-
-        // Load player rank and player XP from PlayerPrefs
         playerRank = PlayerPrefs.GetInt("PlayerRank", 0);
         playerXP = PlayerPrefs.GetInt("PlayerXP", 0);
         toNextRank = PlayerPrefs.GetInt("ToNextRank", 1000);
-
         CurrentLevel = PlayerPrefs.GetInt("CurrentLevel", 0);
 
-        // Update UI with loaded values
         rankeryText.text = playerRank.ToString();
         rankMenuText.text = playerRank.ToString();
 
-        int minNextRank = (toNextRank - playerXP) < 0 ? 0 : (toNextRank - playerXP);
-
+        int minNextRank = Mathf.Max(toNextRank - playerXP, 0);
         rankToMenuText.text = minNextRank.ToString() + "XP";
 
         rankSlider.maxValue = toNextRank;
         rankSlider.value = playerXP;
 
-        if (toNextRank == 0)
-        {
-            XPimg.fillAmount = 1f; // Completely filled when playerXP is equal to toNextRank
-        }
-        else
-        {
-            XPimg.fillAmount = (float)playerXP / toNextRank;
-        }
+        XPimg.fillAmount = toNextRank == 0 ? 1f : (float)playerXP / toNextRank;
 
-
-        // Initialize the score text to display the current player score
         scoreText.text = playerScore.ToString();
-
         scoreTextRanks.text = playerScore.ToString();
-
         highScoreText.text = playerHighScore.ToString();
-
         timerText.text = currentTime.ToString();
-
         healthbar.value = health;
 
-
         lightningObject.SetActive(false);
-
-
-
         shieldParticleSystem.GetComponent<ParticleSystem>().Stop();
         shieldParticleSystem.SetActive(false);
-
         theHaze.GetComponent<Haze>().MakeHazed();
         theRoids.GetComponent<Asteroids>().MakeRoids();
 
+        onMobile = Application.platform == RuntimePlatform.Android;
+        phoneControl.SetActive(onMobile);
 
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            phoneControl.SetActive(true);
-            onMobile = true;
-        }
-        else
-        {
-            phoneControl.SetActive(false);
-            onMobile = false;
-        }
         cheatMenuCanvas.alpha = 0;
         cheatMenuCanvas.interactable = false;
         cheatMenuCanvas.blocksRaycasts = false;
         levelEndNextLevelButton.interactable = false;
         levelEndRetryButton.interactable = false;
 
-
         Ship.instance.SetJetColors();
-
         ResetColourAdjustments();
         ChangeBG();
     }
 
 
-
-    //////  let's try something
 
     public void InstantiateLevel()
     {
@@ -353,7 +318,6 @@ public class GameMaster : MonoBehaviour
         yield return new WaitForSecondsRealtime(1f);
         Time.timeScale = 0f;
 
-
         AudioMixer.SetFloat("SFX", -40f);
         AudioMixer.SetFloat("BGM", -40f);
 
@@ -362,13 +326,11 @@ public class GameMaster : MonoBehaviour
             colorAdjustments.saturation.value = -100f;
             colorAdjustments.postExposure.value = 10f;
 
-
             while (colorAdjustments.postExposure.value > 0)
             {
                 colorAdjustments.postExposure.value -= 0.1f;
                 yield return new WaitForSecondsRealtime(0.05f);
             }
-
         }
 
         ResetAbilities();
@@ -377,61 +339,47 @@ public class GameMaster : MonoBehaviour
         levelEndCanvas.interactable = true;
         levelEndCanvas.blocksRaycasts = true;
 
-        // level complete by destroying all enemies
+        ResetColourAdjustments();
+        levelEndNextLevelButton.interactable = false;
+        levelEndRetryButton.interactable = (reason != 0);
+        levelEndText.text = GetLevelEndText(reason);
+        levelEndScoreTitleText.text = "Level " + CurrentLevel.ToString() + " Score";
+        levelEndScoreText.text = playerScore.ToString();
+        levelEndScoreThisLevelText.text = playerScoreThisLevel.ToString();
+        levelEndHighScoreText.text = playerHighScore.ToString();
+        levelEndTimeText.text = (reason != 0) ? "0" : "";
+
         if (reason == 0)
         {
-            ResetColourAdjustments();
-            levelEndNextLevelButton.interactable = false;
-            levelEndRetryButton.interactable = false;
-            levelEndText.text = "Level " + CurrentLevel.ToString() + " Complete!";
-            levelEndScoreTitleText.text = "Level " + CurrentLevel.ToString() + " Score";
-            levelEndScoreText.text = (playerScore - playerScoreThisLevel).ToString();
-            levelEndScoreThisLevelText.text = playerScoreThisLevel.ToString();
-            levelEndHighScoreText.text = (playerHighScore - playerScoreThisLevel).ToString();
-
             CurrentLevel++;
             PlayerPrefs.SetInt("CurrentLevel", CurrentLevel);
             StartCoroutine(TallyTotals());
-
         }
-
-
-        // level ended by running out of time
-        if (reason == 1)
-        {
-
-            ResetColourAdjustments();
-            levelEndNextLevelButton.interactable = false;
-            levelEndRetryButton.interactable = true;
-            levelEndText.text = "Out Of Time!";
-            levelEndScoreTitleText.text = "Level " + CurrentLevel.ToString() + " Score";
-            levelEndScoreText.text = playerScore.ToString();
-            levelEndScoreThisLevelText.text = playerScoreThisLevel.ToString();
-            levelEndHighScoreText.text = playerHighScore.ToString();
-            levelEndTimeText.text = "0";
-            ResetAll();
-
-
-        }
-        // level ended by death
-        if (reason == 2)
-        {
-            ResetColourAdjustments();
-            levelEndNextLevelButton.interactable = false;
-            levelEndRetryButton.interactable = true;
-            levelEndText.text = "You Died!";
-            levelEndScoreTitleText.text = "Level " + CurrentLevel.ToString() + " Score";
-            levelEndScoreText.text = playerScore.ToString();
-            levelEndScoreThisLevelText.text = playerScoreThisLevel.ToString();
-            levelEndHighScoreText.text = playerHighScore.ToString();
-            levelEndTimeText.text = "0";
-            ResetAll();
-
-
-        }
-
     }
 
+
+    public string GetLevelEndText(int reason)
+    {
+        string levelEndText = "";
+
+        switch (reason)
+        {
+            case 0:
+                levelEndText = "Level Complete!";
+                break;
+            case 1:
+                levelEndText = "You Died!";
+                break;
+            case 2:
+                levelEndText = "Time Ran Out!";
+                break;
+            default:
+                levelEndText = "Level Complete!";
+                break;
+        }
+
+        return levelEndText;
+    }
 
 
     public IEnumerator TallyTotals()
@@ -448,7 +396,7 @@ public class GameMaster : MonoBehaviour
             totalScoreDisplay += 1000;
             levelEndScoreThisLevelText.text = lvlScore.ToString();
             levelEndScoreText.text = totalScoreDisplay.ToString();
-            yield return new WaitForSecondsRealtime(0.01f);
+            yield return new WaitForSecondsRealtime(0.005f);
         }
 
         while (lvlScore > 1000)
@@ -457,7 +405,7 @@ public class GameMaster : MonoBehaviour
             totalScoreDisplay += 100;
             levelEndScoreThisLevelText.text = lvlScore.ToString();
             levelEndScoreText.text = totalScoreDisplay.ToString();
-            yield return new WaitForSecondsRealtime(0.01f);
+            yield return new WaitForSecondsRealtime(0.005f);
         }
 
         while (lvlScore > 100)
@@ -466,7 +414,7 @@ public class GameMaster : MonoBehaviour
             totalScoreDisplay += 10;
             levelEndScoreThisLevelText.text = lvlScore.ToString();
             levelEndScoreText.text = totalScoreDisplay.ToString();
-            yield return new WaitForSecondsRealtime(0.01f);
+            yield return new WaitForSecondsRealtime(0.005f);
         }
 
 
@@ -476,7 +424,7 @@ public class GameMaster : MonoBehaviour
             totalScoreDisplay += 1;
             levelEndScoreThisLevelText.text = lvlScore.ToString();
             levelEndScoreText.text = totalScoreDisplay.ToString();
-            yield return new WaitForSecondsRealtime(0.01f);
+            yield return new WaitForSecondsRealtime(0.005f);
         }
 
 
@@ -487,7 +435,7 @@ public class GameMaster : MonoBehaviour
             playerScore += 10;
             levelEndTimeText.text = timeBonus.ToString();
             levelEndScoreText.text = playerScore.ToString();
-            yield return new WaitForSecondsRealtime(0.006f);
+            yield return new WaitForSecondsRealtime(0.005f);
         }
         scoreText.text = playerScore.ToString();
         if (playerScore > playerHighScore)
@@ -496,7 +444,7 @@ public class GameMaster : MonoBehaviour
         }
 
 
-        yield return new WaitForSecondsRealtime(0.5f);
+        yield return new WaitForSecondsRealtime(0.1f);
         levelEndNextLevelButton.interactable = true;
         playerScoreThisLevel = 0;
     }

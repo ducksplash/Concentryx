@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections.Generic;
+using System.Collections;
 
 public class BulletTime : MonoBehaviour
 {
@@ -8,14 +10,20 @@ public class BulletTime : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        Invoke("DestroyGameObject", countdownTime);
+        StartCoroutine(DestroyAfterDelay(countdownTime));
+    }
+
+    private IEnumerator DestroyAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        DestroyGameObject();
     }
 
     public void DestroyGameObject()
     {
-        rb.velocity = Vector2.zero; // Set the velocity of the Rigidbody2D component to zero
-
-        Destroy(gameObject); // Destroy the game object
+        rb.velocity = Vector2.zero;
+        Destroy(gameObject);
     }
 
     // Handle collision events with other 2D objects

@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class EnemyShip : MonoBehaviour
 {
     public GameObject Player;
+    public Transform playerTransform;
     public float rotationSpeed = 20f;
     public float minChangeDirectionInterval = 2f;
     public float maxChangeDirectionInterval = 8f;
@@ -29,13 +30,13 @@ public class EnemyShip : MonoBehaviour
         Player = GameObject.FindGameObjectWithTag("Player");
         jet.SetActive(true);
         explosionSound = GetComponent<AudioSource>();
-
+        playerTransform = Player.GetComponent<Transform>();
     }
 
     private void Update()
     {
         // Rotate the sprite around the specified object
-        transform.RotateAround(Player.transform.position, Vector3.forward, rotationSpeed * Time.smoothDeltaTime);
+        transform.RotateAround(playerTransform.position, Vector3.forward, rotationSpeed * Time.smoothDeltaTime);
 
         // Update the timer
         directionTimer -= Time.smoothDeltaTime;

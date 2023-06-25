@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 
@@ -29,8 +28,7 @@ public class EnemyProjectile : MonoBehaviour
                 fireTimer = enemyProjectileDelay;
             }
         }
-
-        if (canFire)
+        else
         {
             FireProjectile();
             canFire = false;
@@ -41,16 +39,15 @@ public class EnemyProjectile : MonoBehaviour
     {
         GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
 
-        // Calculate the direction from the projectile to the object being rotated around
         Vector3 direction = player.transform.position - projectile.transform.position;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
-        // Set the rotation of the projectile to face the object being rotated around
-        Quaternion rotation = Quaternion.LookRotation(Vector3.forward, direction);
+        Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         projectile.transform.rotation = rotation;
 
-        // Set the velocity of the projectile to move towards the object being rotated around
         Rigidbody2D projectileRigidbody = projectile.GetComponent<Rigidbody2D>();
         projectileRigidbody.velocity = direction.normalized * projectileSpeed;
         projectile.layer = LayerMask.NameToLayer("Projectiles");
     }
+
 }

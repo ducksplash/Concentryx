@@ -1,7 +1,5 @@
-using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
-
 
 public class Projectile : MonoBehaviour
 {
@@ -10,16 +8,13 @@ public class Projectile : MonoBehaviour
 
     public GameObject flameThrower;
 
-    public Coroutine firingCoroutine = null;
-
     private bool canFire = true;
     private bool isFiring;
 
-    public int projectileCounter = 0;
+    private int projectileCounter = 0;
 
-    public AudioSource audioSource;
-
-    public bool AudioPlaying;
+    private AudioSource audioSource;
+    private Coroutine firingCoroutine;
 
     private void Start()
     {
@@ -27,42 +22,38 @@ public class Projectile : MonoBehaviour
         flameThrower.SetActive(false);
 
         audioSource = GetComponent<AudioSource>();
-
     }
 
     private void Update()
     {
         if (Input.GetMouseButton(0) && canFire)
         {
-            if (GameMaster.instance.currentWeapon == "Projectiles")
-            {
-                FireProjectile();
-            }
-            else if (GameMaster.instance.currentWeapon == "Flamethrower")
-            {
-                StartFlameThrower();
-            }
+            FireSomething();
         }
-
-
 
         if ((Input.GetMouseButtonUp(0) || GameMaster.instance.currentWeapon != "Flamethrower") && isFiring)
-        {
             StopFlameThrower();
-        }
     }
+
+
+    private void FireSomething()
+    {
+        if (GameMaster.instance.currentWeapon == "Projectiles")
+            FireProjectile();
+        else if (GameMaster.instance.currentWeapon == "Flamethrower")
+            StartFlameThrower();
+    }
+
 
     private void FireProjectile()
     {
         canFire = false;
 
         if (firingCoroutine == null)
-        { firingCoroutine = StartCoroutine(StartAudio()); }
-
+            firingCoroutine = StartCoroutine(StartAudio());
 
         Vector2 direction = transform.up; // Use the forward direction of the GameObject
-        GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
-        projectile.transform.rotation = transform.rotation;
+        GameObject projectile = Instantiate(projectilePrefab, transform.position, transform.rotation);
         projectile.GetComponent<Rigidbody2D>().velocity = direction.normalized * projectileSpeed;
         projectile.layer = LayerMask.NameToLayer("Projectiles");
 
@@ -80,8 +71,6 @@ public class Projectile : MonoBehaviour
         flameThrower.SetActive(true);
     }
 
-
-
     private void StopFlameThrower()
     {
         isFiring = false;
@@ -97,18 +86,10 @@ public class Projectile : MonoBehaviour
         canFire = true;
     }
 
-
     private IEnumerator StartAudio()
     {
         audioSource.Play();
         yield return new WaitForSeconds(0.1f);
         firingCoroutine = null;
-
-    }
-    private IEnumerator StopAudio()
-    {
-        audioSource.Stop();
-        yield return new WaitForSeconds(0.1f);
-
     }
 }

@@ -76,7 +76,6 @@ public class Concentryx : MonoBehaviour
 
     public void BuildLevel(int SelectedLevel)
     {
-
         CleanLevel();
 
         if (SelectedLevel == 999)
@@ -84,113 +83,70 @@ public class Concentryx : MonoBehaviour
             GameMaster.instance.ActiveEnemies = 0;
         }
 
-
-        // first 10 levels should be named.
-        // subsequent X levels should be selected randomly from a list of pre defined levels.
-        // all levels beyond shall be randomly generated using the individual parts:
-        // ImagePlay - Creates a grid based image out of segments, and is fed with 'ASCII Art' patterns made of 1s and 0s
-        // LevelPatternPhrase - Creates a word out of segments, and is fed with up to 3 strings
-        // ConcentricRings - Creates concentric rings of segments that rotate around the player, rotating faster the further away from the player.
-        // CreateEnemyShip - Creates specified number of rotating enemies that fire projectiles at the player.
-        // CreateEnemyLaserShip - Creates enemies that crawl the walls and sweeps the screen with a laser.
-        // CreatePlanet - Creates a planet; these do not attack until their shield is brought down, then fire projectiles at the player.
-        // createNearbyStar - Creates a star that is close to the player.
-        // createFarStar - Creates a star that is far from the player.
-        // CreateBoss - creates one of a number of bosses from a prefabs list called bossPrefabs.
-
-
-
-
         // decide on stars outside of other level decisions.
-
-        // nearby
         int numNearbyStars = UnityEngine.Random.Range(1, 2);
-        // faraway
         int numFarStars = UnityEngine.Random.Range(3, 8);
 
+        int maxEnemyLaserShips = 0;
+        int maxEnemyBuzzbugs = 0;
+        int maxEnemyCaterpillars = 0;
+        int maxEnemyShips = 0;
+        int maxPlanets = 0;
 
-        // do levels under 12
+        // Levels under 12
         if (SelectedLevel < 13)
         {
             switch (SelectedLevel)
             {
                 case 0:
-                    // void level - never gets loaded
                     GameTimer = StartCoroutine(GameMaster.instance.Countdown(5));
                     currentLevelName = "Concentryx";
                     ConcentricRings();
                     CreateEnemyShip(1);
-                    CreateNearbyStar(numNearbyStars);
-                    CreateFarStar(numFarStars);
-                    audioSource.clip = gameMusic[0];
                     break;
 
                 case 1:
-                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(160));
+                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(120));
                     currentLevelName = "Concentryx";
                     ConcentricRings();
                     CreateEnemyShip(1);
-                    CreateNearbyStar(numNearbyStars);
-                    CreateFarStar(numFarStars);
-                    audioSource.clip = gameMusic[0];
                     break;
 
                 case 2:
-                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(80));
+                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(160));
                     currentLevelName = "New Friends";
                     ConcentricRings(6);
                     CreateEnemyLaserShip(1);
-                    CreateNearbyStar(numNearbyStars);
-                    CreateFarStar(numFarStars);
-                    audioSource.clip = gameMusic[1];
                     break;
 
                 case 3:
-                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(90));
+                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(140));
                     currentLevelName = "Old Enemies";
                     LevelPatternPhrase(" ", "Ready?", " ");
                     CreateEnemyLaserShip(1);
                     CreateEnemyShip(2);
                     CreatePlanet(1);
-                    CreateNearbyStar(numNearbyStars);
-                    CreateFarStar(numFarStars);
-                    audioSource.clip = gameMusic[2];
                     break;
 
-
                 case 4:
-                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(120));
+                    GameTimer = StartCoroutine(GameMaster.instance.Countdown(160));
                     currentLevelName = "Inevitable";
                     ImagePlay(gridLayouts.GetGridPattern("Sunrise"));
                     CreateEnemyLaserShip(2);
-                    CreateNearbyStar(numNearbyStars);
-                    CreateFarStar(numFarStars);
-                    audioSource.clip = gameMusic[3];
                     break;
-
 
                 case 5:
                     GameTimer = StartCoroutine(GameMaster.instance.Countdown(200));
                     currentLevelName = "Meow";
                     ImagePlay(gridLayouts.GetGridPattern("Meow"));
-                    //CreateEnemyLaserShip(0);
                     CreatePlanet(1);
-                    CreateNearbyStar(numNearbyStars);
-                    CreateFarStar(numFarStars);
-                    audioSource.clip = gameMusic[4];
                     break;
-
 
                 case 6:
                     // boss 1
                     GameTimer = StartCoroutine(GameMaster.instance.Countdown(300));
                     currentLevelName = "uh oh";
-                    // create enemy boss
                     CreateBoss(0);
-                    //CreatePlanet(1);
-                    CreateNearbyStar(numNearbyStars);
-                    CreateFarStar(numFarStars);
-                    audioSource.clip = gameMusic[5];
                     break;
 
                 case 7:
@@ -201,9 +157,6 @@ public class Concentryx : MonoBehaviour
                     CreateEnemyBuzzbug(1);
                     CreateEnemyShip(2);
                     CreatePlanet(1);
-                    CreateNearbyStar(numNearbyStars);
-                    CreateFarStar(numFarStars);
-                    audioSource.clip = gameMusic[6];
                     break;
 
                 case 8:
@@ -213,9 +166,6 @@ public class Concentryx : MonoBehaviour
                     CreateEnemyCaterpillar(1);
                     CreateEnemyShip(4);
                     CreatePlanet(2);
-                    CreateNearbyStar(numNearbyStars);
-                    CreateFarStar(numFarStars);
-                    audioSource.clip = gameMusic[7];
                     break;
 
                 case 9:
@@ -224,10 +174,6 @@ public class Concentryx : MonoBehaviour
                     ImagePlay(gridLayouts.GetGridPattern("Arena"));
                     CreateEnemyLaserShip(4);
                     CreateEnemyBuzzbug(1);
-                    //CreatePlanet(0);
-                    CreateNearbyStar(numNearbyStars);
-                    CreateFarStar(numFarStars);
-                    audioSource.clip = gameMusic[8];
                     break;
 
                 case 10:
@@ -236,9 +182,6 @@ public class Concentryx : MonoBehaviour
                     ImagePlay(gridLayouts.GetGridPattern("Vote, Dummy!"));
                     CreateEnemyLaserShip(1);
                     CreateEnemyShip(4);
-                    CreateNearbyStar(numNearbyStars);
-                    CreateFarStar(numFarStars);
-                    audioSource.clip = gameMusic[9];
                     break;
 
                 case 11:
@@ -247,10 +190,6 @@ public class Concentryx : MonoBehaviour
                     ImagePlay(gridLayouts.GetGridPattern("Resonance Cascade"));
                     CreateEnemyLaserShip(1);
                     CreateEnemyShip(4);
-                    //CreatePlanet(0);
-                    CreateNearbyStar(numNearbyStars);
-                    CreateFarStar(numFarStars);
-                    audioSource.clip = gameMusic[UnityEngine.Random.Range(0, gameMusic.Length - 1)];
                     break;
 
                 case 12:
@@ -260,12 +199,12 @@ public class Concentryx : MonoBehaviour
                     ImagePlay(gridLayouts.GetGridPattern("Fleg"));
                     CreateBoss(1);
                     CreateEnemyCaterpillar(1);
-                    CreateNearbyStar(numNearbyStars);
-                    CreateFarStar(numFarStars);
-                    audioSource.clip = gameMusic[UnityEngine.Random.Range(0, gameMusic.Length - 1)];
                     break;
             }
 
+            CreateNearbyStar(numNearbyStars);
+            CreateFarStar(numFarStars);
+            audioSource.clip = gameMusic[SelectedLevel];
             audioSource.Play();
         }
         else
@@ -279,92 +218,91 @@ public class Concentryx : MonoBehaviour
             CreateFarStar(numFarStars);
             ImagePlay(gridLayouts.GetRandomPattern());
 
-
             // create a boss every 10th SelectedLevel
             if (SelectedLevel % 5 == 0)
             {
-                // random boss man
                 BossPotLuck();
-
-                // a reduced number of additional beasties, we're not hercules.
-                CreateEnemyBuzzbug(UnityEngine.Random.Range(0, 1));
-                CreateEnemyLaserShip(UnityEngine.Random.Range(0, 1));
-                CreateEnemyCaterpillar(UnityEngine.Random.Range(0, 1));
-                CreateEnemyShip(UnityEngine.Random.Range(0, 2));
+                maxEnemyBuzzbugs = UnityEngine.Random.Range(0, 1);
+                maxEnemyLaserShips = UnityEngine.Random.Range(0, 1);
+                maxEnemyCaterpillars = UnityEngine.Random.Range(0, 1);
+                maxEnemyShips = UnityEngine.Random.Range(0, 2);
             }
             else
             {
-                CreateEnemyLaserShip(UnityEngine.Random.Range(0, 4));
-                CreateEnemyBuzzbug(UnityEngine.Random.Range(0, 2));
-                CreateEnemyCaterpillar(UnityEngine.Random.Range(0, 3));
-                CreateEnemyShip(UnityEngine.Random.Range(0, 8));
-                CreatePlanet(UnityEngine.Random.Range(0, 3));
+                maxEnemyBuzzbugs = UnityEngine.Random.Range(0, 2);
+                maxEnemyLaserShips = UnityEngine.Random.Range(0, 4);
+                maxEnemyCaterpillars = UnityEngine.Random.Range(0, 3);
+                maxEnemyShips = UnityEngine.Random.Range(0, 8);
+                maxPlanets = UnityEngine.Random.Range(0, 3);
             }
+
+            CreateEnemyLaserShip(maxEnemyLaserShips);
+            CreateEnemyBuzzbug(maxEnemyBuzzbugs);
+            CreateEnemyCaterpillar(maxEnemyCaterpillars);
+            CreateEnemyShip(maxEnemyShips);
+            CreatePlanet(maxPlanets);
         }
     }
 
 
     public void ImagePlay(string[] InstanceParameters)
     {
-
         int width = 64; // Width of the grid
-        int height = Mathf.CeilToInt((float)InstanceParameters[1].Length / width); // Height of the grid
+        int instanceLength = InstanceParameters[1].Length; // Length of the instance parameter
+        int height = Mathf.CeilToInt((float)instanceLength / width); // Height of the grid
         float spacing = 0.28f; // Spacing between each instantiated sprite
 
         GameObject gridObject = new GameObject("GridObject");
 
+        Vector3 gridParentPosition = gridParent.transform.position;
+        Material segmentMaterial = segOneMaterial;
+
         for (int y = 0; y < height; y++)
         {
+            float ySpacing = y * (spacing * 1.7f);
             for (int x = 0; x < width; x++)
             {
                 int index = y * width + x;
-                if (index < InstanceParameters[1].Length && InstanceParameters[1][index] == '1')
+                if (index < instanceLength && InstanceParameters[1][index] == '1')
                 {
-                    Vector3 position = gridParent.transform.position + new Vector3(x * spacing, -y * (spacing * 1.7f), 0f);
+                    Vector3 position = gridParentPosition + new Vector3(x * spacing, -ySpacing, 0f);
                     GameObject segmentObject = new GameObject("Segment " + y + x);
                     segmentObject.transform.position = position;
 
                     SpriteRenderer spriteRenderer = segmentObject.AddComponent<SpriteRenderer>();
                     Segment segmentScript = segmentObject.AddComponent<Segment>();
 
-
-                    // get sprite colour pattern
-                    Sprite selectedSprite = GetSprite(x, y, 0);
-
+                    int spriteIndex;
 
                     switch (InstanceParameters[0])
                     {
                         case "Meow":
-                            selectedSprite = GetSprite(x, y, 6);
+                            spriteIndex = 6;
                             break;
 
                         case "Fleg":
-                            selectedSprite = GetSprite(x, y, 5);
+                            spriteIndex = 5;
                             break;
 
                         case "Quack":
-                            selectedSprite = GetSprite(x, y, 7);
-                            break;
-
                         case "Sunrise":
-                            selectedSprite = GetSprite(x, y, 7);
+                            spriteIndex = 7;
                             break;
 
                         case "Boxed In":
-                            selectedSprite = GetSprite(x, y, 3);
+                            spriteIndex = 3;
                             break;
 
                         case "Resonance Cascade":
-                            selectedSprite = GetSprite(x, y, 8);
+                            spriteIndex = 8;
                             break;
 
                         default:
-                            selectedSprite = GetSprite(x, y, UnityEngine.Random.Range(0, 8));
+                            spriteIndex = UnityEngine.Random.Range(0, 8);
                             break;
                     }
 
-
-                    // insert mystery/bonus drops
+                    Sprite selectedSprite = GetSprite(x, y, spriteIndex);
 
                     float specialRand = Random.Range(dropRandomLower, dropRandomUpper);
                     if (specialRand > dropRandomCutoff)
@@ -378,22 +316,17 @@ public class Concentryx : MonoBehaviour
                         spriteRenderer.sprite = selectedSprite;
                     }
 
-                    segOneMaterial.EnableKeyword("_EMISSION");
-                    spriteRenderer.material = segOneMaterial;
+                    segmentMaterial.EnableKeyword("_EMISSION");
+                    spriteRenderer.material = segmentMaterial;
                     spriteRenderer.sortingLayerName = "Default";
                     spriteRenderer.sortingOrder = -10;
 
-
-                    // Create a new BoxCollider2D component for this segment.
                     BoxCollider2D collider = segmentObject.AddComponent<BoxCollider2D>();
-
-                    // Set the size of the BoxCollider2D to match the size of the SpriteRenderer.
                     collider.size = spriteRenderer.bounds.size;
 
-
-                    // Set the pill prefabs and initial health for the segment.
-                    segmentObject.GetComponent<Segment>().pillPrefabs = pillPrefabs;
-                    segmentObject.GetComponent<Segment>().health = 3;
+                    Segment segmentComponent = segmentObject.GetComponent<Segment>();
+                    segmentComponent.pillPrefabs = pillPrefabs;
+                    segmentComponent.health = 3;
 
                     segmentObject.transform.parent = gridObject.transform;
                 }
@@ -401,7 +334,6 @@ public class Concentryx : MonoBehaviour
         }
         gridObject.transform.parent = gridParent.transform;
     }
-
 
     public Sprite GetSprite(int x, int y, int pattern = 0)
     {
@@ -929,10 +861,6 @@ public class Concentryx : MonoBehaviour
 
         }
     }
-
-
-
-
 
 
 

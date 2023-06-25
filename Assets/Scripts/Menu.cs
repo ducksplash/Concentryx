@@ -100,7 +100,6 @@ public class Menu : MonoBehaviour
         }
 
 
-
         // Set the initial state of the vibration toggle
         VibrationToggle.isOn = GameMaster.instance.deviceVibrationEnabled;
 
@@ -350,6 +349,7 @@ public class Menu : MonoBehaviour
 
     public void TryAgain()
     {
+        GameMaster.instance.ResetAll();
         TriggerVibrate();
         ChangePage(null, true);
         Time.timeScale = 1f;

@@ -90,19 +90,6 @@ public class Segment : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        if (isFlashing)
-        {
-            flashTimer -= Time.deltaTime;
-            if (flashTimer <= 0f)
-            {
-                spriteRenderer.color = defaultMaterialColor;
-                isFlashing = false;
-            }
-        }
-    }
-
     public void CreatePill()
     {
         float totalWeight = 0f;
