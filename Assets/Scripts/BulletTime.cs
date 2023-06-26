@@ -22,7 +22,10 @@ public class BulletTime : MonoBehaviour
 
     public void DestroyGameObject()
     {
-        rb.velocity = Vector2.zero;
+        if (rb != null)
+        {
+            rb.velocity = Vector2.zero;
+        }
         Destroy(gameObject);
     }
 

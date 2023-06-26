@@ -396,7 +396,7 @@ public class GameMaster : MonoBehaviour
             totalScoreDisplay += 1000;
             levelEndScoreThisLevelText.text = lvlScore.ToString();
             levelEndScoreText.text = totalScoreDisplay.ToString();
-            yield return new WaitForSecondsRealtime(0.005f);
+            yield return new WaitForSecondsRealtime(0.001f);
         }
 
         while (lvlScore > 1000)
@@ -405,7 +405,7 @@ public class GameMaster : MonoBehaviour
             totalScoreDisplay += 100;
             levelEndScoreThisLevelText.text = lvlScore.ToString();
             levelEndScoreText.text = totalScoreDisplay.ToString();
-            yield return new WaitForSecondsRealtime(0.005f);
+            yield return new WaitForSecondsRealtime(0.001f);
         }
 
         while (lvlScore > 100)
@@ -414,7 +414,7 @@ public class GameMaster : MonoBehaviour
             totalScoreDisplay += 10;
             levelEndScoreThisLevelText.text = lvlScore.ToString();
             levelEndScoreText.text = totalScoreDisplay.ToString();
-            yield return new WaitForSecondsRealtime(0.005f);
+            yield return new WaitForSecondsRealtime(0.001f);
         }
 
 
@@ -424,7 +424,7 @@ public class GameMaster : MonoBehaviour
             totalScoreDisplay += 1;
             levelEndScoreThisLevelText.text = lvlScore.ToString();
             levelEndScoreText.text = totalScoreDisplay.ToString();
-            yield return new WaitForSecondsRealtime(0.005f);
+            yield return new WaitForSecondsRealtime(0.001f);
         }
 
 
@@ -435,7 +435,7 @@ public class GameMaster : MonoBehaviour
             playerScore += 10;
             levelEndTimeText.text = timeBonus.ToString();
             levelEndScoreText.text = playerScore.ToString();
-            yield return new WaitForSecondsRealtime(0.005f);
+            yield return new WaitForSecondsRealtime(0.001f);
         }
         scoreText.text = playerScore.ToString();
         if (playerScore > playerHighScore)

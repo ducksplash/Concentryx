@@ -646,6 +646,57 @@ public class Concentryx : MonoBehaviour
 
 
 
+    // enemy ship 4
+    public void CreateRandomPill()
+    {
+
+        Vector3 parentPosition = transform.position;
+        Vector3 parentScale = transform.localScale;
+        Vector3 parentSize = new Vector3(parentScale.x * 2, parentScale.y * 2, parentScale.z * 2);
+
+        Vector3 playerPosition = Player.transform.position;
+        Vector3 playerScale = Player.transform.localScale;
+        Vector3 playerSize = new Vector3(playerScale.x * 2, playerScale.y * 2, playerScale.z * 2);
+
+        Camera mainCamera = Camera.main;
+        float cameraSize = mainCamera.orthographicSize;
+        float aspectRatio = mainCamera.aspect;
+
+
+        float maxPositionOffsetX = (cameraSize * aspectRatio) / 2;
+        float maxPositionOffsetY = cameraSize / 2;
+
+        Vector3 enemyPosition = Vector3.zero;
+        bool isValidPosition = false;
+        int maxAttempts = 100;
+        int attempts = 0;
+
+        while (!isValidPosition && attempts < maxAttempts)
+        {
+            float randomPositionOffsetX = Random.Range(-maxPositionOffsetX, maxPositionOffsetX);
+            float randomPositionOffsetY = Random.Range(-maxPositionOffsetY, maxPositionOffsetY);
+
+            enemyPosition = parentPosition + new Vector3(randomPositionOffsetX, randomPositionOffsetY, 0f);
+
+            if (!CheckOverlapWithPlayer(enemyPosition, playerPosition, playerSize))
+            {
+                isValidPosition = true;
+            }
+
+            attempts++;
+        }
+
+        if (!isValidPosition)
+        {
+            return;
+        }
+
+        GameObject randPill = Instantiate(pillPrefabs[UnityEngine.Random.Range(0, pillPrefabs.Length - 1)], enemyPosition, Quaternion.identity);
+        randPill.transform.parent = gridParent.transform;
+
+
+    }
+
 
 
     public void CreateBoss(int bossnumber = 0)
