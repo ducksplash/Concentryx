@@ -47,7 +47,7 @@ public class PulsatingLight : MonoBehaviour
             float t = Mathf.PingPong(Time.time * speed, 1f);
             float intensity = Mathf.Lerp(minIntensity, maxIntensity, t);
             light2D.intensity = intensity;
-            yield return null; // Wait for the next frame
+            yield return null;
         }
     }
 }

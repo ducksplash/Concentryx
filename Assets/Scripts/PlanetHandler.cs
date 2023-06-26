@@ -26,7 +26,6 @@ public class PlanetHandler : MonoBehaviour
     private EnemyProjectile enemyProjectileScript;
 
     public ParticleSystem planetaryShieldParticleSystem;
-    public ParticleSystem atmosphereParticleSystem;
     private CircleCollider2D planetaryCollider;
     private Canvas healthCanvas;
     private UnityEngine.Rendering.Universal.Light2D planetLight;
@@ -66,7 +65,7 @@ public class PlanetHandler : MonoBehaviour
         if (planetHealth > 0)
         {
             DecrementPlanetHealth(5);
-            StartCoroutine(AddScore(10));
+            GameMaster.instance.IncrementScore(10);
 
             if (!planetaryShieldParticleSystem)
             {
@@ -79,7 +78,7 @@ public class PlanetHandler : MonoBehaviour
             if (!isDead)
             {
                 planetaryCollider.enabled = false;
-                StartCoroutine(AddScore(1000));
+                GameMaster.instance.IncrementScore(1000);
                 isDead = true;
                 StopCoroutine(planetRotationCoroutine);
                 planetRotationCoroutine = null;
@@ -122,11 +121,6 @@ public class PlanetHandler : MonoBehaviour
     }
 
 
-    private IEnumerator AddScore(int scoreadd)
-    {
-        GameMaster.instance.IncrementScore(scoreadd);
-        yield return new WaitForSeconds(0.01f);
-    }
     private IEnumerator Destroy()
     {
         yield return new WaitForSeconds(0.1f);
@@ -178,14 +172,6 @@ public class PlanetHandler : MonoBehaviour
             planetHealthbar.color = Color.red;
         }
 
-
-        if (planetHealth < 150)
-        {
-            if (atmosphereParticleSystem != null)
-            {
-                Destroy(atmosphereParticleSystem);
-            }
-        }
     }
 
 
@@ -231,7 +217,6 @@ public class PlanetHandler : MonoBehaviour
 
         yield return new WaitForSeconds(0.05f);
 
-        Destroy(atmosphereParticleSystem);
         animator.SetTrigger("planetsplode");
         planetMaterial.color = defaultColor;
         planetMaterial.SetColor("_EmissionColor", defaultEmissionColor);

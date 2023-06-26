@@ -344,14 +344,14 @@ Material:
     - Vector2_A15C6754: {r: 1, g: 1, b: 0, a: 0}
     - _AtmosphereColor: {r: 0, g: 0.11161316, b: 0.3301887, a: 1}
     - _BASE_COLOR: {r: 1, g: 1, b: 1, a: 1}
-    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BaseColor: {r: 1, g: 0.9764725, b: 0.70472974, a: 1}
     - _BaseColorAddSubDiff: {r: 1, g: 0, b: 0, a: 0}
     - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
     - _CityLightColor: {r: 1, g: 1, b: 1, a: 1}
     - _CloudColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 1, g: 0.9764725, b: 0.70472974, a: 1}
     - _EMISSION_COLOR: {r: 0, g: 0, b: 0, a: 0}
-    - _EmissionColor: {r: 0.608393, g: 0.608393, b: 0.608393, a: 1}
+    - _EmissionColor: {r: 0.7258656, g: 0.7023381, b: 0.43059534, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _GlowColor: {r: 1, g: 1, b: 1, a: 1}
     - _HaloColor: {r: 1, g: 1, b: 1, a: 1}

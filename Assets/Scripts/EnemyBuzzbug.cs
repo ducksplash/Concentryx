@@ -143,6 +143,7 @@ public class EnemyBuzzbug : MonoBehaviour
             if (enemyHealth > 0)
             {
                 DecrementEnemyHealth(1);
+
             }
             else
             {
@@ -154,6 +155,7 @@ public class EnemyBuzzbug : MonoBehaviour
     public void DestroyEnemyShip()
     {
         animator.SetTrigger("shipsplode");
+        GameMaster.instance.IncrementScore(5);
 
         if (!isDead)
         {

@@ -57,7 +57,7 @@ public class Segment : MonoBehaviour
 
                 if (!isDead)
                 {
-                    StartCoroutine(AddScore(hits));
+                    GameMaster.instance.IncrementScore(hits);
                     isDead = true;
                 }
             }
@@ -66,11 +66,6 @@ public class Segment : MonoBehaviour
         }
     }
 
-    private IEnumerator AddScore(int scoreadd)
-    {
-        GameMaster.instance.IncrementScore(scoreadd);
-        yield return new WaitForSeconds(0.01f);
-    }
 
     private void StartFlashSegment()
     {
@@ -90,26 +85,31 @@ public class Segment : MonoBehaviour
 
     public void CreatePill()
     {
-        float totalWeight = 0f;
+        // Determine which pill to print.
+        // Set pill weights in the Inspector>Pills>PillPrefab
+        // The higher the weight, the more likely the pill will be printed.
+
+        float totalWeight = 0f; // Total weight of all pill prefabs
+
         foreach (GameObject prefab in pillPrefabs)
         {
             float prefabWeight = prefab.GetComponent<PillX>().weight;
-            totalWeight += prefabWeight;
+            totalWeight += prefabWeight; // Calculate the total weight by summing up individual prefab weights
         }
 
-        float randomValue = Random.Range(0f, totalWeight);
+        float randomValue = Random.Range(0f, totalWeight); // Generate a random value within the total weight range
         float weightSum = 0f;
-        GameObject prefabToInstantiate = null;
+        GameObject prefabToInstantiate = null; // The selected prefab to instantiate
 
         for (int i = 0; i < pillPrefabs.Length; i++)
         {
             GameObject prefab = pillPrefabs[i];
             float prefabWeight = prefab.GetComponent<PillX>().weight;
-            weightSum += prefabWeight;
+            weightSum += prefabWeight; // Accumulate the weight sum as we iterate through the prefabs
 
             if (randomValue <= weightSum)
             {
-                prefabToInstantiate = prefab;
+                prefabToInstantiate = prefab; // Select the prefab if the random value is within the weight sum
                 break;
             }
         }
@@ -117,8 +117,8 @@ public class Segment : MonoBehaviour
         if (prefabToInstantiate != null)
         {
             GameObject pillfab = Instantiate(prefabToInstantiate, transform.position, Quaternion.identity);
-            pillfab.transform.parent = transform.parent.parent;
-
+            pillfab.transform.parent = transform.parent.parent; // Instantiate the selected prefab and set its parent
         }
     }
+
 }

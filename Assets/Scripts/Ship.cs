@@ -8,33 +8,22 @@ using TMPro;
 public class Ship : MonoBehaviour
 {
     public static Ship instance;
-
-
     public SpriteRenderer shipSprite;
     private Rigidbody2D rb;
     private AndroidJavaObject vibrator;
-
     public Animator splodanim;
-
     public CanvasGroup healthCanvas;
-
     public Sprite[] shipSpriteList;
-
-
     public Vector3 startPosition;
-
     public Coroutine gameOverCoroutine = null;
-
     public Button shipSelectButton1;
     public Button shipSelectButton2;
     public Button shipSelectButton3;
     public Button shipSelectButton4;
     public Button shipSelectButton5;
     public Button shipSelectButton6;
-
     public ParticleSystem shipJetParticles;
     public ParticleSystem demoJetPart;
-
     public Image previewShipSprite;
 
 
@@ -52,9 +41,6 @@ public class Ship : MonoBehaviour
         startPosition = transform.position;
 
         SetSprite(PlayerPrefs.GetInt("ShipSprite", 0));
-
-
-
     }
 
 
@@ -111,8 +97,6 @@ public class Ship : MonoBehaviour
         demoCol.color = new ParticleSystem.MinMaxGradient(grad);
     }
 
-
-
     void Update()
     {
         if (Application.platform != RuntimePlatform.Android)
@@ -129,6 +113,7 @@ public class Ship : MonoBehaviour
             }
         }
     }
+
     public void MoveShip(Vector2 direction)
     {
         if (Time.timeScale > 0f)
@@ -142,7 +127,6 @@ public class Ship : MonoBehaviour
             // Rotate the game object to the calculated angle
             transform.rotation = Quaternion.Euler(0f, 0f, angle);
         }
-
     }
 
 
@@ -161,7 +145,6 @@ public class Ship : MonoBehaviour
         shipSelectButton6.interactable = (shipSpriteCode == 5) ? false : true;
 
         previewShipSprite.sprite = Ship.instance.shipSpriteList[shipSpriteCode];
-
     }
 
 
@@ -190,8 +173,6 @@ public class Ship : MonoBehaviour
                 }
             }
 
-
-
             if (collision.gameObject.name.Contains("EnemyKamikaziDrone"))
             {
 
@@ -209,15 +190,11 @@ public class Ship : MonoBehaviour
                     DestroyShip();
                 }
             }
-
-
-
         }
 
 
         if (collision.gameObject.name.Contains("Segment"))
         {
-
             Destroy(collision.gameObject);
         }
 

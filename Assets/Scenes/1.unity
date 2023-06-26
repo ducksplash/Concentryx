@@ -936,6 +936,7 @@ Transform:
   - {fileID: 1495852418}
   - {fileID: 94250966}
   - {fileID: 136637979}
+  - {fileID: 1787638673}
   m_Father: {fileID: 1695265327}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -30608,10 +30609,11 @@ MonoBehaviour:
   lifeDuration: 0.5
   textMaterial: {fileID: 6454014653600419309, guid: 8313e91594fc7604a987603da962d8b8, type: 2}
   healthLootValue: 0
+  timeLootValue: 0
   pillTime: 15
-  projectileDelay: 0.005
-  projectileDelayDefault: 0.005
-  projectileDelayBoosted: 0.001
+  projectileDelay: 0.05
+  projectileDelayDefault: 0.05
+  projectileDelayBoosted: 0.01
   pillScroll: {fileID: 1749503659}
   pillContent: {fileID: 1985906783}
   pillReadoutPrefabs:
@@ -35430,7 +35432,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
-    maxNumParticles: 40
+    maxNumParticles: 10
     customEmitterVelocity: {x: 0, y: 0, z: 0}
     size3D: 0
     rotation3D: 0
@@ -35494,7 +35496,7 @@ ParticleSystem:
     angle: 25
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
-    radiusThickness: 1
+    radiusThickness: 0.1
     donutRadius: 0.1
     m_Position: {x: 0, y: 0, z: 0}
     m_Rotation: {x: 0, y: 0, z: 0}
@@ -35575,7 +35577,7 @@ ParticleSystem:
     m_TextureBilinearFiltering: 0
     randomDirectionAmount: 1
     sphericalDirectionAmount: 0
-    randomPositionAmount: 8
+    randomPositionAmount: 5
     radius:
       value: 1
       mode: 0
@@ -35696,7 +35698,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 40
+      scalar: 10
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -37017,7 +37019,7 @@ ParticleSystem:
     x:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.1
+      scalar: 1
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -37070,7 +37072,7 @@ ParticleSystem:
     y:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.5
+      scalar: 1
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -37123,7 +37125,7 @@ ParticleSystem:
     z:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.1
+      scalar: 1
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -48886,6 +48888,7 @@ MonoBehaviour:
   - {fileID: 2888271685259355414, guid: caceadd0905cc5b42ba03b40ef703131, type: 3}
   - {fileID: 6466880149065721876, guid: 5c7cb8daaa74288449b61bef236858d0, type: 3}
   - {fileID: 1843011716137890690, guid: b0a20b8de90c3ab42a0adaaae2b5882f, type: 3}
+  - {fileID: 6315077664584332584, guid: bf966dbc386a1e9489da295f3b886bf8, type: 3}
   enemyPrefabs:
   - {fileID: 2264219344330808542, guid: fbeda00a30077e347885a440b7029a7d, type: 3}
   - {fileID: 2914923436639915091, guid: 94540ab30915e39419519d558bb775d4, type: 3}
@@ -51859,7 +51862,6 @@ RectTransform:
   - {fileID: 704797748}
   - {fileID: 107526722}
   - {fileID: 1902836725}
-  - {fileID: 1787638673}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -51940,6 +51942,7 @@ MonoBehaviour:
   XPButtonCanvas: {fileID: 1937829923}
   PauseButtonCanvas: {fileID: 704797752}
   CustomMenuCanvas: {fileID: 1517419885}
+  CheatMenuCanvas: {fileID: 1787638679}
   previewJet: {fileID: 241929302}
   previewShip: {fileID: 937150099}
   LevelEndCanvas: {fileID: 94250968}
@@ -52726,12 +52729,12 @@ RectTransform:
   - {fileID: 1141286838}
   - {fileID: 810912996}
   - {fileID: 692126436}
-  m_Father: {fileID: 1695265327}
+  m_Father: {fileID: 107526722}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 940, y: 24}
+  m_AnchoredPosition: {x: 928.80005, y: 6.0007324}
   m_SizeDelta: {x: 300, y: 1220}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1787638674
@@ -57332,7 +57335,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
-    maxNumParticles: 50
+    maxNumParticles: 20
     customEmitterVelocity: {x: 0, y: 0, z: 0}
     size3D: 0
     rotation3D: 0
@@ -57396,11 +57399,11 @@ ParticleSystem:
     angle: 25
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
-    radiusThickness: 1
+    radiusThickness: 0.1
     donutRadius: 0.1
     m_Position: {x: 0, y: 0, z: 0}
     m_Rotation: {x: 0, y: 0, z: 0}
-    m_Scale: {x: 2, y: 2, z: 2}
+    m_Scale: {x: 1, y: 1, z: 1}
     placementMode: 0
     m_MeshMaterialIndex: 0
     m_MeshNormalOffset: 0
@@ -57479,7 +57482,7 @@ ParticleSystem:
     sphericalDirectionAmount: 1
     randomPositionAmount: 1
     radius:
-      value: 0.37
+      value: 0.1
       mode: 0
       spread: 0
       speed:
@@ -57651,7 +57654,7 @@ ParticleSystem:
     rateOverDistance:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 0.1
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -57723,13 +57726,13 @@ ParticleSystem:
           inWeight: 0.33333334
           outWeight: 0.33333334
         - serializedVersion: 3
-          time: 0.06770831
+          time: 0.43950313
           value: 1
-          inSlope: 48.778442
-          outSlope: 48.778442
+          inSlope: -Infinity
+          outSlope: -Infinity
           tangentMode: 0
           weightedMode: 0
-          inWeight: 0.19230752
+          inWeight: 0
           outWeight: 0.33333334
         m_PreInfinity: 2
         m_PostInfinity: 2
@@ -58859,7 +58862,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
   LifetimeByEmitterSpeedModule:
-    enabled: 1
+    enabled: 0
     m_Curve:
       serializedVersion: 2
       minMaxState: 3
@@ -59411,7 +59414,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
   NoiseModule:
-    enabled: 1
+    enabled: 0
     strength:
       serializedVersion: 2
       minMaxState: 0
@@ -62014,7 +62017,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectilePrefab: {fileID: 1153927297093656384, guid: a95f22291c2f6834db19607675e9c0f0, type: 3}
-  projectileSpeed: 10
+  projectileSpeed: 40
   flameThrower: {fileID: 4956001992437177027}
 --- !u!114 &4956001991301095819
 MonoBehaviour:
@@ -72696,7 +72699,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: 20}
+  m_SizeDelta: {x: 60, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7037445098783512336
 CanvasRenderer:

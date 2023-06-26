@@ -5139,8 +5139,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b470821f9a34f7849ac105ef956038bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultHealth: 1000
-  planetHealth: 1000
+  defaultHealth: 500
+  planetHealth: 500
   shieldsUp: 1
   isDead: 0
   reductionPercentage: 0.35
@@ -5149,7 +5149,6 @@ MonoBehaviour:
   planetHealthbar: {fileID: 8069387532671414410}
   PlanetSphere: {fileID: 6098091106055539719}
   planetaryShieldParticleSystem: {fileID: 843210162275472023}
-  atmosphereParticleSystem: {fileID: 0}
 --- !u!58 &8069387534014273894
 CircleCollider2D:
   m_ObjectHideFlags: 0

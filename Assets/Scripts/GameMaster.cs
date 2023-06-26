@@ -92,6 +92,7 @@ public class GameMaster : MonoBehaviour
     public Material textMaterial;
 
     public int healthLootValue = 0;
+    public int timeLootValue = 0;
 
     public int pillTime;
 
@@ -179,6 +180,7 @@ public class GameMaster : MonoBehaviour
     {
         instance = this;
         Application.targetFrameRate = targetFrameRate;
+        Time.timeScale = 1f;
 
     }
 
@@ -315,6 +317,12 @@ public class GameMaster : MonoBehaviour
 
     public IEnumerator EndLevel(int reason = 0)
     {
+
+        // close cheat menu if open:
+        cheatMenuCanvas.alpha = 0;
+        cheatMenuCanvas.interactable = false;
+        cheatMenuCanvas.blocksRaycasts = false;
+
         yield return new WaitForSecondsRealtime(1f);
         Time.timeScale = 0f;
 
@@ -368,10 +376,10 @@ public class GameMaster : MonoBehaviour
                 levelEndText = "Level Complete!";
                 break;
             case 1:
-                levelEndText = "You Died!";
+                levelEndText = "Time Ran Out!";
                 break;
             case 2:
-                levelEndText = "Time Ran Out!";
+                levelEndText = "You Died!";
                 break;
             default:
                 levelEndText = "Level Complete!";
@@ -447,6 +455,10 @@ public class GameMaster : MonoBehaviour
         yield return new WaitForSecondsRealtime(0.1f);
         levelEndNextLevelButton.interactable = true;
         playerScoreThisLevel = 0;
+
+
+        // stop the clock
+        StopCoroutine(Countdown(0));
     }
 
 
@@ -671,7 +683,7 @@ public class GameMaster : MonoBehaviour
             case "+":
                 healthLootValue = (UnityEngine.Random.Range(10, 50));
                 IncrementHealth(healthLootValue);
-                return;
+                return; // non-display pill; use return here to leave the switch
             case "F":
                 pillTime = flameThrowerTimer;
                 currentWeapon = "Flamethrower";
@@ -690,6 +702,10 @@ public class GameMaster : MonoBehaviour
                 sfxAudioSource.Play();
                 StartCoroutine(StrikeLightning());
                 break;
+            case "T":
+                timeLootValue = (UnityEngine.Random.Range(5, 25));
+                AddTime(timeLootValue, pillType);
+                return; // non-display pill; use return here to leave the switch
         }
         if (!pillToasting)
         {
@@ -703,6 +719,13 @@ public class GameMaster : MonoBehaviour
         lightningObject.SetActive(true);
         ChainLightning.instance.engaged = true;
         yield return new WaitForSeconds(0.5f);
+
+    }
+
+    public void AddTime(int time, string pillType)
+    {
+        timeLeft += time;
+        DisplayPillText(pillType);
 
     }
 
@@ -843,6 +866,10 @@ public class GameMaster : MonoBehaviour
     {
         while (clocktime > 0)
         {
+            if (timeLeft > clocktime)
+            {
+                clocktime = timeLeft;
+            }
             clocktime--;
             timeLeft = clocktime;
             timerText.text = clocktime.ToString();
@@ -1001,6 +1028,9 @@ public class GameMaster : MonoBehaviour
             case "L":
                 pilltext = "Buzz Off";
                 break;
+            case "T":
+                pilltext = "+" + timeLootValue + " Seconds";
+                break;
         }
 
 
@@ -1040,6 +1070,7 @@ public class GameMaster : MonoBehaviour
             cheatMenuCanvas.blocksRaycasts = false;
         }
     }
+
 
 
 

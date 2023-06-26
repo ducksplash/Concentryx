@@ -67,7 +67,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Score x2
+  m_text: Score multi
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8313e91594fc7604a987603da962d8b8, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: a27f554c768bdb149a36e9221a04d26f, type: 2}

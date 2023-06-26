@@ -36,6 +36,7 @@ public class EnemyLaserShipCollisions : MonoBehaviour
             if (enemyHealth > 0)
             {
                 DecrementEnemyHealth(1);
+                GameMaster.instance.IncrementScore(5);
             }
             else
             {

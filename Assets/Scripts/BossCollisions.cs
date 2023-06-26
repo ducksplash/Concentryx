@@ -42,6 +42,7 @@ public class BossCollisions : MonoBehaviour
                 if (enemyHealth > 0)
                 {
                     DecrementEnemyHealth(1);
+                    GameMaster.instance.IncrementScore(10);
                 }
                 else
                 {

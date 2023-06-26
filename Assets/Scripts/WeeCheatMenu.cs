@@ -16,17 +16,20 @@ public class WeeCheatMenu : MonoBehaviour
 
     public void CheatMenu()
     {
-        if (GameMaster.instance.cheatMenuCanvas.alpha == 0)
+        if (GameMaster.instance.LevelEngaged)
         {
-            GameMaster.instance.cheatMenuCanvas.alpha = 1;
-            GameMaster.instance.cheatMenuCanvas.interactable = true;
-            GameMaster.instance.cheatMenuCanvas.blocksRaycasts = true;
-        }
-        else
-        {
-            GameMaster.instance.cheatMenuCanvas.alpha = 0;
-            GameMaster.instance.cheatMenuCanvas.interactable = false;
-            GameMaster.instance.cheatMenuCanvas.blocksRaycasts = false;
+            if (GameMaster.instance.cheatMenuCanvas.alpha == 0)
+            {
+                GameMaster.instance.cheatMenuCanvas.alpha = 1;
+                GameMaster.instance.cheatMenuCanvas.interactable = true;
+                GameMaster.instance.cheatMenuCanvas.blocksRaycasts = true;
+            }
+            else
+            {
+                GameMaster.instance.cheatMenuCanvas.alpha = 0;
+                GameMaster.instance.cheatMenuCanvas.interactable = false;
+                GameMaster.instance.cheatMenuCanvas.blocksRaycasts = false;
+            }
         }
     }
 

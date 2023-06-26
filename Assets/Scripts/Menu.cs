@@ -11,9 +11,6 @@ using System.Linq;
 
 public class Menu : MonoBehaviour
 {
-
-
-
     public GameObject GameMenu;
     public CanvasGroup MainMenuCanvas;
     public CanvasGroup PauseMenuCanvas;
@@ -24,50 +21,33 @@ public class Menu : MonoBehaviour
     public CanvasGroup XPButtonCanvas;
     public CanvasGroup PauseButtonCanvas;
     public CanvasGroup CustomMenuCanvas;
-
+    public CanvasGroup CheatMenuCanvas;
     public ParticleSystem previewJet;
-
     public Image previewShip;
-
-
     public CanvasGroup LevelEndCanvas;
     public CanvasGroup LevelInterstitialCanvas;
     public Slider warmUpSlider;
     public TextMeshProUGUI warmUpTimeText;
     public TextMeshProUGUI levelNumberText;
     public TextMeshProUGUI levelNameText;
-
     public CanvasGroup ThumbStickCanvas;
-
-    // sfx
     public Slider SFXSlider;
     public TextMeshProUGUI SFXValueText;
-    // sfx
     public Slider BGMSlider;
     public TextMeshProUGUI BGMValueText;
-
     public Toggle VibrationToggle;
     public Toggle PostProcessingToggle;
-
     public bool postProcessingEnabled;
-
     public AudioSource menuNoiseBox;
     public AudioClip[] menuNoises;
     public AudioMixer AudioMixer;
-
-
     public GameObject ConcentryxObject;
-
     public GameObject postProcessingVolume; // Reference to the Volume component
-
     public float minVolume = -80f; // Minimum volume in decibels
-
     public Coroutine warmupCoroutine;
-
 
     void Start()
     {
-
         previewJet.Stop();
 
         // Set initial toggle value based on the device vibration setting
@@ -88,15 +68,11 @@ public class Menu : MonoBehaviour
         // Set initial toggle value based on the post-processing setting
         if (!PlayerPrefs.HasKey("PostProcessingEnabled"))
         {
-
             postProcessingEnabled = true; // Save the changes
-
         }
         else
         {
-
             postProcessingEnabled = PlayerPrefs.GetInt("PostProcessingEnabled") == 1 ? true : false;
-
         }
 
 
@@ -220,13 +196,11 @@ public class Menu : MonoBehaviour
         }
     }
 
-
     public void SettingsScreen()
     {
         ChangePage(SettingsMenuCanvas);
         Time.timeScale = 0f;
     }
-
 
     public void CustomisationScreen()
     {
@@ -246,9 +220,6 @@ public class Menu : MonoBehaviour
 
         Time.timeScale = 0f;
     }
-
-
-
     public void Pause()
     {
         if (GameMaster.instance.LevelEngaged)
@@ -259,7 +230,6 @@ public class Menu : MonoBehaviour
 
             GameMaster.instance.GamePaused = true;
         }
-
     }
     public void AreYouSure()
     {
@@ -273,14 +243,12 @@ public class Menu : MonoBehaviour
 
         Time.timeScale = 0f;
     }
-
     public void ResetXP()
     {
         GameMaster.instance.ResetAll();
         ChangePage(RankMenuCanvas);
 
     }
-
     public void HardReset()
     {
         GameMaster.instance.ResetAll();
@@ -288,22 +256,18 @@ public class Menu : MonoBehaviour
         GameMaster.instance.InstantiateLevel();
 
     }
-
-
     public void QuitGame()
     {
         // Quit the game
         Application.Quit();
     }
-
-
-
-    // Change the page of the menu
     public void ChangePage(CanvasGroup ToOpen = null, bool FirstRun = false)
     {
         previewJet.Stop();
 
         CanvasGroup[] canvasGroups = GameMenu.GetComponentsInChildren<CanvasGroup>();
+
+
 
         foreach (CanvasGroup canvasGroup in canvasGroups)
         {
@@ -337,15 +301,8 @@ public class Menu : MonoBehaviour
                 menuNoiseBox.PlayOneShot(menuNoises[1]);
             }
         }
-
-
-
-
         TriggerVibrate();
     }
-
-
-
     public void TryAgain()
     {
         GameMaster.instance.ResetAll();
@@ -354,22 +311,14 @@ public class Menu : MonoBehaviour
         Time.timeScale = 1f;
         GameMaster.instance.InstantiateLevel();
     }
-
-
     public void TriggerVibrate()
     {
         Vibration.Vibrate(50, 255);
     }
-
-
-
     public void WarmUpGame()
     {
         warmupCoroutine = StartCoroutine(WarmUp(4));
     }
-
-
-
     public IEnumerator WarmUp(int timeleft)
     {
         TriggerVibrate();
@@ -399,7 +348,6 @@ public class Menu : MonoBehaviour
 
         GameMaster.instance.LevelEngaged = true;
     }
-
     public void BypassWarmup()
     {
         StopCoroutine(warmupCoroutine);
@@ -409,6 +357,4 @@ public class Menu : MonoBehaviour
 
         GameMaster.instance.LevelEngaged = true;
     }
-
-
 }

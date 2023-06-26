@@ -26,9 +26,14 @@ public class CaterpillarCollisions : MonoBehaviour
         {
             case "Projectile(Clone)":
                 if (enemyHealth > 0)
+                {
                     DecrementEnemyHealth(1);
+                    GameMaster.instance.IncrementScore(2);
+                }
                 else
+                {
                     DestroyEnemyShip();
+                }
                 break;
             case "EnemyProjectile(Clone)":
                 // Do nothing as enemies are allies

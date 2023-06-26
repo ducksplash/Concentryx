@@ -50,6 +50,7 @@ public class BossThreeCollisions : MonoBehaviour
                 if (enemyHealth > 0)
                 {
                     DecrementEnemyHealth(1);
+                    GameMaster.instance.IncrementScore(30);
                 }
                 else
                 {
@@ -77,6 +78,7 @@ public class BossThreeCollisions : MonoBehaviour
             Destroy(gameObject.transform.parent.gameObject, animator.GetCurrentAnimatorStateInfo(0).length);
         }
     }
+
 
     public void DecrementEnemyHealth(int amount)
     {

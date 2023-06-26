@@ -45,6 +45,7 @@ public class BossTwoCollisions : MonoBehaviour
                 if (enemyHealth > 0)
                 {
                     DecrementEnemyHealth(1);
+                    GameMaster.instance.IncrementScore(20);
                 }
                 else
                 {

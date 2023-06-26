@@ -230,10 +230,10 @@ public class Concentryx : MonoBehaviour
             else
             {
                 maxEnemyBuzzbugs = UnityEngine.Random.Range(0, 2);
-                maxEnemyLaserShips = UnityEngine.Random.Range(0, 4);
-                maxEnemyCaterpillars = UnityEngine.Random.Range(0, 3);
-                maxEnemyShips = UnityEngine.Random.Range(0, 8);
-                maxPlanets = UnityEngine.Random.Range(0, 3);
+                maxEnemyLaserShips = UnityEngine.Random.Range(0, 3);
+                maxEnemyCaterpillars = UnityEngine.Random.Range(0, 2);
+                maxEnemyShips = UnityEngine.Random.Range(0, 4);
+                maxPlanets = UnityEngine.Random.Range(0, 2);
             }
 
             CreateEnemyLaserShip(maxEnemyLaserShips);
@@ -242,6 +242,9 @@ public class Concentryx : MonoBehaviour
             CreateEnemyShip(maxEnemyShips);
             CreatePlanet(maxPlanets);
         }
+
+        // initialise lightning
+        ChainLightning.instance.InitialiseLightning();
     }
 
 
@@ -921,10 +924,10 @@ public class Concentryx : MonoBehaviour
 
     public void ConcentricRings(int numRings = 3)
     {
-        float innerRadius = 1.9f; // The inner radius of the ring.
-        float outerRadius = 1.8f; // The outer radius of the ring.
+        float innerRadius = 1.9f;
+        float outerRadius = 1.8f;
 
-        int numSegments = 28; // The number of segments in the ring.
+        int numSegments = 28;
         float rotationSpeed = 10f;
 
 
