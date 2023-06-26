@@ -14,7 +14,6 @@ public class Segment : MonoBehaviour
 
     public GameObject[] pillPrefabs;
 
-    private float flashTimer;
     private bool isFlashing;
 
     private void Start()
@@ -84,7 +83,6 @@ public class Segment : MonoBehaviour
             if (!isFlashing)
             {
                 isFlashing = true;
-                flashTimer = 0.01f;
                 spriteRenderer.color = Color.black;
             }
         }

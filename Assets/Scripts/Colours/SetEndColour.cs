@@ -32,7 +32,6 @@ public class SetEndColour : MonoBehaviour
         string colorString = ColorUtility.ToHtmlStringRGB(c);
 
         PlayerPrefs.SetString("EndColor", colorString);
-        Debug.Log(colorString);
         Ship.instance.SetJetColors();
     }
 

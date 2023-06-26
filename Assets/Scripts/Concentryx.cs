@@ -108,14 +108,14 @@ public class Concentryx : MonoBehaviour
                 case 1:
                     GameTimer = StartCoroutine(GameMaster.instance.Countdown(120));
                     currentLevelName = "Concentryx";
-                    ConcentricRings();
+                    ConcentricRings(3);
                     CreateEnemyShip(1);
                     break;
 
                 case 2:
                     GameTimer = StartCoroutine(GameMaster.instance.Countdown(160));
                     currentLevelName = "New Friends";
-                    ConcentricRings(6);
+                    ConcentricRings(4);
                     CreateEnemyLaserShip(1);
                     break;
 
@@ -204,7 +204,7 @@ public class Concentryx : MonoBehaviour
 
             CreateNearbyStar(numNearbyStars);
             CreateFarStar(numFarStars);
-            audioSource.clip = gameMusic[SelectedLevel];
+            audioSource.clip = gameMusic[UnityEngine.Random.Range(0, gameMusic.Length - 1)];
             audioSource.Play();
         }
         else

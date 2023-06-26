@@ -24,7 +24,7 @@ public class Projectile : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (Input.GetMouseButton(0) && canFire)
         {

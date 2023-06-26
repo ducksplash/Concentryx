@@ -201,7 +201,6 @@ public class Menu : MonoBehaviour
         TriggerVibrate();
         ChangePage();
         Time.timeScale = 1f;
-        Debug.Log("resume triggered");
         GameMaster.instance.GamePaused = false;
     }
 
@@ -354,7 +353,6 @@ public class Menu : MonoBehaviour
         ChangePage(null, true);
         Time.timeScale = 1f;
         GameMaster.instance.InstantiateLevel();
-        Debug.Log("tryagain triggered");
     }
 
 

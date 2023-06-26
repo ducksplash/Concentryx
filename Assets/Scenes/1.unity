@@ -30415,9 +30415,9 @@ MonoBehaviour:
   textMaterial: {fileID: 6454014653600419309, guid: 8313e91594fc7604a987603da962d8b8, type: 2}
   healthLootValue: 0
   pillTime: 15
-  projectileDelay: 0.01
-  projectileDelayDefault: 0.01
-  projectileDelayBoosted: 0.005
+  projectileDelay: 0.005
+  projectileDelayDefault: 0.005
+  projectileDelayBoosted: 0.001
   pillScroll: {fileID: 1749503659}
   pillContent: {fileID: 1985906783}
   pillReadoutPrefabs:
@@ -48722,11 +48722,10 @@ MonoBehaviour:
   - {fileID: 5116799521037211069, guid: 01df39786e1a3dc4d974a75ac4008838, type: 3}
   - {fileID: 4524934019268388776, guid: ca9f570ed92d73c4183c974f5c39eb8f, type: 3}
   - {fileID: 656559970223295855, guid: 00f774d400f71364eac8813d8e74eebf, type: 3}
-  - {fileID: 96798686313080694, guid: 09d8decbf151c22488f4ce4eccb6af1a, type: 3}
+  - {fileID: 656559970223295855, guid: de2a7905c96caab41a3fc1e24db66f78, type: 3}
   - {fileID: 5607979261931276207, guid: 622b26c469729f24fba735702581012e, type: 3}
   - {fileID: 469024434675377314, guid: b27555b1911a92c4e83fa2e907884c8d, type: 3}
   - {fileID: 5829611295301993623, guid: 4edc366f50ec55d45a4132566bc30bb1, type: 3}
-  - {fileID: 8789758802732481945, guid: d5f4311e7373603418ff6272be1601ef, type: 3}
   - {fileID: 1055843422440111240, guid: 96315106496f63a40a8d6a88fc54ee46, type: 3}
   - {fileID: 1595469572540032353, guid: 1f3a10e9bb4541f4e917f36fffc75ca9, type: 3}
   - {fileID: 8683314793578411259, guid: ef0d06a98f3d6784ba03142a47deb4fe, type: 3}

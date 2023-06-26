@@ -29,7 +29,6 @@ public class SetStartColour : MonoBehaviour
         string colorString = ColorUtility.ToHtmlStringRGB(c);
 
         PlayerPrefs.SetString("StartColor", colorString);
-        Debug.Log(colorString);
         Ship.instance.SetJetColors();
     }
 
