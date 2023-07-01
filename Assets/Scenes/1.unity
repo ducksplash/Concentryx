@@ -30577,7 +30577,7 @@ MonoBehaviour:
   rankToMenuText: {fileID: 1106881583}
   healthCanvas: {fileID: 4956001991486753672}
   deviceVibrationEnabled: 1
-  health: 100000
+  health: 100
   maxHealth: 100
   defaultMaxHealth: 100
   shipCollider: {fileID: 4956001991301095825}

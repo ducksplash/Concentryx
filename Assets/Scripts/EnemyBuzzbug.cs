@@ -134,7 +134,7 @@ public class EnemyBuzzbug : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (!collision.gameObject.name.Contains("Enemy") && !collision.gameObject.name.Contains("Boss"))
+        if (!collision.gameObject.name.Contains("Enemy") && !collision.gameObject.name.Contains("Boss") && !collision.gameObject.name.Contains("SpaceShip"))
         {
             if (collision.gameObject.GetComponent<BulletTime>())
             {
@@ -151,7 +151,16 @@ public class EnemyBuzzbug : MonoBehaviour
                 DestroyEnemyShip();
             }
         }
+
+
+
+        if (collision.gameObject.name.Contains("SpaceShip"))
+        {
+            GameMaster.instance.DecrementHealth(5);
+
+        }
     }
+
 
     public void DestroyEnemyShip()
     {
