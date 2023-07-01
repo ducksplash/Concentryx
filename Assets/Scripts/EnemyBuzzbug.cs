@@ -38,7 +38,7 @@ public class EnemyBuzzbug : MonoBehaviour
         Player = GameObject.FindGameObjectWithTag("Player");
         jet.SetActive(true);
         explosionSound = GetComponent<AudioSource>();
-
+        ChainLightning.instance.InitialiseLightning();
     }
     private void Update()
     {
@@ -143,6 +143,7 @@ public class EnemyBuzzbug : MonoBehaviour
             if (enemyHealth > 0)
             {
                 DecrementEnemyHealth(1);
+                GameMaster.instance.IncrementScore(5);
 
             }
             else
@@ -155,7 +156,8 @@ public class EnemyBuzzbug : MonoBehaviour
     public void DestroyEnemyShip()
     {
         animator.SetTrigger("shipsplode");
-        GameMaster.instance.IncrementScore(5);
+
+        Debug.Log("Destroying buzz ship");
 
         if (!isDead)
         {

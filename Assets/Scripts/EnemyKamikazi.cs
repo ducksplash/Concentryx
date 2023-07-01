@@ -31,6 +31,7 @@ public class EnemyKamikazi : MonoBehaviour
         Player = GameObject.FindGameObjectWithTag("Player");
         shipCollider = GetComponent<Collider2D>();
         explosionSound = GetComponent<AudioSource>();
+
     }
 
     private void Update()
@@ -121,6 +122,8 @@ public class EnemyKamikazi : MonoBehaviour
 
     public void DestroyEnemyShip()
     {
+
+        Debug.Log("Destroying drone ship");
         animator.SetTrigger("shipsplode");
 
         if (!isDead)

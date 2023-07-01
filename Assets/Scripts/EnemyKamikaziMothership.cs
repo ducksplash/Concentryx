@@ -45,6 +45,7 @@ public class EnemyKamikaziMothership : MonoBehaviour
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
         explosionSound = GetComponent<AudioSource>();
+        ChainLightning.instance.InitialiseLightning();
     }
 
 
@@ -79,11 +80,10 @@ public class EnemyKamikaziMothership : MonoBehaviour
     }
 
 
-    // mothership counts as 'active enemy'
-    // but the drones do not.
-    // they are parented to the grid and are subject to housekeeping.
     public void DestroyEnemyShip()
     {
+
+        Debug.Log("Destroying mother ship");
         animator.SetTrigger("shipsplode");
 
         if (!isDead)
@@ -110,8 +110,6 @@ public class EnemyKamikaziMothership : MonoBehaviour
             yield return new WaitForSeconds(0.7f);
 
         }
-
-        //GameMaster.instance.ActiveEnemies += numships;
 
     }
 

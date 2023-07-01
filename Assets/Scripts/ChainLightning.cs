@@ -125,25 +125,50 @@ public class ChainLightning : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
-        // Remove destroyed targets from the list
-        targets.RemoveAll(target => target == null);
 
         for (int i = 0; i < targets.Count; i++)
         {
 
-            if (targets[i] != null && targets[i].gameObject != null && targets[i].gameObject.GetComponent<EnemyShip>() != null)
+            if (targets[i] != null && targets[i].gameObject != null)
             {
-                targets[i].gameObject.GetComponent<EnemyShip>().DestroyEnemyShip();
+                //targets[i].gameObject.GetComponent<EnemyShip>().DestroyEnemyShip();
+
+
+                if (targets[i].name.Contains("EnemyLaserShip"))
+                {
+                    targets[i].gameObject.GetComponent<EnemyLaserShipCollisions>().DestroyEnemyShip();
+                }
+
+                if (targets[i].name.Contains("EnemyShip"))
+                {
+                    targets[i].gameObject.GetComponent<EnemyShip>().DestroyEnemyShip();
+                }
+
+                if (targets[i].name.Contains("EnemySeg"))
+                {
+                    targets[i].gameObject.GetComponent<CaterpillarCollisions>().DestroyEnemyShip();
+                }
+
+                if (targets[i].name.Contains("EnemyKamikaziMothership"))
+                {
+                    targets[i].gameObject.GetComponent<EnemyKamikaziMothership>().DestroyEnemyShip();
+                }
+
+                if (targets[i].name.Contains("EnemybuzzBug"))
+                {
+                    targets[i].gameObject.GetComponent<EnemyBuzzbug>().DestroyEnemyShip();
+                }
             }
 
-            yield return new WaitForSeconds(0.6f);
         }
-        StartCoroutine(ResetChain());
+
+        // Remove destroyed targets from the list
+        targets.RemoveAll(target => target == null);
+        ResetChain();
     }
 
-    public IEnumerator ResetChain()
+    public void ResetChain()
     {
-        yield return EnemySweepRoutine;
         foreach (LightningBolt lightningBolt in lightningBolts)
         {
             lightningBolt.DestroyLightning();

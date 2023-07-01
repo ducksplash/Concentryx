@@ -10049,7 +10049,7 @@ GameObject:
   - component: {fileID: 2914923436639915093}
   m_Layer: 0
   m_Name: EnemyLaserShip
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10083,7 +10083,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e25275957ebf834bb7c71de4a96a371, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  durationInSeconds: 1.5
+  durationInSeconds: 3
   emenyLaserShip: {fileID: 3972170562902603255}
   targetPositions:
   - {fileID: 2914923435763873931}
@@ -10543,7 +10543,7 @@ GameObject:
   - component: {fileID: 9206161078792262379}
   m_Layer: 0
   m_Name: EnemyLaserShip
-  m_TagString: Enemy
+  m_TagString: MovingEnemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10580,7 +10580,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fcfbb59f541be3459339f881361b6da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyHealth: 50
+  enemyHealth: 40
   enemyHits: 0
   jet: {fileID: 2914923435158185473}
   laser: {fileID: 2914923435823232819}

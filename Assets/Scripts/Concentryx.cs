@@ -243,8 +243,6 @@ public class Concentryx : MonoBehaviour
             CreatePlanet(maxPlanets);
         }
 
-        // initialise lightning
-        ChainLightning.instance.InitialiseLightning();
     }
 
 
@@ -481,8 +479,6 @@ public class Concentryx : MonoBehaviour
             enemyShip.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         }
 
-        ChainLightning.instance.InitialiseLightning();
-
         GameMaster.instance.ActiveEnemies += numships;
     }
 
@@ -542,8 +538,6 @@ public class Concentryx : MonoBehaviour
             angle += 180f; // Add 180 degrees to flip the direction
             enemyShip.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         }
-
-        ChainLightning.instance.InitialiseLightning();
 
         GameMaster.instance.ActiveEnemies += numships;
     }
@@ -640,8 +634,6 @@ public class Concentryx : MonoBehaviour
             angle += 180f; // Add 180 degrees to flip the direction
             enemyShip.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         }
-
-        ChainLightning.instance.InitialiseLightning();
 
         GameMaster.instance.ActiveEnemies += numships;
     }

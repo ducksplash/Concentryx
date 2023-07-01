@@ -74,6 +74,7 @@ public class BossTwoCollisions : MonoBehaviour
         }
     }
 
+
     public void DecrementEnemyHealth(int amount)
     {
         enemyHealth -= amount;

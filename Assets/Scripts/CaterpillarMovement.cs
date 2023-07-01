@@ -48,6 +48,11 @@ public class CaterpillarMovement : MonoBehaviour
                 Vector3 targetPosition = prevSegment.position - (prevSegment.position - currentSegment.position).normalized * segmentSpacing;
                 currentSegment.position = Vector3.MoveTowards(currentSegment.position, targetPosition, moveSpeed * Time.deltaTime);
             }
+
+            // if (segments.Length < 1)
+            // {
+            //     Destroy(gameObject);
+            // }
         }
 
         // Move the head segment towards the current target

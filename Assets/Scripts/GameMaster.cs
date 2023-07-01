@@ -94,6 +94,7 @@ public class GameMaster : MonoBehaviour
     public int healthLootValue = 0;
     public int timeLootValue = 0;
 
+    public int scoreLootValue = 0;
     public int pillTime;
 
 
@@ -112,7 +113,7 @@ public class GameMaster : MonoBehaviour
     public int scoreMultiplierTimer = 20;
     public int invulnerabiltyTimer = 20;
     public int flameThrowerTimer = 4;
-    public int lightningTimer = 2;
+    public int lightningTimer = 10;
 
 
 
@@ -418,6 +419,16 @@ public class GameMaster : MonoBehaviour
 
         while (lvlScore > 100)
         {
+            lvlScore -= 20;
+            totalScoreDisplay += 20;
+            levelEndScoreThisLevelText.text = lvlScore.ToString();
+            levelEndScoreText.text = totalScoreDisplay.ToString();
+            yield return new WaitForSecondsRealtime(0.001f);
+        }
+
+
+        while (lvlScore > 10)
+        {
             lvlScore -= 10;
             totalScoreDisplay += 10;
             levelEndScoreThisLevelText.text = lvlScore.ToString();
@@ -437,6 +448,30 @@ public class GameMaster : MonoBehaviour
 
 
 
+
+
+        while (timeBonus > 100)
+        {
+            timeBonus -= 10;
+            playerScore += 100;
+            levelEndTimeText.text = timeBonus.ToString();
+            levelEndScoreText.text = playerScore.ToString();
+            yield return new WaitForSecondsRealtime(0.001f);
+        }
+
+
+
+        while (timeBonus > 10)
+        {
+            timeBonus -= 10;
+            playerScore += 100;
+            levelEndTimeText.text = timeBonus.ToString();
+            levelEndScoreText.text = playerScore.ToString();
+            yield return new WaitForSecondsRealtime(0.001f);
+        }
+
+
+
         while (timeBonus > 0)
         {
             timeBonus -= 1;
@@ -445,6 +480,8 @@ public class GameMaster : MonoBehaviour
             levelEndScoreText.text = playerScore.ToString();
             yield return new WaitForSecondsRealtime(0.001f);
         }
+
+
         scoreText.text = playerScore.ToString();
         if (playerScore > playerHighScore)
         {
@@ -706,6 +743,9 @@ public class GameMaster : MonoBehaviour
                 timeLootValue = (UnityEngine.Random.Range(5, 25));
                 AddTime(timeLootValue, pillType);
                 return; // non-display pill; use return here to leave the switch
+            case "Q":
+                AddScore(pillType);
+                return; // non-display pill; use return here to leave the switch
         }
         if (!pillToasting)
         {
@@ -728,7 +768,13 @@ public class GameMaster : MonoBehaviour
         DisplayPillText(pillType);
 
     }
+    public void AddScore(string pillType)
+    {
+        scoreLootValue = (UnityEngine.Random.Range(10, 1000));
+        IncrementScore(scoreLootValue);
+        DisplayPillText(pillType);
 
+    }
 
     private void PillAction(string pillType)
     {
@@ -1030,6 +1076,9 @@ public class GameMaster : MonoBehaviour
                 break;
             case "T":
                 pilltext = "+" + timeLootValue + " Seconds";
+                break;
+            case "Q":
+                pilltext = "+" + scoreLootValue + " Points";
                 break;
         }
 

@@ -25,6 +25,7 @@ public class EnemyLaserShipCollisions : MonoBehaviour
         jet.SetActive(true);
         laser.SetActive(true);
         explosionSound = GetComponent<AudioSource>();
+        ChainLightning.instance.InitialiseLightning();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -47,6 +48,9 @@ public class EnemyLaserShipCollisions : MonoBehaviour
 
     public void DestroyEnemyShip()
     {
+
+        Debug.Log("Destroying laser ship");
+
         animator.SetTrigger("shipsplode");
 
         if (!isDead)

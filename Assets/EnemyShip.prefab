@@ -5133,7 +5133,7 @@ GameObject:
   - component: {fileID: 886306160725507318}
   - component: {fileID: 7745373089695662842}
   m_Layer: 0
-  m_Name: EnemyShip1
+  m_Name: EnemyShip
   m_TagString: MovingEnemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

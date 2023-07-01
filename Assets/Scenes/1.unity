@@ -29216,13 +29216,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 732098430}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d167ca12d2b72fc46b28c1505e2edd12, type: 3}
+  m_Script: {fileID: 11500000, guid: 5ff7b83251c21954098bc08ce26007fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lineRendererPrefab: {fileID: 143006, guid: eaab52f69b92bdf46a3cc56d142366a2, type: 3}
+  lineRendererPrefab: {fileID: 5007409335025004252, guid: be0ae5aa751ac714e815dd77c21436dd, type: 3}
   lightRendererPrefab: {fileID: 143006, guid: 8fc6ea7d162c9fe4f98c21fdeb50a301, type: 3}
-  chainLength: 0
-  lightnings: 10
+  chainLength: 2
+  lightnings: 2
   targetTag: MovingEnemy
   targets: []
   engaged: 0
@@ -30610,9 +30610,10 @@ MonoBehaviour:
   textMaterial: {fileID: 6454014653600419309, guid: 8313e91594fc7604a987603da962d8b8, type: 2}
   healthLootValue: 0
   timeLootValue: 0
+  scoreLootValue: 0
   pillTime: 15
-  projectileDelay: 0.05
-  projectileDelayDefault: 0.05
+  projectileDelay: 0.03
+  projectileDelayDefault: 0.03
   projectileDelayBoosted: 0.01
   pillScroll: {fileID: 1749503659}
   pillContent: {fileID: 1985906783}
@@ -48866,7 +48867,7 @@ MonoBehaviour:
   Player: {fileID: 4956001991301095822}
   dropRandomLower: 0
   dropRandomUpper: 100
-  dropRandomCutoff: 90
+  dropRandomCutoff: 95
   mysterySprite: {fileID: 21300000, guid: 690ebe6258c7be74e89ea375d86b315b, type: 3}
   spriteSelection:
   - {fileID: 21300000, guid: 5eda18ffee439c848a6eb1db3e16a9ad, type: 3}
@@ -48889,6 +48890,7 @@ MonoBehaviour:
   - {fileID: 6466880149065721876, guid: 5c7cb8daaa74288449b61bef236858d0, type: 3}
   - {fileID: 1843011716137890690, guid: b0a20b8de90c3ab42a0adaaae2b5882f, type: 3}
   - {fileID: 6315077664584332584, guid: bf966dbc386a1e9489da295f3b886bf8, type: 3}
+  - {fileID: 2888271685259355414, guid: 775aa74125783324c87e58110c43532d, type: 3}
   enemyPrefabs:
   - {fileID: 2264219344330808542, guid: fbeda00a30077e347885a440b7029a7d, type: 3}
   - {fileID: 2914923436639915091, guid: 94540ab30915e39419519d558bb775d4, type: 3}
@@ -62017,7 +62019,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectilePrefab: {fileID: 1153927297093656384, guid: a95f22291c2f6834db19607675e9c0f0, type: 3}
-  projectileSpeed: 40
+  projectileSpeed: 10
   flameThrower: {fileID: 4956001992437177027}
 --- !u!114 &4956001991301095819
 MonoBehaviour:

@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 317471661560406882}
   m_Layer: 0
-  m_Name: EnemyShip3
-  m_TagString: MovingEnemy
+  m_Name: EnemyCaterpillar
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -187,7 +187,7 @@ GameObject:
   - component: {fileID: 5695410771091163790}
   m_Layer: 0
   m_Name: EnemySeg1
-  m_TagString: Enemy
+  m_TagString: MovingEnemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -315,7 +315,6 @@ MonoBehaviour:
   enemyMinHealth: 1
   enemyMaxHealth: 10
   enemyHits: 0
-  isDead: 0
   enemyHealthbar: {fileID: 6565595106213862501}
 --- !u!58 &6565595106186742438
 CircleCollider2D:
@@ -1080,7 +1079,7 @@ GameObject:
   - component: {fileID: 655168182856732414}
   m_Layer: 0
   m_Name: EnemySeg5
-  m_TagString: Enemy
+  m_TagString: MovingEnemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1208,7 +1207,6 @@ MonoBehaviour:
   enemyMinHealth: 1
   enemyMaxHealth: 10
   enemyHits: 0
-  isDead: 0
   enemyHealthbar: {fileID: 6565595106701112276}
 --- !u!58 &6565595106562464589
 CircleCollider2D:
@@ -2144,7 +2142,7 @@ GameObject:
   - component: {fileID: 3824421736807758232}
   m_Layer: 0
   m_Name: EnemySeg3
-  m_TagString: Enemy
+  m_TagString: MovingEnemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2272,7 +2270,6 @@ MonoBehaviour:
   enemyMinHealth: 1
   enemyMaxHealth: 10
   enemyHits: 0
-  isDead: 0
   enemyHealthbar: {fileID: 6565595107603406365}
 --- !u!58 &6565595107113194146
 CircleCollider2D:
@@ -2403,7 +2400,7 @@ GameObject:
   - component: {fileID: 61755312554123949}
   m_Layer: 0
   m_Name: EnemySeg2
-  m_TagString: Enemy
+  m_TagString: MovingEnemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2531,7 +2528,6 @@ MonoBehaviour:
   enemyMinHealth: 1
   enemyMaxHealth: 10
   enemyHits: 0
-  isDead: 0
   enemyHealthbar: {fileID: 6565595106172137593}
 --- !u!58 &6565595107277205025
 CircleCollider2D:
@@ -3459,7 +3455,7 @@ GameObject:
   - component: {fileID: 5621881437519307078}
   m_Layer: 0
   m_Name: EnemySeg4
-  m_TagString: Enemy
+  m_TagString: MovingEnemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3587,7 +3583,6 @@ MonoBehaviour:
   enemyMinHealth: 1
   enemyMaxHealth: 10
   enemyHits: 0
-  isDead: 0
   enemyHealthbar: {fileID: 6565595107351841318}
 --- !u!58 &6565595107853853899
 CircleCollider2D:

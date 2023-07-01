@@ -1630,6 +1630,7 @@ MonoBehaviour:
   enemyHealthbarcanvas1: {fileID: 2346308238331202342}
   enemyHealthbarcanvas2: {fileID: 3573875992827717727}
   Player: {fileID: 0}
+  enemyEnabled: 1
 --- !u!1 &1890577529066820436
 GameObject:
   m_ObjectHideFlags: 0

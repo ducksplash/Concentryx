@@ -31,6 +31,7 @@ public class EnemyShip : MonoBehaviour
         jet.SetActive(true);
         explosionSound = GetComponent<AudioSource>();
         playerTransform = Player.GetComponent<Transform>();
+        ChainLightning.instance.InitialiseLightning();
     }
 
     private void Update()
@@ -80,6 +81,9 @@ public class EnemyShip : MonoBehaviour
 
     public void DestroyEnemyShip()
     {
+
+        Debug.Log("Destroying basic ship");
+
         animator.SetTrigger("shipsplode");
 
         if (!isDead)
