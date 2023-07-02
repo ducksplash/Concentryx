@@ -16,6 +16,9 @@ public class GameMaster : MonoBehaviour
 
     public GameObject Concentryx;
 
+
+    public int ActiveEnemies = 0;
+
     [Header("Player Values")]
 
     public int playerScore = 0;
@@ -142,9 +145,6 @@ public class GameMaster : MonoBehaviour
 
 
     int startpilltime = 15;
-
-    public int ActiveEnemies = 0;
-
 
     public GameObject shieldParticleSystem;
 

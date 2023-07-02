@@ -19,6 +19,7 @@ public class CaterpillarCollisions : MonoBehaviour
         animator = GetComponent<Animator>();
         explosionSound = GetComponent<AudioSource>();
         ChainLightning.instance.InitialiseLightning();
+        GameMaster.instance.ActiveEnemies++;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -54,17 +55,19 @@ public class CaterpillarCollisions : MonoBehaviour
 
         animator.SetTrigger("shipsplode");
 
-        //if (!isDead)
-        //{
-        enemyHealthbar.fillAmount = 0f;
-        GameMaster.instance.IncrementScore(enemyHits);
-        //isDead = true;
-        GameMaster.instance.ActiveEnemies--;
+        if (!isDead)
+        {
+            enemyHealthbar.fillAmount = 0f;
+            GameMaster.instance.IncrementScore(enemyHits);
+            isDead = true;
+            GameMaster.instance.ActiveEnemies--;
 
-        // Play explosion sound
-        explosionSound.Play();
-        Destroy(gameObject, animator.GetCurrentAnimatorStateInfo(0).length);
-        //}
+            Debug.Log("enemies left: " + GameMaster.instance.ActiveEnemies);
+
+            // Play explosion sound
+            explosionSound.Play();
+            Destroy(gameObject, animator.GetCurrentAnimatorStateInfo(0).length);
+        }
     }
 
     public void DecrementEnemyHealth(int amount)

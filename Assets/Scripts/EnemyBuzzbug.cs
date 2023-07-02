@@ -156,7 +156,10 @@ public class EnemyBuzzbug : MonoBehaviour
 
         if (collision.gameObject.name.Contains("SpaceShip"))
         {
-            GameMaster.instance.DecrementHealth(5);
+            if (!GameMaster.instance.invulnerable)
+            {
+                GameMaster.instance.DecrementHealth(5);
+            }
 
         }
     }

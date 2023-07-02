@@ -16,10 +16,6 @@ public class CaterpillarMovement : MonoBehaviour
             targets[i].GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 0);
         }
 
-        for (int i = 0; i < segments.Length; i++)
-        {
-            GameMaster.instance.ActiveEnemies++;
-        }
     }
 
     private void Update()
@@ -48,11 +44,6 @@ public class CaterpillarMovement : MonoBehaviour
                 Vector3 targetPosition = prevSegment.position - (prevSegment.position - currentSegment.position).normalized * segmentSpacing;
                 currentSegment.position = Vector3.MoveTowards(currentSegment.position, targetPosition, moveSpeed * Time.deltaTime);
             }
-
-            // if (segments.Length < 1)
-            // {
-            //     Destroy(gameObject);
-            // }
         }
 
         // Move the head segment towards the current target
