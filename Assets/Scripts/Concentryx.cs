@@ -10,10 +10,6 @@ public class Concentryx : MonoBehaviour
 
 
 
-    public int numSegments = 32; // The number of segments in the ring.
-    public int numLayers = 4; // The number of segments in the ring.
-    public float innerRadius = 1.0f; // The inner radius of the ring.
-    public float outerRadius = 2.0f; // The outer radius of the ring.
     public float spriteWidth = 0.1f; // The width of each sprite in the ring.
 
     public GameObject Player;

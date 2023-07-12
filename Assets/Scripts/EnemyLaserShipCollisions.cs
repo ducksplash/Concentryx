@@ -49,8 +49,6 @@ public class EnemyLaserShipCollisions : MonoBehaviour
     public void DestroyEnemyShip()
     {
 
-        Debug.Log("Destroying laser ship");
-
         animator.SetTrigger("shipsplode");
 
         if (!isDead)

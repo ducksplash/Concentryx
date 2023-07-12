@@ -9,6 +9,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: planetSphere2
   m_Shader: {fileID: 4800000, guid: 0406db5a14f94604a8c57ccfbc9f3b46, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - _DISTORTION_ON
   - _EMISSION
@@ -27,6 +29,7 @@ Material:
   disabledShaderPasses:
   - DepthOnly
   - SHADOWCASTER
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -261,6 +264,7 @@ Material:
     - Vector1_E4ED4A83: 1
     - Vector1_FC072ADF: 10
     - _AlphaClip: 0
+    - _AlphaToMask: 0
     - _AtmosphereDensity: 0
     - _BASE_COLOR_WEIGHT: 1
     - _BUMP_MAP_STRENGTH: 0.3
@@ -288,6 +292,7 @@ Material:
     - _DistortionStrength: 0.341
     - _DistortionStrengthScaled: 0.0341
     - _DstBlend: 1
+    - _DstBlendAlpha: 1
     - _EMISSION_WEIGHT: 1
     - _EnableExternalAlpha: 0
     - _EnvironmentReflections: 1
@@ -330,6 +335,7 @@ Material:
     - _SpecularMapIntensity: 0.4
     - _Specularity: 0
     - _SrcBlend: 5
+    - _SrcBlendAlpha: 1
     - _Surface: 1
     - _TRANSPARENCY: 0
     - _WorkflowMode: 1
@@ -376,4 +382,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  version: 5
+  version: 7

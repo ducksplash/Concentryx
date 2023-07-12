@@ -49,7 +49,6 @@ public class EndColorPicker : MonoBehaviour, IPointerDownHandler, IDragHandler, 
 
         if (WrongShader())
         {
-            Debug.LogWarning($"Color picker requires image material with {colorPickerShaderName} shader.");
 
             if (Application.isPlaying && colorPickerShader != null)
             {

@@ -51,7 +51,6 @@ public class CaterpillarCollisions : MonoBehaviour
 
     public void DestroyEnemyShip()
     {
-        Debug.Log("Destroying caterpillar ship");
 
         animator.SetTrigger("shipsplode");
 
@@ -61,8 +60,6 @@ public class CaterpillarCollisions : MonoBehaviour
             GameMaster.instance.IncrementScore(enemyHits);
             isDead = true;
             GameMaster.instance.ActiveEnemies--;
-
-            Debug.Log("enemies left: " + GameMaster.instance.ActiveEnemies);
 
             // Play explosion sound
             explosionSound.Play();

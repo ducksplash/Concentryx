@@ -82,8 +82,6 @@ public class EnemyKamikaziMothership : MonoBehaviour
 
     public void DestroyEnemyShip()
     {
-
-        Debug.Log("Destroying mother ship");
         animator.SetTrigger("shipsplode");
 
         if (!isDead)

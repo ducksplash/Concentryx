@@ -169,8 +169,6 @@ public class EnemyBuzzbug : MonoBehaviour
     {
         animator.SetTrigger("shipsplode");
 
-        Debug.Log("Destroying buzz ship");
-
         if (!isDead)
         {
             enemyHealthbar.value = 0;

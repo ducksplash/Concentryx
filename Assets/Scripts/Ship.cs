@@ -58,7 +58,6 @@ public class Ship : MonoBehaviour
         if (!ColorUtility.TryParseHtmlString(startColorString, out startColor))
         {
             // Error handling if the conversion fails
-            Debug.LogError("Failed to parse start color from PlayerPrefs. Color string: " + startColorString);
             startColor = Color.blue; // Default color value
         }
 
@@ -72,7 +71,6 @@ public class Ship : MonoBehaviour
         if (!ColorUtility.TryParseHtmlString(endColorString, out endColor))
         {
             // Error handling if the conversion fails
-            Debug.LogError("Failed to parse end color from PlayerPrefs. Color string: " + endColorString);
             endColor = Color.red; // Default color value
         }
 

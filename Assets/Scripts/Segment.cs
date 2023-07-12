@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Segment : MonoBehaviour
 {
-    public int health = 3;
+    public int health = 1;
     public int hits = 0;
     public bool isDead;
 

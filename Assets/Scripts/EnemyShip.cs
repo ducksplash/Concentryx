@@ -82,7 +82,6 @@ public class EnemyShip : MonoBehaviour
     public void DestroyEnemyShip()
     {
 
-        Debug.Log("Destroying basic ship");
 
         animator.SetTrigger("shipsplode");
 
