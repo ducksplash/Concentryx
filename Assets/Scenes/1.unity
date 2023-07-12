@@ -13699,8 +13699,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -0.001393795, y: 0.005699992, z: 0}
-    m_Extent: {x: 1.0006938, y: 1.0013, z: 0}
+    m_Center: {x: -0.0012938082, y: 0.0030499995, z: 0}
+    m_Extent: {x: 1.0007938, y: 0.99665, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -48913,7 +48913,7 @@ MonoBehaviour:
   Player: {fileID: 4956001991301095822}
   dropRandomLower: 0
   dropRandomUpper: 100
-  dropRandomCutoff: 95
+  dropRandomCutoff: 90
   mysterySprite: {fileID: 21300000, guid: 690ebe6258c7be74e89ea375d86b315b, type: 3}
   spriteSelection:
   - {fileID: 21300000, guid: 5eda18ffee439c848a6eb1db3e16a9ad, type: 3}
@@ -62104,7 +62104,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectilePrefab: {fileID: 1153927297093656384, guid: a95f22291c2f6834db19607675e9c0f0, type: 3}
-  projectileSpeed: 10
+  projectileSpeed: 15
   flameThrower: {fileID: 4956001992437177027}
 --- !u!114 &4956001991301095819
 MonoBehaviour:

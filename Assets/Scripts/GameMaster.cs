@@ -338,7 +338,7 @@ public class GameMaster : MonoBehaviour
             while (colorAdjustments.postExposure.value > 0)
             {
                 colorAdjustments.postExposure.value -= 0.1f;
-                yield return new WaitForSecondsRealtime(0.05f);
+                yield return new WaitForSecondsRealtime(0.01f);
             }
         }
 
